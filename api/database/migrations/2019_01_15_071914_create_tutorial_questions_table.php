@@ -16,7 +16,6 @@ class CreateTutorialQuestionsTable extends Migration
         Schema::create('tutorial_questions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('tutorial_id');
-            $table->integer('question_number');
             $table->text('question');
             $table->text('answer1');
             $table->text('answer2');
