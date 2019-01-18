@@ -16,6 +16,16 @@ class Controller extends BaseController
         $this->rules = $rules;
     }
 
+    public function get()
+    {
+        return $this->model::all();
+    }
+
+    public function getById($id)
+    {
+        return $this->model::findOrFail($id);
+    }
+
     public function add(Request $request)
     {
         $this->validate($request, $this->rules);
@@ -31,7 +41,8 @@ class Controller extends BaseController
         return response()->json($result);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $delete = $this->model::findOrFail($id);
         $result = $delete->delete();
         return response()->json($result);

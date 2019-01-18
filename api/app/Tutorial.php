@@ -14,4 +14,9 @@ class Tutorial extends Model
     protected $fillable = [
         'title', 'system', 'author',
     ];
+
+    public function questions()
+    {
+        return $this->hasMany('App\Question', 'tutorial_id');
+    }
 }

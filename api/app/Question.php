@@ -14,4 +14,9 @@ class Question extends Model
     protected $fillable = [
         'tutorial_id', 'question', 'answer1', 'answer2', 'answer3', 'answer4', 'correct_answer', 'difficulty', 'author_id', 'verified',
     ];
+
+    public function tutorial()
+    {
+        return $this->belongsTo('App\Tutorial', 'tutorial_id');
+    }
 }
