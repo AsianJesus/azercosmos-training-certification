@@ -20,8 +20,8 @@ class CreateParticipantTrainingTable extends Migration
             $table->date('end_date');
             $table->unsignedInteger('participant_id');
             $table->tinyInteger('status');
-            $table->integer('score');
-            $table->integer('attempt');
+            $table->integer('score')->nullable();
+            $table->integer('attempt')->nullable();
             $table->unsignedInteger('examiner_id');
             $table->softDeletes();
             $table->timestamps();

@@ -20,10 +20,10 @@ class CreateTrainingsTable extends Migration
             $table->text('reference');
             $table->tinyInteger('status');
             $table->boolean('is_test_exam');
-            $table->integer('question_number');
-            $table->integer('pass_score');
-            $table->integer('exam_time');
-            $table->unsignedInteger('tutorial_id');
+            $table->integer('question_number')->nullable();
+            $table->integer('pass_score')->nullable();
+            $table->integer('exam_time')->nullable();
+            $table->unsignedInteger('tutorial_id')->nullable();
             $table->unsignedInteger('originator_id');
             $table->softDeletes();
             $table->timestamps();
