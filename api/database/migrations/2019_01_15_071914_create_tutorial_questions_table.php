@@ -24,7 +24,7 @@ class CreateTutorialQuestionsTable extends Migration
             $table->integer('correct_answer');
             $table->tinyInteger('difficulty');
             $table->unsignedInteger('author_id');
-            $table->boolean('verified');
+            $table->boolean('verified')->default(null);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -37,8 +37,8 @@ class Controller extends BaseController
     {
         $this->validate($request, $this->rules);
         $update = $this->model::findOrFail($id);
-        $result = $update->fill($request->all())->save();
-        return response()->json($result);
+        $update->fill($request->all())->save();
+        return $update;
     }
 
     public function delete($id)

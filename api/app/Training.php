@@ -14,4 +14,5 @@ class Training extends Model
     protected $fillable = [
         'title', 'description', 'reference', 'status', 'is_test_exam', 'question_number', 'pass_score', 'exam_time', 'tutorial_id', 'originator_id',
     ];
+
 }
