@@ -2,10 +2,17 @@
     <div class="new-tutorial-component">
         <h5>
             New tutorial
+            <b-btn variant="outline-warning" @click="$emit('close', true)">Close</b-btn>
         </h5>
         <div class="new-tutorial-component form">
             <b-form-input placeholder="Title" v-model="form.title"></b-form-input>
             <b-form-select :options="systems" placeholder="System" v-model="form.system"></b-form-select>
+            <multi-select :options="usersOptions" :selected-options="moderators" @select="moderators = $event"
+                          placeholder="Moderators">
+            </multi-select>
+            <multi-select :options="usersOptions" :selected-options="observers" @select="observers = $event"
+                        placeholder="Observers">
+            </multi-select>
             <div class="new-tutorial-component questions-list">
                     <table class="table table-hover">
                         <tr>
@@ -68,31 +75,24 @@
     </div>
 </template>
 <script>
-const systems = [
-  {
-    text: 'Please, select system',
-    value: null
-  },
-  {
-    text: 'AZERSKY',
-    value: 'azersky'
-  }
-]
-const difficulties = {
-  1: 'Easy',
-  2: 'Medium',
-  3: 'Hard'
-}
+import { MultiSelect } from 'vue-search-select'
+import { mapDifficulty, difficultyOptions } from '../../js/difficulties'
+import { systemOptions } from '../../js/systems'
+
 export default{
+  components: {
+    MultiSelect
+  },
   data () {
     return {
-      systems: systems,
       form: {
         title: null,
         system: null,
         questions: [],
         author: 1
       },
+      moderators: [],
+      observers: [],
       newQuestion: {
         question: '',
         answer1: '',
@@ -142,21 +142,15 @@ export default{
       }
     },
     difficultiesOptions () {
-      let result = Object.keys(difficulties).map((x) => {
-        return {
-          text: difficulties[x],
-          value: parseInt(x)
-        }
-      })
-      result.unshift({
-        text: 'Please, select difficulty',
-        value: null
-      })
-      return result
+        return difficultyOptions
     },
     userID () {
       return 1
-    }
+    },
+    usersOptions () {
+      return this.$store.getters.usersOptions
+    },
+    systems: () => systemOptions
   },
   methods: {
     addQuestion () {
@@ -164,6 +158,7 @@ export default{
         alert('Cannot add question')
         return
       }
+      this.newQuestion.author_id = 1
       this.form.questions.push(this.newQuestion)
       this.newQuestion = {
         question: '',
@@ -176,17 +171,41 @@ export default{
         verified: true
       }
     },
-    mapDifficulty (id) {
-      return difficulties[id]
-    },
+    mapDifficulty: mapDifficulty,
     createTutorial () {
       if (!this.canCreateTutorial) {
         alert('Can\'t create tutorial')
         return
       }
+      this.form.moderators = this.moderators.map(x => {
+        return {
+          moderator_id: x.value
+        }
+      })
+      this.form.observers = this.observers.map(x => {
+        return {
+          observer_id: x.value
+        }
+      })
       this.axios.post('/tutorials', this.form).then(response => {
         alert('Tutorial was successfully created')
-        this.$store.commit('addTutorial', response.data)
+        this.$store.commit('addTutorial', {
+            type: 'my',
+            tutorial: response.data
+        })
+        if (this.observers.filter(x => x.value === 1)) {
+          this.$store.commit('addTutorial', {
+            type: 'observing',
+            tutorial: response.data
+          })
+        }
+        if (this.moderating.filter(x => x.value === 1)) {
+          this.$store.commit('addTutorial', {
+            type: 'moderating',
+            tutorial: response.data
+          })
+        }
+        this.$emit('close', true)
       }).catch(err => {
         alert('Some error occurred')
         console.log(err)

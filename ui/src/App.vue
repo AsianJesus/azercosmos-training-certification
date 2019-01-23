@@ -13,14 +13,35 @@ export default {
   name: 'App',
   mounted () {
     this.loadTutorials()
+    this.loadUsers()
   },
   methods: {
     loadTutorials () {
-      this.axios.get('/tutorials').then(response => {
-        this.$store.commit('setTutorials', response.data)
+      this.axios.get('/users/1/tutorials').then(response => {
+        console.log(response.data)
+        this.$store.commit('setTutorials', {
+          type: 'my',
+          tutorials: response.data.my
+        })
+        this.$store.commit('setTutorials', {
+          type: 'observing',
+          tutorials: response.data.observing
+        })
+        this.$store.commit('setTutorials', {
+          type: 'moderating',
+          tutorials: response.data.moderating
+        })
+          //this.$store.commit('setTutorials', response.data)
+
       }).catch(err => {
         alert('Error occurred')
         console.log(err)
+      })
+    },
+    loadUsers () {
+      this.axios.get('/users').then(response => {
+        this.$store.commit('setUsers', response.data)
+        console.log(response.data)
       })
     }
   }

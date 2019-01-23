@@ -15,9 +15,17 @@ class Tutorial extends Model
         'title', 'system', 'author',
     ];
 
+    protected $withCount = [
+        'questions', 'verified_questions'
+    ];
+
     public function questions()
     {
         return $this->hasMany('App\Question', 'tutorial_id');
+    }
+
+    public function verified_questions () {
+        return $this->questions()->where('verified', true);
     }
 
     public function observers () {

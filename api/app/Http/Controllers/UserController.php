@@ -24,15 +24,9 @@ class UserController extends Controller
 
     public function getTutorials(Request $request, $id) {
         $user = $this->user::findOrFail($id);
-        $own = $user->own_tutorials()->get();
-        $ids = array_map(function ($t) {
-            return $t['id'];
-        }, $own->toArray());
-        $moderating = $user->moderating_tutorials()->whereNotIn('tutorial_id', $ids)->get();
-        foreach($moderating->toArray() as $t) {
-            array_push($ids, $t['id']);
-        }
-        $observed = $user->observed_tutorials()->whereNotIn('tutorial_id', $ids)->get();
-        return array('my' => $own, 'moderating' => $moderating, 'observed' => $observed);
+        $own = $user->own_tutorials()->with(['moderators.user', 'observers.user'])->get();
+        $moderating = $user->moderating_tutorials()->with(['moderators.user', 'observers.user'])->get();
+        $observing = $user->observed_tutorials()->with(['moderators.user', 'observers.user'])->get();
+        return array('my' => $own, 'moderating' => $moderating, 'observing' => $observing);
     }
 }

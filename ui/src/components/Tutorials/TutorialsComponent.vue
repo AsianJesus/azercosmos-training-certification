@@ -1,16 +1,15 @@
 <template>
     <div class="tutorials-component">
-        <div class="tutorials-list">
-            <tutorial-list-component></tutorial-list-component>
-        </div>
         <div>
             <b-btn variant="outline-success" @click="showNewTutorial = true">Create new tutorial</b-btn>
         </div>
-        <transition name="new-tutorial">
-            <div class="new-tutorial modal-window-canvas" @click="closeWindow()" v-if="showNewTutorial"
-                 @close="closeWindow(true)">
+        <div class="tutorials-list">
+            <tutorial-list-component></tutorial-list-component>
+        </div>
+        <transition name="fade">
+            <div class="new-tutorial modal-window-canvas" @click="closeWindow()" v-if="showNewTutorial">
                 <div class="new-tutorial-holder modal-window-holder" @click="$event.stopPropagation()">
-                    <new-tutorial-component></new-tutorial-component>
+                    <new-tutorial-component @close="closeWindow($event)"></new-tutorial-component>
                 </div>
             </div>
         </transition>
@@ -40,23 +39,5 @@ export default{
 }
 </script>
 <style>
-@keyframes s {
-    0% {
-        background-color: transparent;
-        opacity: 0;
-    }
-    60% {
-        background-color: transparent;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-.new-tutorial-enter-active{
-    animation: s .2s ease;
-}
-.new-tutorial-leave-active{
-    animation: s .2s ease reverse;
 
-}
 </style>

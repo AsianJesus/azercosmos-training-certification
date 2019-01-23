@@ -34,4 +34,5 @@ $router->post('questions', 'QuestionController@add');
 $router->put('questions/{id}', 'QuestionController@update');
 $router->delete('questions/{id}', 'QuestionController@delete');
 
+$router->get('users', 'UserController@get');
 $router->get('users/{id}/tutorials', 'UserController@getTutorials');

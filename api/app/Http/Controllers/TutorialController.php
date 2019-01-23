@@ -22,6 +22,12 @@ class TutorialController extends Controller
         foreach($request['questions'] as $question) {
             $tutorial->questions()->create($question);
         }
+        foreach($request->input('moderators') as $moderator) {
+            $tutorial->moderators()->create($moderator);
+        }
+        foreach($request->input('observers') as $observer) {
+            $tutorial->observers()->create($observer);
+        }
         return $tutorial;
 //        foreach ($request['question'])
     }
@@ -55,4 +61,25 @@ class TutorialController extends Controller
         return $tutorial->moderators()->with('user')->get();
     }
 
+    public function update(Request $request, $id)
+    {
+        $tutorial = $this->tutorial::findOrFail($id);
+        $moderators = $request->input('moderators');
+        if (is_array($moderators)) {
+
+            $tutorial->moderators()->whereNotIn('id', $moderators)->delete();
+            foreach($moderators as $m) {
+                $tutorial->moderators()->firstOrCreate(['moderator_id' => $m]);
+            }
+        }
+        $observers = $request->input('observers');
+        if (is_array($observers)) {
+            $tutorial->observers()->whereNotIn('id', $request->input('observers', []))->delete();
+            foreach($observers as $o) {
+                $tutorial->observers()->firstOrCreate(['observer_id' => $o]);
+            }
+        }
+        $tutorial->fill($request->all())->save();
+        return $tutorial->load('moderators.user', 'observers.user');
+    }
 }
