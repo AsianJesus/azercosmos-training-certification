@@ -5,8 +5,11 @@
             <b-btn variant="outline-warning" @click="$emit('close', true)">Close</b-btn>
         </h5>
         <div class="new-tutorial-component form">
-            <b-form-input placeholder="Title" v-model="form.title"></b-form-input>
-            <b-form-select :options="systems" placeholder="System" v-model="form.system"></b-form-select>
+            <b-form-input placeholder="Title" v-model="form.title" :state="showError && tutorialErrors.title ? false : null">
+            </b-form-input>
+            <b-form-select :options="systems" placeholder="System" v-model="form.system"
+                            :state="showError && tutorialErrors.system ? false : null">
+            </b-form-select>
             <multi-select :options="usersOptions" :selected-options="moderators" @select="moderators = $event"
                           placeholder="Moderators">
             </multi-select>
@@ -43,27 +46,7 @@
                     </table>
                 <hr>
                 <div class="new-tutorial-component new-question">
-                    <div class="new-question-title">
-                        <input type="text" v-model="newQuestion.question" placeholder="Question">
-                    </div>
-                    <div class="new-question-answers">
-                        <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="0">
-                        <input type="text" v-model="newQuestion.answer1" placeholder="Answer">
-                        <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="1">
-                        <input type="text" v-model="newQuestion.answer2" placeholder="Answer">
-                        <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="2">
-                        <input type="text" v-model="newQuestion.answer3" placeholder="Answer">
-                        <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="3">
-                        <input type="text" v-model="newQuestion.answer4" placeholder="Answer">
-                    </div>
-                    <div class="new-question-difficulty">
-                        <b-form-select :options="difficultiesOptions" v-model="newQuestion.difficulty"></b-form-select>
-                    </div>
-                    <div class="new-question-buttons">
-                        <b-btn @click="addQuestion" variant="outline-success">
-                            Add question
-                        </b-btn>
-                    </div>
+                    <new-question-component @addQuestion="addQuestion($event)"></new-question-component>
                 </div>
             </div>
             <div class="new-tutorial-component-buttons">
@@ -78,10 +61,11 @@
 import { MultiSelect } from 'vue-search-select'
 import { mapDifficulty, difficultyOptions } from '../../js/difficulties'
 import { systemOptions } from '../../js/systems'
-
+import NewQuestionComponent from '../Questions/NewQuestionComponent.vue'
 export default{
   components: {
-    MultiSelect
+    MultiSelect,
+    NewQuestionComponent
   },
   data () {
     return {
@@ -93,28 +77,10 @@ export default{
       },
       moderators: [],
       observers: [],
-      newQuestion: {
-        question: '',
-        answer1: '',
-        answer2: '',
-        answer3: '',
-        answer4: '',
-        correct_answer: '',
-        difficulty: null,
-        verified: true,
-        author_id: 1
-      }
+      showError: false
     }
   },
   computed: {
-    canAddQuestion () {
-      for (let key in this.newQuestionErrors) {
-        if (this.newQuestionErrors[key]) {
-          return false
-        }
-      }
-      return true
-    },
     canCreateTutorial () {
       for (let key in this.tutorialErrors) {
         if (this.tutorialErrors[key]) {
@@ -122,17 +88,6 @@ export default{
         }
       }
       return true
-    },
-    newQuestionErrors () {
-      return {
-        question: !this.newQuestion.question,
-        answer1: !this.newQuestion.answer1,
-        answer2: !this.newQuestion.answer2,
-        answer3: !this.newQuestion.answer3,
-        answer4: !this.newQuestion.answer4,
-        difficulty: !this.newQuestion.difficulty,
-        correct_answer: !this.newQuestion.correct_answer
-      }
     },
     tutorialErrors () {
       return {
@@ -153,30 +108,19 @@ export default{
     systems: () => systemOptions
   },
   methods: {
-    addQuestion () {
-      if (!this.canAddQuestion) {
-        alert('Cannot add question')
-        return
-      }
-      this.newQuestion.author_id = 1
-      this.form.questions.push(this.newQuestion)
-      this.newQuestion = {
-        question: '',
-        answer1: '',
-        answer2: '',
-        answer3: '',
-        answer4: '',
-        correct_answer: '',
-        difficulty: null,
-        verified: true
-      }
+    addQuestion (question) {
+      question.author_id = 1
+      question.verified = true
+      this.form.questions.push(question)
     },
     mapDifficulty: mapDifficulty,
     createTutorial () {
       if (!this.canCreateTutorial) {
         alert('Can\'t create tutorial')
+        this.showError = true
         return
       }
+      this.showError = false
       this.form.moderators = this.moderators.map(x => {
         return {
           moderator_id: x.value
@@ -187,19 +131,32 @@ export default{
           observer_id: x.value
         }
       })
-      this.axios.post('/tutorials', this.form).then(response => {
+      var form = new FormData()
+      this.observers.forEach(x => form.set('observers[][observer_id]', x.value))
+      this.moderators.forEach(x => form.set('moderators[][moderator_id]', x.value))
+      form.set('title', this.form.title)
+      form.set('difficulty', this.form.difficulty)
+      form.set('system', this.form.system)
+      form.set('author', this.form.author)
+      this.form.questions.forEach((q, index) => {
+        Object.keys(q).forEach((key) => {
+          form.set('questions['+index+']['+key+']', q[key])
+        })
+        form.append('file' + index, q.file)
+      })
+      this.axios.post('/tutorials', form).then(response => {
         alert('Tutorial was successfully created')
         this.$store.commit('addTutorial', {
             type: 'my',
             tutorial: response.data
         })
-        if (this.observers.filter(x => x.value === 1)) {
+        if (this.observers && this.observers.some(x => x.value === 1)) {
           this.$store.commit('addTutorial', {
             type: 'observing',
             tutorial: response.data
           })
         }
-        if (this.moderating.filter(x => x.value === 1)) {
+        if (this.moderating && this.moderating.some(x => x.value === 1)) {
           this.$store.commit('addTutorial', {
             type: 'moderating',
             tutorial: response.data

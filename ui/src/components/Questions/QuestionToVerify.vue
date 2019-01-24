@@ -7,7 +7,16 @@
         </div>
         <table class="table" v-else>
             <tr>
-                <td>{{ question.question }}</td>
+                <td>
+                    <div>
+                        {{ question.question }}
+                    </div>
+                    <div v-if="question.file">
+                        <a :href="$store.state.serverURL + '/' + question.file.path" target="_blank">
+                            Attachment
+                        </a>
+                    </div>
+                </td>
                 <td>
                     <div>
                         <strong v-if="question.correct_answer === 0"> {{ question.answer1 }}</strong>

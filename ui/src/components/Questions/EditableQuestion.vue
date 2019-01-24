@@ -64,6 +64,11 @@
                     <h6>
                         {{ question.question }}
                     </h6>
+                    <div v-if="question.file">
+                        <a :href="$store.state.serverURL + '/' + question.file.path" target="_blank ">
+                            Attachment
+                        </a>
+                    </div>
                 </div>
                 <div class="col">
                     <div>

@@ -40,39 +40,7 @@
             </div>
             <hr>
             <div class="add-questions-new-question">
-                <div class="new-question-title">
-                    <input type="text" v-model="newQuestion.question" placeholder="Question"
-                           :class="questionErrors.question && showError ? 'error-outline' : ''">
-                </div>
-                <div class="new-question-answers">
-                    <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="0"
-                           :class="questionErrors.correct_answer && showError ? 'error-border' : ''">
-                    <input type="text" v-model="newQuestion.answer1" placeholder="Answer"
-                           :class="questionErrors.answer1 && showError ? 'error-border' : ''">
-                    <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="1"
-                           :class="questionErrors.correct_answer && showError ? 'error-border' : ''">
-                    <input type="text" v-model="newQuestion.answer2" placeholder="Answer"
-                           :class="questionErrors.answer2 && showError ? 'error-border' : ''">
-                    <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="2"
-                           :class="questionErrors.correct_answer && showError ? 'error-border' : ''">
-                    <input type="text" v-model="newQuestion.answer3" placeholder="Answer"
-                           :class="questionErrors.answer3 && showError ? 'error-border' : ''">
-                    <input type="radio" name="new-question-correct" v-model="newQuestion.correct_answer" :value="3"
-                           :class="questionErrors.correct_answer && showError ? 'error-border' : ''">
-                    <input type="text" v-model="newQuestion.answer4" placeholder="Answer"
-                           :class="questionErrors.answer4 && showError ? 'error-border' : ''">
-                </div>
-                <div class="new-question-difficulty">
-                    <b-form-select :options="difficultyOptions" v-model="newQuestion.difficulty"
-                                   :state="(showError && questionErrors.difficulty) ? false : null">
-
-                    </b-form-select>
-                </div>
-                <div class="new-question-buttons">
-                    <b-btn @click="addQuestion" variant="outline-success">
-                        Add question
-                    </b-btn>
-                </div>
+                <new-question-component @addQuestion="addQuestion"></new-question-component>
             </div>
         </div>
         <hr>
@@ -85,6 +53,7 @@
 </template>
 <script>
 import { mapDifficulty, difficultyOptions } from '../../js/difficulties'
+import NewQuestionComponent from '../Questions/NewQuestionComponent.vue'
 export default{
   props: {
     tutorial: {
@@ -96,65 +65,30 @@ export default{
       default: false
     }
   },
-  computed: {
-    difficultyOptions () {
-      return difficultyOptions
-    },
-    questionErrors () {
-      return {
-        question: !this.newQuestion.question,
-        answer1: !this.newQuestion.answer1,
-        answer2: !this.newQuestion.answer2,
-        answer3: !this.newQuestion.answer3,
-        answer4: !this.newQuestion.answer4,
-        correct_answer: this.newQuestion.correct_answer === null,
-        difficulty: !this.newQuestion.difficulty
-      }
-    }
-
+  components: {
+    NewQuestionComponent
   },
   data () {
     return {
-      questions: [],
-      newQuestion: {
-        author_id: 1,
-        question: '',
-        answer1: '',
-        answer2: '',
-        answer3: '',
-        answer4: '',
-        correct_answer: null,
-        verified: this.moderator,
-        difficulty: null,
-        tutorial_id: this.tutorial.id
-      },
-      showError: false
+      questions: []
     }
   },
   methods: {
     mapDifficulty: mapDifficulty,
-    addQuestion () {
-      if (Object.values(this.questionErrors).some(x => x)) {
-        alert('Error ')
-        this.showError = true
-        return
-      }
-      this.showError = false
-      this.questions.push(this.newQuestion)
-      this.newQuestion = {
-        author_id: 1,
-        question: '',
-        answer1: '',
-        answer2: '',
-        answer3: '',
-        answer4: '',
-        correct_answer: null,
-        verified: this.moderator,
-        difficulty: null,
-        tutorial_id: this.tutorial.id
-      }
+    addQuestion (question) {
+      question.author_id = this.$store.state.userID
+      question.verified = this.moderator
+      question.tutorial_id = this.tutorial.id
+      this.questions.push(question)
     },
     postQuestions () {
+      var form = new FormData()
+      this.questions.forEach((q, index) => {
+        Object.keys(q).forEach((key) => {
+          form.set('questions['+index+']['+key+']', q[key])
+        })
+        form.append('file' + index, q.file)
+      })
       this.axios.post('/questions', {
           questions: this.questions
       }).then(response => {
@@ -167,7 +101,7 @@ export default{
           id: this.tutorial.id,
           props: props
         })
-        this.$emit('close')
+        setTimeout(() => this.$emit('close'), 1000);
       }).catch(err => {
         alert('Some error occurred')
         console.log(err)

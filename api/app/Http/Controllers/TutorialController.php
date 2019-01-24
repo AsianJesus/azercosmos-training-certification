@@ -18,14 +18,21 @@ class TutorialController extends Controller
 
     public function add(Request $request)
     {
+        return $request->all();
         $tutorial = parent::add($request);
-        foreach($request['questions'] as $question) {
-            $tutorial->questions()->create($question);
+        foreach($request->input('questions') as $index => $question) {
+            $q = $tutorial->questions()->create($question);
+            $file = $request->file("file$index");
+            if ($file) {
+                $name = generateFileName(QuestionController::DIRECTORY, $file->extension());
+                $q->file()->create(['path' => $name]);
+                $file->move(QuestionController::DIRECTORY.'/', $name);
+            }
         }
-        foreach($request->input('moderators') as $moderator) {
+        foreach($request->input('moderators', []) as $moderator) {
             $tutorial->moderators()->create($moderator);
         }
-        foreach($request->input('observers') as $observer) {
+        foreach($request->input('observers', []) as $observer) {
             $tutorial->observers()->create($observer);
         }
         return $tutorial;

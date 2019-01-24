@@ -38,3 +38,7 @@ $router->delete('questions/{id}', 'QuestionController@delete');
 
 $router->get('users', 'UserController@get');
 $router->get('users/{id}/tutorials', 'UserController@getTutorials');
+
+$router->get('test', function () {
+    return json_encode(generateFileName('files', 'txt'));
+});
