@@ -36,6 +36,20 @@ $router->put('questions/{id}', 'QuestionController@update');
 $router->delete('questions/', 'QuestionController@deleteMany');
 $router->delete('questions/{id}', 'QuestionController@delete');
 
+$router->get('trainings', 'TrainingController@get');
+$router->get('trainings/{id}', 'TrainingController@getById');
+$router->post('trainings', 'TrainingController@add');
+$router->put('trainings/{id}', 'TrainingController@update');
+$router->delete('trainings/{id}', 'TrainingController@delete');
+$router->get('trainings/{id}/questions', 'TrainingController@getQuestions');
+
+$router->get('participants', 'ParticipantController@get');
+$router->get('participants/{id}', 'ParticipantController@getById');
+$router->post('participants', 'ParticipantController@add');
+$router->patch('participants', 'ParticipantController@updateMany');
+$router->put('participants/{id}', 'ParticipantController@update');
+$router->delete('participants/{id}', 'ParticipantController@delete');
+
 $router->get('users', 'UserController@get');
 $router->get('users/{id}/tutorials', 'UserController@getTutorials');
 

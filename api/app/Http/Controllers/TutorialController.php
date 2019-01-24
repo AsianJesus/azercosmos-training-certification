@@ -18,7 +18,6 @@ class TutorialController extends Controller
 
     public function add(Request $request)
     {
-        return $request->all();
         $tutorial = parent::add($request);
         foreach($request->input('questions') as $index => $question) {
             $q = $tutorial->questions()->create($question);
@@ -36,7 +35,6 @@ class TutorialController extends Controller
             $tutorial->observers()->create($observer);
         }
         return $tutorial;
-//        foreach ($request['question'])
     }
 
     public function getById($id)

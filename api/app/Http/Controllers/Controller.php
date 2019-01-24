@@ -47,4 +47,12 @@ class Controller extends BaseController
         $result = $delete->delete();
         return response()->json($result);
     }
+
+    public function updateMany(Request $request) {
+        $result = 0;
+        foreach($request->all() as $id => $value) {
+            $result += $this->model::where('id', $id)->update($value);
+        }
+        return $result;
+    }
 }
