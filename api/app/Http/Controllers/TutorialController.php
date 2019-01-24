@@ -38,7 +38,8 @@ class TutorialController extends Controller
     }
 
     public function getQuestions ($id, Request $request) {
-        return $this->tutorial::findOrFail($id)->questions()->get();
+        $tutorial = $this->tutorial::findOrFail($id);
+        return array('unverified' => $tutorial->unverified_questions()->get(), 'verified' => $tutorial->verified_questions()->get());
     }
 
     public function addObserver ($id, Request $request) {

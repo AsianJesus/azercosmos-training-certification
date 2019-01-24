@@ -38,7 +38,16 @@ class QuestionController extends Controller
          }
     }
 
-    public function verify(Request $request) {
-        $this->question::whereIn('id', $request->input('ids', []))->update(['verified' => true]);
+    public function deleteMany (Request $request) {
+        return response()->json($this->question::whereIn('id', $request->input('ids', []))->delete());
     }
+
+    public function updateMany (Request $request) {
+        $count = 0;
+        foreach($request->all() as $id => $value) {
+            $count += $this->question::where('id', $id)->update($value);
+        }
+        return $count;
+    }
+
 }

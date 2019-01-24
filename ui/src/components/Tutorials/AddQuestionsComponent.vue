@@ -134,7 +134,7 @@ export default{
   methods: {
     mapDifficulty: mapDifficulty,
     addQuestion () {
-      if (Object.values(this.questionErrors).filter(x => x).length) {
+      if (Object.values(this.questionErrors).some(x => x)) {
         alert('Error ')
         this.showError = true
         return

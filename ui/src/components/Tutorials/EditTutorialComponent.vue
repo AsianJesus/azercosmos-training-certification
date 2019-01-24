@@ -35,7 +35,7 @@
                 <div class="edit-tutorial-questions-list">
                     <div v-for="(q, i) in questions" v-bind:key="i">
                         <editable-question :question="q" :isDeleted="isDeleting(q.id)" @undoDelete="undoDeleteQuestion(q.id)"
-                                           @deleteQuestion="deleteQuestion(q.id)">
+                                           @deleteQuestion="deleteQuestion(q.id)" @saveEdit="editQuestion(q.id, $event)">
 
                         </editable-question>
                     </div>
@@ -47,8 +47,6 @@
                 Save
             </b-btn>
         </div>
-        {{ questions }}
-        {{ editedTutorial }}
     </div>
 </template>
 <script>
@@ -72,6 +70,7 @@ export default{
       moderators: [],
       observers: [],
       questions: [],
+      editedQuestions: {},
       questionsToDelete: []
     }
   },
@@ -102,6 +101,12 @@ export default{
       let form = this.editedTutorial
       form.moderators = this.moderators.map(x => x.value)
       form.observers = this.observers.map(x => x.value)
+      this.axios.delete('/questions', {
+        params: {
+          ids: this.questionsToDelete
+        }
+      })
+      this.axios.patch('/questions', this.editedQuestions)
       this.axios.put('/tutorials/' + this.tutorial.id, form).then(response => {
         this.$store.commit('updateTutorial', {
           id: response.data.id,
@@ -112,18 +117,26 @@ export default{
     },
     loadQuestions () {
       this.axios.get('/tutorials/' + this.tutorial.id + '/questions').then(response => {
-        alert('We got it!')
-        this.questions = response.data
+        this.questions = response.data.verified
       })
     },
     isDeleting (id) {
-      return this.questionsToDelete.filter(x => x === id).length > 0
+      return this.questionsToDelete.some(x => x === id)
     },
     deleteQuestion (id) {
       this.questionsToDelete.push(id)
     },
     undoDeleteQuestion (id) {
       this.questionsToDelete = this.questionsToDelete.filter(x => x !== id)
+    },
+    editQuestion (id, question) {
+      question.author_id = this.$store.state.userID
+      this.editedQuestions[question.id] = question
+      for (let i = 0; i < this.questions.length; i++) {
+        if (this.questions[i].id === id) {
+          this.$set(this.questions, i, question)
+        }
+      }
     }
   }
 

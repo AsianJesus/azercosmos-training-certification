@@ -27,6 +27,9 @@ class Tutorial extends Model
     public function verified_questions () {
         return $this->questions()->where('verified', true);
     }
+    public function unverified_questions () {
+        return $this->questions()->where('verified', false);
+    }
 
     public function observers () {
         return $this->hasMany(TutorialObserver::class);

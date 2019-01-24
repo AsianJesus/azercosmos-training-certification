@@ -30,19 +30,27 @@ export default new Vuex.Store({
     updateTutorial (state, info) {
       let id = info.id
       let props = info.props
-      // Delete from moderating if you're not moderator anymore
-      if (props.moderators && !props.moderators.filter(m => m.moderator_id === state.userID).length) {
+      let isModerator = props.moderators && props.moderators.some(m => m.moderator_id === state.userID)
+        // Delete from moderating if you're not moderator anymore
+      if (!isModerator &&
+        state.tutorials['moderating'].some(t => t.id === id)) {
         state.tutorials['moderating'] = state.tutorials['moderating'].filter(x => x.id !== id)
       }
       // Add into moderating if you're moderator
-      if (props.moderators && props.moderators.filter(m => m.moderator_id === state.userID).length) {
+      if (isModerator &&
+        !state.tutorials['moderating'].some(t => t.id === id)) {
         state.tutorials['moderating'].push(props)
       }
       // Same two actions for observers
-      if (props.observers && !props.observers.filter(m => m.observer_id === state.userID).length) {
+      let isObserver = props.observers && props.observers.some(m => m.observer_id === state.userID)
+      // Delete from moderating if you're not moderator anymore
+      if (!isObserver &&
+        state.tutorials['observing'].some(t => t.id === id)) {
         state.tutorials['observing'] = state.tutorials['observing'].filter(x => x.id !== id)
       }
-      if (props.observers && props.observers.filter(m => m.observer_id === state.userID).length) {
+      // Add into moderating if you're moderator
+      if (isObserver &&
+        !state.tutorials['observing'].some(t => t.id === id)) {
         state.tutorials['observing'].push(props)
       }
       for (let type in state.tutorials) {

@@ -17,9 +17,9 @@
                     </b-form-input>
                 </div>
                 <div class="col-2">
-                    <b-form-radio type="radiobutton" v-model="form.correct_answer" :value="0">
+                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="0">
 
-                    </b-form-radio>
+                    </input>
                 </div>
                 <div class="col-10">
                     <b-form-input v-model="form.answer2" placeholder="Answer #2">
@@ -27,9 +27,9 @@
                     </b-form-input>
                 </div>
                 <div class="col-2">
-                    <b-form-radio type="radiobutton" v-model="form.correct_answer" :value="1">
+                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="1">
 
-                    </b-form-radio>
+                    </input>
                 </div>
                 <div class="col-10">
                     <b-form-input v-model="form.answer3" placeholder="Answer #3">
@@ -37,9 +37,19 @@
                     </b-form-input>
                 </div>
                 <div class="col-2">
-                    <b-form-radio type="radiobutton" v-model="form.correct_answer" :value="2">
+                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="2">
 
-                    </b-form-radio>
+                    </input>
+                </div>
+                <div class="col-10">
+                    <b-form-input v-model="form.answer4" placeholder="Answer #4">
+
+                    </b-form-input>
+                </div>
+                <div class="col-2">
+                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="3">
+
+                    </input>
                 </div>
             </div>
             <div class="editable-question-edit-buttons">
@@ -57,24 +67,24 @@
                 </div>
                 <div class="col">
                     <div>
-                        <em v-if="question.correct_answer === 0">{{ question.answer1 }}</em>
+                        <strong v-if="question.correct_answer === 0">{{ question.answer1 }}</strong>
                         <span v-else> {{question.answer1 }}</span>
                     </div>
                     <div>
-                        <em v-if="question.correct_answer === 1">{{ question.answer2 }}</em>
+                        <strong v-if="question.correct_answer === 1">{{ question.answer2 }}</strong>
                         <span v-else> {{question.answer2 }}</span>
                     </div>
                     <div>
-                        <em v-if="question.correct_answer === 2">{{ question.answer3 }}</em>
+                        <strong v-if="question.correct_answer === 2">{{ question.answer3 }}</strong>
                         <span v-else> {{question.answer3 }}</span>
                     </div>
                     <div>
-                        <em v-if="question.correct_answer === 3">{{ question.answer4 }}</em>
+                        <strong v-if="question.correct_answer === 3">{{ question.answer4 }}</strong>
                         <span v-else> {{question.answer4 }}</span>
                     </div>
                 </div>
                 <div class="col-2">
-                    {{ question.author_id }}
+                    {{ author }}
                 </div>
             </div>
             <div class="editable-question-read-buttons">
@@ -100,27 +110,36 @@ export default{
   data () {
     return {
       form: {
-
+        question: '',
+        answer1: '',
+        answer2: '',
+        answer3: '',
+        answer4: '',
+        correct_answer: null
       },
       isEditing: false
     }
   },
   computed: {
-    difficultyOptions: () => difficultyOptions
+    difficultyOptions: () => difficultyOptions,
+    author () {
+      let res = this.$store.state.users.filter(x => x.ID === this.question.author_id)
+      return res.length ? res[0].NAME : 'Undefined'
+    }
   },
   mounted () {
-
+    this.form = JSON.parse(JSON.stringify(this.question))
   },
   methods: {
     startEdit () {
       this.isEditing = true
     },
     cancelEdit () {
-      this.isEditing = false
       this.form = JSON.parse(JSON.stringify(this.question))
+      this.isEditing = false
     },
     saveEdit () {
-      this.$emit('save', this.form)
+      this.$emit('saveEdit', this.form)
       this.isEditing = false
     },
     deleteQuestion () {

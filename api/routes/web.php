@@ -31,7 +31,9 @@ $router->get('questions', 'QuestionController@get');
 $router->get('questions/{id}', 'QuestionController@getById');
 $router->get('questions/by-tutorial/{id}', 'QuestionController@getByTutorial');
 $router->post('questions', 'QuestionController@add');
+$router->patch('questions', 'QuestionController@updateMany');
 $router->put('questions/{id}', 'QuestionController@update');
+$router->delete('questions/', 'QuestionController@deleteMany');
 $router->delete('questions/{id}', 'QuestionController@delete');
 
 $router->get('users', 'UserController@get');

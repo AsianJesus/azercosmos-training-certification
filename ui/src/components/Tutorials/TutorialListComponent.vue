@@ -18,7 +18,7 @@
                         <td>{{ t.system }}</td>
                         <td>
                             <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
-                            <b-btn variant="outline-success">Verify</b-btn>
+                            <b-btn variant="outline-success" @click="selectedTutorial.verifyQuestions = t">Verify</b-btn>
                             <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add question</b-btn>
                             <b-btn variant="outline-secondary" @click="selectedTutorial.edit = t">Edit</b-btn>
                             <b-btn variant="outline-danger" @click="deleteTutorial(t.id)">Delete</b-btn>
@@ -42,9 +42,9 @@
                         <td>{{ t.system }}</td>
                         <td>
                             <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
-                            <b-btn variant="outline-primary">Add questions</b-btn>
-                            <b-btn variant="outline-success">Verify</b-btn>
-                            <b-btn variant="outline-secondary">Edit</b-btn>
+                            <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add questions</b-btn>
+                            <b-btn variant="outline-success" @click="selectedTutorial.verifyQuestions = t">Verify</b-btn>
+                            <b-btn variant="outline-secondary" @click="selectedTutorial.edit = t">Edit</b-btn>
                         </td>
                     </tr>
                 </table>
@@ -65,7 +65,7 @@
                         <td>{{ t.system }}</td>
                         <td>
                             <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
-                            <b-btn variant="outline-primary">Add questions</b-btn>
+                            <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add questions</b-btn>
                         </td>
                     </tr>
                 </table>
@@ -99,17 +99,27 @@
                 </div>
             </div>
         </transition>
+        <transition name="fade">
+            <div class="modal-window-canvas" v-if="selectedTutorial.verifyQuestions" @click="hideVerify()">
+                <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <verify-questions :tutorial="selectedTutorial.verifyQuestions" @close="hideVerify($event)">
+                    </verify-questions>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
 import ViewTutorialComponent from './ViewTutorialComponent.vue'
 import AddQuestionsComponent from './AddQuestionsComponent.vue'
 import EditTutorialComponent from './EditTutorialComponent.vue'
+import VerifyQuestions from './VerifyQuestions.vue'
 export default{
   components: {
     ViewTutorialComponent,
     AddQuestionsComponent,
-    EditTutorialComponent
+    EditTutorialComponent,
+    VerifyQuestions
   },
   computed: {
     MyTutorials () {
@@ -127,7 +137,8 @@ export default{
       selectedTutorial: {
         view: null,
         addQuestions: null,
-        edit: null
+        edit: null,
+        verifyQuestions: null
       }
     }
   },
@@ -137,19 +148,25 @@ export default{
     },
     hideAddQuestions (force = false) {
       if (!force && !confirm('Do you wanna close window?')) {
-          return
+        return
       }
       this.selectedTutorial.addQuestions = null
     },
     hideEdit (force = false) {
       if (!force && !confirm('Do you wanna close window?')) {
-          return
+        return
       }
       this.selectedTutorial.edit = null
     },
+    hideVerify (force = false) {
+      if (!force && !confirm('Do you wanna close window?')) {
+        return
+      }
+      this.selectedTutorial.verifyQuestions = null
+    },
     canAddQuestion (id) {
-      return this.MyTutorials.filter(x => x.id === id).length > 0 ||
-          this.ModeratingTutorials.filter(x => x.id === id).length > 0
+      return this.MyTutorials.some(x => x.id === id) ||
+          this.ModeratingTutorials.some(x => x.id === id)
     },
     deleteTutorial (id) {
       if (!confirm('Do you wanna delete tutorial #' + id)) {
