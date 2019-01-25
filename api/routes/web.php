@@ -52,7 +52,11 @@ $router->delete('participants/{id}', 'ParticipantController@delete');
 
 $router->get('users', 'UserController@get');
 $router->get('users/{id}/tutorials', 'UserController@getTutorials');
+$router->get('users/{id}/my-trainings', 'UserController@getMyTrainings');
+$router->get('users/{id}/participating-trainings', 'UserController@getParticipatingTrainings');
+$router->get('users/{id}/observing-trainings', 'UserController@getObservingTrainings');
 
 $router->get('test', function () {
-    return json_encode(generateFileName('files', 'txt'));
+    $arr = array('f' => 1, 's' => 2);
+    return $arr['a'] ?? $arr['f'] ?? 3;
 });

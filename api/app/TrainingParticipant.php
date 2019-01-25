@@ -25,10 +25,10 @@ class TrainingParticipant extends Model
     }
 
     public function examiner() {
-        return $this->belongsTo(User::class, 'examiner');
+        return $this->belongsTo(User::class, 'examiner_id');
     }
 
     public function participant() {
-        return $this->belongsTo(User::class, 'participant');
+        return $this->belongsTo(User::class, 'participant_id');
     }
 }

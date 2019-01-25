@@ -28,4 +28,17 @@ class User extends Model
     public function own_tutorials() {
         return $this->hasMany(Tutorial::class, 'author', 'ID');
     }
+
+    public function observed_trainings() {
+        return $this->hasManyThrough(Training::class, TrainingObserver::class, 'observer_id',
+            'id', 'ID', 'training_id');
+    }
+
+    public function own_trainings() {
+        return $this->hasMany(Training::class, 'originator_id', 'ID');
+    }
+
+    public function participating_trainings() {
+        return $this->hasMany(TrainingParticipant::class, 'participant_id', 'ID');
+    }
 }
