@@ -34,7 +34,7 @@ export default{
     return {
       questions: [],
       questionsToDelete: [],
-      questionsToVerify: [],
+      questionsToVerify: []
     }
   },
   mounted () {
@@ -75,10 +75,12 @@ export default{
     save () {
       this.questionsToVerify = this.questionsToVerify.filter(q => !this.questionsToDelete.some(d => d === q))
       let toVerify = {}
-      this.questionsToVerify.forEach(x => toVerify[x] = {verified: true})
-      var props = {
+      this.questionsToVerify.forEach(x => {
+        toVerify[x] = {verified: true}
+      })
+      let props = {
         questions_count: this.tutorial.questions_count,
-        verified_questions_count: this.tutorial.verified_questions_count,
+        verified_questions_count: this.tutorial.verified_questions_count
       }
       this.axios.all([
         this.axios.delete('/questions', {

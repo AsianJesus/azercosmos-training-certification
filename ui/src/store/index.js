@@ -10,6 +10,12 @@ export default new Vuex.Store({
       observing: [],
       moderating: []
     },
+    trainings: {
+      my: {},
+      observing: {}
+    },
+    // Participating is more flexible with different structure
+    trainingParticipating: {},
     users: [],
     userID: 1,
     serverURL: 'http://localhost/azercosmos-training-certification/api/public'
@@ -32,7 +38,7 @@ export default new Vuex.Store({
       let id = info.id
       let props = info.props
       let isModerator = props.moderators && props.moderators.some(m => m.moderator_id === state.userID)
-        // Delete from moderating if you're not moderator anymore
+      // Delete from moderating if you're not moderator anymore
       if (!isModerator &&
         state.tutorials['moderating'].some(t => t.id === id)) {
         state.tutorials['moderating'] = state.tutorials['moderating'].filter(x => x.id !== id)
@@ -70,6 +76,51 @@ export default new Vuex.Store({
     },
     setUsers (state, users) {
       state.users = users
+    },
+    setTrainings (state, options) {
+      console.log(options)
+      state.trainings[options.type] = {}
+      options.trainings.forEach(t => {
+        state.trainings[options.type][t.id] = t
+      })
+    },
+    deleteTraining (state, options) {
+      let type = options.type
+      for (let key in state.trainings) {
+        if ((!type || key === type) && state.trainings.hasOwnProperty(key)) {
+          delete state.trainings[key][options.id]
+        }
+      }
+    },
+    updateTraining (state, info) {
+      for (let key in state.trainings) {
+        if (state.trainings.hasOwnProperty(key)) {
+          state.trainings[key][info.id] = info
+        }
+      }
+    },
+    addTraining (state, options) {
+      state.trainings[options.type][options.training.id] = options.training
+    },
+    setParticipatingTrainings (state, trainings) {
+      state.trainingParticipating = {}
+      console.log(trainings)
+      trainings.forEach(t => {
+        state.trainingParticipating[t.id] = t
+      })
+    },
+    deleteParticipatingTraining (state, id) {
+      delete state.trainings[id]
+    },
+    updateParticipatingTraining (state, info) {
+      for (let key in info.props) {
+        if (info.props.hasOwnProperty(key)) {
+          state.trainingParticipating[info.id][key] = info.props[key]
+        }
+      }
+    },
+    addParticipatingTraining (state, options) {
+      state.trainingParticipating[options.id] = options.body
     }
   },
   getters: {

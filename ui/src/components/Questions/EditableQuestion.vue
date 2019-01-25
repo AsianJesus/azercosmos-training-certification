@@ -18,8 +18,6 @@
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="0">
-
-                    </input>
                 </div>
                 <div class="col-10">
                     <b-form-input v-model="form.answer2" placeholder="Answer #2">
@@ -28,8 +26,6 @@
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="1">
-
-                    </input>
                 </div>
                 <div class="col-10">
                     <b-form-input v-model="form.answer3" placeholder="Answer #3">
@@ -38,8 +34,6 @@
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="2">
-
-                    </input>
                 </div>
                 <div class="col-10">
                     <b-form-input v-model="form.answer4" placeholder="Answer #4">
@@ -48,8 +42,6 @@
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="3">
-
-                    </input>
                 </div>
             </div>
             <div class="editable-question-edit-buttons">

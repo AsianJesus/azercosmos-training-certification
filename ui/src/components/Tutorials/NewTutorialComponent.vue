@@ -97,7 +97,7 @@ export default{
       }
     },
     difficultiesOptions () {
-        return difficultyOptions
+      return difficultyOptions
     },
     userID () {
       return 1
@@ -140,15 +140,15 @@ export default{
       form.set('author', this.form.author)
       this.form.questions.forEach((q, index) => {
         Object.keys(q).forEach((key) => {
-          form.set('questions['+index+']['+key+']', q[key])
+          form.set('questions[' + index + '][' + key + ']', q[key])
         })
         form.append('file' + index, q.file)
       })
       this.axios.post('/tutorials', form).then(response => {
         alert('Tutorial was successfully created')
         this.$store.commit('addTutorial', {
-            type: 'my',
-            tutorial: response.data
+          type: 'my',
+          tutorial: response.data
         })
         if (this.observers && this.observers.some(x => x.value === 1)) {
           this.$store.commit('addTutorial', {

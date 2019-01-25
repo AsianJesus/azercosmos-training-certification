@@ -86,13 +86,13 @@ export default{
     this.moderators = this.tutorial.moderators.map(u => {
       return {
         text: u.user.NAME,
-        value: u.moderator_id,
+        value: u.moderator_id
       }
     })
     this.observers = this.tutorial.observers.map(u => {
       return {
         text: u.user.NAME,
-        value: u.observer_id,
+        value: u.observer_id
       }
     })
   },

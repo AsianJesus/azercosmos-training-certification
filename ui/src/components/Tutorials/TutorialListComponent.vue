@@ -18,7 +18,9 @@
                         <td>{{ t.system }}</td>
                         <td>
                             <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
+<!--
                             <b-btn variant="outline-success" @click="selectedTutorial.verifyQuestions = t">Verify</b-btn>
+-->
                             <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add question</b-btn>
                             <b-btn variant="outline-secondary" @click="selectedTutorial.edit = t">Edit</b-btn>
                             <b-btn variant="outline-danger" @click="deleteTutorial(t.id)">Delete</b-btn>
@@ -165,8 +167,7 @@ export default{
       this.selectedTutorial.verifyQuestions = null
     },
     canAddQuestion (id) {
-      return this.MyTutorials.some(x => x.id === id) ||
-          this.ModeratingTutorials.some(x => x.id === id)
+      return this.ModeratingTutorials.some(x => x.id === id)
     },
     deleteTutorial (id) {
       if (!confirm('Do you wanna delete tutorial #' + id)) {

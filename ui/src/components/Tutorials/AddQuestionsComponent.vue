@@ -52,7 +52,7 @@
     </div>
 </template>
 <script>
-import { mapDifficulty, difficultyOptions } from '../../js/difficulties'
+import { mapDifficulty } from '../../js/difficulties'
 import NewQuestionComponent from '../Questions/NewQuestionComponent.vue'
 export default{
   props: {
@@ -85,23 +85,24 @@ export default{
       var form = new FormData()
       this.questions.forEach((q, index) => {
         Object.keys(q).forEach((key) => {
-          form.set('questions['+index+']['+key+']', q[key])
+          form.set('questions[' + index + '][' + key + ']', q[key])
         })
         form.append('file' + index, q.file)
       })
       this.axios.post('/questions', {
-          questions: this.questions
+        questions: this.questions
       }).then(response => {
         let props = {}
         props['questions_count'] = this.tutorial.questions_count + response.data.length
         if (this.moderator) {
           props['verified_questions_count'] = this.tutorial.verified_questions_count + response.data.length
         }
+        console.log(props)
         this.$store.commit('updateTutorial', {
           id: this.tutorial.id,
           props: props
         })
-        setTimeout(() => this.$emit('close'), 1000);
+        setTimeout(() => this.$emit('close'), 1000)
       }).catch(err => {
         alert('Some error occurred')
         console.log(err)

@@ -66,7 +66,7 @@ export default{
     verificationErrors () {
       return {
         question: !this.question,
-        correct_answer: !this.correct_answer,
+        correct_answer: this.correct_answer === null,
         difficulty: !this.difficulty,
         answer1: !this.answer1,
         answer2: !this.answer2,
@@ -94,8 +94,8 @@ export default{
         answer4: this.answer4
       })
       this.question = ''
-      this.answer1=''
-      this.answer2=''
+      this.answer1 = ''
+      this.answer2 = ''
       this.answer3 = ''
       this.answer4 = ''
       this.correct_answer = null
