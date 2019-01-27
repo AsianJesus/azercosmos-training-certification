@@ -18,7 +18,7 @@ class TrainingObserver extends Model
     ];
     protected $table = 'observer_training';
     public function user() {
-        return $this->belongsTo(User::class, 'observer_id');
+        return $this->belongsTo(User::class, 'observer_id', 'ID');
     }
 
     public function training() {

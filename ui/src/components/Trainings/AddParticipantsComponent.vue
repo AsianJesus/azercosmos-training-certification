@@ -102,7 +102,7 @@ export default{
       this.participants.splice(index, 1)
     },
     save () {
-      if (!this.participants.length){
+      if (!this.participants.length) {
         this.error = 'No users to add!'
         return
       }

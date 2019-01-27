@@ -1,32 +1,45 @@
 <template>
     <div class="participating-trainings-component">
-        <table class="table">
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Type
-                </th>
-                <th></th>
-            </tr>
-            <tr v-for="(p, id) in trainings" v-bind:key="id">
-                <td>
-                    {{ p.title }}
-                </td>
-                <td>
-                    {{ p.is_test_exam ? 'Test' : 'Non test' }}
-                </td>
-                <td>
-                    <b-btn variant="outline-success" @click="viewTraining(p.id)">
-                        View
-                    </b-btn>
-                    <b-btn variant="outline-primary" @click="addParticipants(p.id)">
-                        Add participants
-                    </b-btn>
-                </td>
-            </tr>
-        </table>
+        <div class="participating-trainings-loaded" v-if="!isLoading">
+            <table class="table">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th></th>
+                </tr>
+                <tr v-for="(p, id) in trainings" v-bind:key="id">
+                    <td>
+                        {{ p.title }}
+                    </td>
+                    <td>
+                        {{ p.is_test_exam ? 'Test' : 'Non test' }}
+                    </td>
+                    <td>
+                        <b-btn variant="outline-success" @click="viewTraining(p.id)">
+                            View
+                        </b-btn>
+                        <b-btn variant="outline-secondary" @click="trainingToEdit = p">
+                            Edit
+                        </b-btn>
+                        <b-btn variant="outline-primary" @click="addParticipants(p.id)">
+                            Add participants
+                        </b-btn>
+                    </td>
+                </tr>
+            </table>
+            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" :per-page="1" @input="changePage">
+
+            </b-pagination>
+        </div>
+        <div class="participating-trainings-not-loaded" v-else>
+            <h4>
+                Sorry, but we are still loading
+            </h4>
+        </div>
         <transition name="fade">
             <div class="modal-window-canvas" v-if="selectedTraining !== null" @click="selectedTraining = null">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
@@ -42,25 +55,37 @@
                 </div>
             </div>
         </transition>
+        <transition name="fade">
+            <div class="modal-window-canvas" v-if="trainingToEdit !== null" @click="hideEdit()">
+                <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <edit-training-component :training="trainingToEdit" @close="hideEdit($event)">
+                    </edit-training-component>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
 import ViewTrainingAsOwner from './ViewTrainingAsObserver.vue'
 import AddParticipantsComponent from './AddParticipantsComponent.vue'
+import EditTrainingComponent from './EditTrainingComponent.vue'
 export default{
   components: {
     ViewTrainingComponent: ViewTrainingAsOwner,
+    EditTrainingComponent,
     AddParticipantsComponent
   },
   data () {
     return {
       filters: [],
       currentPage: null,
+      isLoading: false,
       totalPages: null,
       orderBy: null,
       orderAsc: false,
       selectedTraining: null,
-      trainingToAddParticipants: null
+      trainingToAddParticipants: null,
+      trainingToEdit: null
     }
   },
   computed: {
@@ -73,6 +98,10 @@ export default{
   },
   methods: {
     loadTrainings (page = 1) {
+      if (this.isLoading) {
+        return
+      }
+      this.isLoading = true
       this.axios.get('/users/' + this.$store.state.userID + '/observing-trainings', {
         params: {
           page: page,
@@ -81,6 +110,7 @@ export default{
           order: this.orderAsc ? 'asc' : 'desc'
         }
       }).then(response => {
+        this.isLoading = false
         console.log(response.data)
         this.currentPage = response.data.current_page
         this.totalPages = response.data.last_page
@@ -88,6 +118,8 @@ export default{
           type: 'observing',
           trainings: response.data.data
         })
+      }).catch(() => {
+        this.isLoading = false
       })
     },
     viewTraining (id) {
@@ -101,6 +133,18 @@ export default{
         return
       }
       this.trainingToAddParticipants = null
+    },
+    hideEdit (force = false) {
+      if (!(force || confirm('Do you want to close window?'))) {
+        return
+      }
+      this.trainingToEdit = null
+    },
+    changePage (page) {
+      if (page === this.currentPage) {
+        return
+      }
+      this.loadTrainings(page)
     }
   }
 }

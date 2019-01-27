@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="create-training-participants">
-                <new-participant-component v-model="participants" @error="participantErrors = $event" :showError="showError">
+                <new-participant-component @input="participants = value" @error="participantErrors = $event" :showError="showError">
                 </new-participant-component>
             </div>
         </div>
@@ -101,7 +101,7 @@ export default{
         description: !this.description,
         participants: this.participantErrors,
         tutorialID: this.isTestExam && !this.tutorialID,
-        passScore: this.isTestExam && !this.passScore,
+        passScore: this.isTestExam && (!this.passScore || this.passScore > 100),
         examTime: this.isTestExam && (!this.examTime || this.examTime < 0)
       }
     }
@@ -141,8 +141,8 @@ export default{
       this.axios.post('/trainings', form).then(response => {
         console.log(response)
         this.$store.commit('addTraining', {
-            type: 'observing',
-            training: response.data
+          type: 'observing',
+          training: response.data
         })
       })
     }

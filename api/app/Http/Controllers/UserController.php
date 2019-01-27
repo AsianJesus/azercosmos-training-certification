@@ -66,7 +66,8 @@ class UserController extends Controller
         $user = $this->user::findOrFail($id);
         $observing = $this->applyFilters($user->observed_trainings(), $request->input('g_filters', []));
         $observing->orderBy($request->input('orderBy', 'id'), $request->input('order', 'desc'));
-        $result = $observing->with('training.participants')->paginate($request->input('amount', 5))->toArray();
+        $result = $observing->with('training.participants', 'training.observers.user')
+            ->paginate($request->input('amount', 5))->toArray();
         $result['data'] = array_map(function ($d) {
             return $d['training'];
         }, $result['data']);

@@ -37,6 +37,12 @@ export default{
     showError: {
       type: Boolean,
       default: false
+    },
+    participantsInitial: {
+      type: Array,
+      default () {
+        return []
+      }
     }
   },
   data () {
@@ -44,12 +50,18 @@ export default{
       participants: []
     }
   },
+  mounted () {
+    this.participants = this.participantsInitial
+  },
   watch: {
     participants (val) {
       this.$emit('input', val)
     },
     errors (val) {
       this.$emit('error', val.some(x => Object.values(x).some(y => y)))
+    },
+    participantsInitial (val) {
+      this.participants = val
     }
   },
   computed: {
@@ -64,7 +76,7 @@ export default{
           end: !p.end_date || p.start_date >= p.end_date
         }
       })
-    },
+    }
   },
   methods: {
     addParticipant (id) {

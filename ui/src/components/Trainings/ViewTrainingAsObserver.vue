@@ -81,7 +81,7 @@ export default{
       }).then(() => {
         this.$store.commit('updateParticipatingTraining', {
           id: id,
-          props:{
+          props: {
             status: 2
           }
         })

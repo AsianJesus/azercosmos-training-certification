@@ -7,9 +7,6 @@
             <b-tab title="Participating tutorials">
                 <participating-trainings-component></participating-trainings-component>
             </b-tab>
-            <b-tab title="My tutorials">
-                <my-trainings-component></my-trainings-component>
-            </b-tab>
             <b-tab title="Observing tutorials">
                 <observing-trainings-component></observing-trainings-component>
             </b-tab>
@@ -25,13 +22,11 @@
 </template>
 <script>
 import ParticipatingTrainingsComponent from './ParticipatingTrainingsComponent.vue'
-import MyTrainingsComponent from './MyTrainingsComponent.vue'
 import ObservingTrainingsComponent from './ObservingTrainingsComponent.vue'
 import CreateTrainingComponent from './CreateTrainingComponent.vue'
 export default{
   components: {
     ParticipatingTrainingsComponent,
-    MyTrainingsComponent,
     ObservingTrainingsComponent,
     CreateTrainingComponent
   },
@@ -39,9 +34,6 @@ export default{
     return {
       showCreateWindow: false
     }
-  },
-  mounted () {
-
   },
   methods: {
     hideCreate (force = false) {

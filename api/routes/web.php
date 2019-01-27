@@ -40,6 +40,7 @@ $router->get('trainings', 'TrainingController@get');
 $router->get('trainings/{id}', 'TrainingController@getById');
 $router->post('trainings', 'TrainingController@add');
 $router->put('trainings/{id}', 'TrainingController@update');
+$router->post('trainings/{id}', 'TrainingController@update');
 $router->delete('trainings/{id}', 'TrainingController@delete');
 $router->get('trainings/{id}/questions', 'TrainingController@getQuestions');
 
