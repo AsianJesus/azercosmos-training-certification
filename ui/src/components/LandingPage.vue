@@ -4,9 +4,9 @@
         <div>
             <trainings-list-component></trainings-list-component>
         </div>
-        <!--<div>
+        <div>
             <tutorials-component></tutorials-component>
-        </div>-->
+        </div>
     </div>
 </template>
 <script>

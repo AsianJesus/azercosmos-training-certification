@@ -21,6 +21,9 @@
                     <b-btn variant="outline-success" @click="viewTraining(p.id)">
                         View
                     </b-btn>
+                    <b-btn variant="outline-primary" @click="addParticipants(p.id)">
+                        Add participants
+                    </b-btn>
                 </td>
             </tr>
         </table>
@@ -31,13 +34,23 @@
                 </div>
             </div>
         </transition>
+        <transition name="fade">
+            <div class="modal-window-canvas" v-if="trainingToAddParticipants !== null" @click="hideAdd()">
+                <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <add-participants-component :id="trainingToAddParticipants" @close="hideAdd($event)">
+                    </add-participants-component>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
-import ViewTrainingAsOwner from './ViewTrainingAsOwner.vue'
+import ViewTrainingAsOwner from './ViewTrainingAsObserver.vue'
+import AddParticipantsComponent from './AddParticipantsComponent.vue'
 export default{
   components: {
-    ViewTrainingComponent: ViewTrainingAsOwner
+    ViewTrainingComponent: ViewTrainingAsOwner,
+    AddParticipantsComponent
   },
   data () {
     return {
@@ -46,7 +59,8 @@ export default{
       totalPages: null,
       orderBy: null,
       orderAsc: false,
-      selectedTraining: null
+      selectedTraining: null,
+      trainingToAddParticipants: null
     }
   },
   computed: {
@@ -78,6 +92,15 @@ export default{
     },
     viewTraining (id) {
       this.selectedTraining = id
+    },
+    addParticipants (id) {
+      this.trainingToAddParticipants = id
+    },
+    hideAdd (force = false) {
+      if (!(force || confirm('Do you want to close window?'))) {
+        return
+      }
+      this.trainingToAddParticipants = null
     }
   }
 }

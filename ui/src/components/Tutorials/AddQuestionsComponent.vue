@@ -21,7 +21,7 @@
                             <td>{{ question.question }}</td>
                             <td>
                                 <div>
-                                    <span>1) {{ question.answer1 }}</span>
+                                    <b-form-input v-model="questions[index]">1) {{ question.answer1 }}</b-form-input>
                                 </div>
                                 <div>
                                     <span>2) {{ question.answer2 }}</span>
@@ -82,16 +82,17 @@ export default{
       this.questions.push(question)
     },
     postQuestions () {
-      var form = new FormData()
+      let form = new FormData()
       this.questions.forEach((q, index) => {
         Object.keys(q).forEach((key) => {
-          form.set('questions[' + index + '][' + key + ']', q[key])
+          if (key !== 'file') {
+            form.set('questions[' + index + '][' + key + ']', q[key])
+          } else {
+            form.set('file' + index, q[key])
+          }
         })
-        form.append('file' + index, q.file)
       })
-      this.axios.post('/questions', {
-        questions: this.questions
-      }).then(response => {
+      this.axios.post('/questions', form).then(response => {
         let props = {}
         props['questions_count'] = this.tutorial.questions_count + response.data.length
         if (this.moderator) {

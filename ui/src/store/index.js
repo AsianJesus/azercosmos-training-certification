@@ -120,7 +120,7 @@ export default new Vuex.Store({
       }
     },
     addParticipatingTraining (state, options) {
-      state.trainingParticipating[options.id] = options.body
+      state.trainingParticipating[options.id] = options
     }
   },
   getters: {

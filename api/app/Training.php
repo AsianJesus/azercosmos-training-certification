@@ -14,7 +14,7 @@ class Training extends Model
     protected $fillable = [
         'title', 'description', 'reference', 'status', 'is_test_exam', 'question_number', 'pass_score', 'exam_time', 'tutorial_id', 'originator_id',
     ];
-    protected $with = ['tutorial'];
+    protected $with = ['tutorial', 'file'];
 
     public function tutorial() {
         return $this->belongsTo(Tutorial::class);
@@ -28,7 +28,15 @@ class Training extends Model
         return $this->hasMany(TrainingObserver::class);
     }
 
+    public function observers_view() {
+        return $this->hasMany(TrainingObserverView::class);
+    }
+
     public function participants () {
         return $this->hasMany(TrainingParticipant::class);
+    }
+
+    public function file () {
+        return $this->morphOne(File::class,'fileable');
     }
 }

@@ -48,7 +48,7 @@
                             <b-btn variant="outline-success" v-if="participant.status === 0" @click="verify">
                                 Verify
                             </b-btn>
-                            <b-btn variant="outline-success" v-else-if="participant.status === 1">
+                            <b-btn variant="outline-success" v-else-if="training.is_test_exam && participant.status === 1">
                                 Pass exam
                             </b-btn>
                         </td>

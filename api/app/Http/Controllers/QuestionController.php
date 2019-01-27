@@ -29,7 +29,6 @@ class QuestionController extends Controller
 
     public function add(Request $request)
     {
-        //return $request->all();
         $questions = $request->input('questions');
         if ($questions) {
             return array_map(function ($q, $i) use ($request) {
