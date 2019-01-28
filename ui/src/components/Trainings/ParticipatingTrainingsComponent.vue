@@ -1,5 +1,6 @@
 <template>
     <div class="participating-trainings-component">
+        <filter-component v-model="filters" @input="delayedLoad()"></filter-component>
         <div class="participating-trainigs-loaded" v-if="!isLoading">
             <table class="table">
                 <tr>
@@ -62,21 +63,44 @@
     </div>
 </template>
 <script>
-import { getStatus } from '../../js/statuses'
+import { getStatus, statusOptions } from '../../js/statuses'
 import ViewTrainingAsParticipantComponent from './ViewTrainingAsParticipantComponent.vue'
+import FilterComponent from '../Utilities/FilterComponent.vue'
+import lodash from 'lodash'
 export default{
   components: {
-    ViewTrainingComponent: ViewTrainingAsParticipantComponent
+    ViewTrainingComponent: ViewTrainingAsParticipantComponent,
+    FilterComponent
   },
   data () {
     return {
-      filters: [],
       currentPage: null,
       totalPages: null,
       orderBy: null,
       orderAsc: false,
       selectedTraining: null,
-      isLoading: false
+      isLoading: false,
+      filters: [
+        {
+          text: 'Name',
+          meta: {
+            name: 'title',
+            modifier (value) {
+              return '%' + value + '%'
+            },
+          },
+          value: null
+        },
+        {
+          text: 'Status',
+          meta: {
+            name: 'status',
+            type: 'p',
+          },
+          value: null,
+          options: statusOptions
+        }
+      ]
     }
   },
   computed: {
@@ -93,10 +117,23 @@ export default{
         return
       }
       this.isLoading = true
+      let trainingFilters = this.filters.filter(f => !f.meta.type || f.meta.type === 't' && f.value).map(f => {
+        return {
+          name: f.meta.name,
+          value: f.meta.modifier ? f.meta.modifier(f.value) : f.value
+        }
+      })
+      let participantFilters = this.filters.filter(f => f.meta.type === 'p' && f.value).map(f => {
+        return {
+          name: f.meta.name,
+          value: f.meta.modifier ? f.meta.modifier(f.value) : f.value
+        }
+      })
       this.axios.get('/users/' + this.$store.state.userID + '/participating-trainings', {
         params: {
           page: page,
-          filters: this.filters,
+          p_filters: participantFilters,
+          t_filters: trainingFilters,
           orderBy: this.orderBy,
           order: this.orderAsc ? 'asc' : 'desc'
         }
@@ -118,7 +155,10 @@ export default{
       if (page !== this.currentPage) {
         this.loadTrainings(page)
       }
-    }
+    },
+    delayedLoad: lodash.debounce(function () {
+      this.loadTrainings()
+    }, 1000)
   }
 }
 </script>

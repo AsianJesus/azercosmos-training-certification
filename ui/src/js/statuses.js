@@ -12,4 +12,11 @@ function getStatus (id) {
   return statuses[id]
 }
 
-export {statuses, getStatus}
+let statusOptions = Object.keys(statuses).map(key => {
+  return {
+    text: statuses[key],
+    value: key
+  }
+})
+
+export {statuses, statusOptions, getStatus}

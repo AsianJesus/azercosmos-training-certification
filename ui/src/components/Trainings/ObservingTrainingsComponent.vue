@@ -1,5 +1,6 @@
 <template>
     <div class="participating-trainings-component">
+        <filter-component v-model="filters" @input="delayedLoad"></filter-component>
         <div class="participating-trainings-loaded" v-if="!isLoading">
             <table class="table">
                 <tr>
@@ -31,7 +32,8 @@
                     </td>
                 </tr>
             </table>
-            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" :per-page="1" @input="changePage">
+            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" v-if="currentPage"
+                          :per-page="1" @input="changePage">
 
             </b-pagination>
         </div>
@@ -69,15 +71,18 @@
 import ViewTrainingAsOwner from './ViewTrainingAsObserver.vue'
 import AddParticipantsComponent from './AddParticipantsComponent.vue'
 import EditTrainingComponent from './EditTrainingComponent.vue'
+import FilterComponent from '../Utilities/FilterComponent.vue'
+import lodash from 'lodash'
+
 export default{
   components: {
     ViewTrainingComponent: ViewTrainingAsOwner,
     EditTrainingComponent,
-    AddParticipantsComponent
+    AddParticipantsComponent,
+    FilterComponent
   },
   data () {
     return {
-      filters: [],
       currentPage: null,
       isLoading: false,
       totalPages: null,
@@ -85,7 +90,32 @@ export default{
       orderAsc: false,
       selectedTraining: null,
       trainingToAddParticipants: null,
-      trainingToEdit: null
+      trainingToEdit: null,
+      filters: [
+        {
+          text: 'Name',
+          metaName: 'title',
+          modifier (value) {
+            return '%' + value + '%'
+          },
+          value: null
+        },
+        {
+          text: 'Type',
+          metaName: 'is_test_exam',
+          value: null,
+          options: [
+            {
+              text: 'Test',
+              value: true
+            },
+            {
+              text: 'Non test',
+              value: false
+            }
+          ]
+        }
+      ]
     }
   },
   computed: {
@@ -102,10 +132,16 @@ export default{
         return
       }
       this.isLoading = true
+      let filters = this.filters.filter(x => x.value).map(f => {
+        return {
+          name: f.metaName,
+          value: f.modifier ? f.modifier(f.value) : f.value
+        }
+      })
       this.axios.get('/users/' + this.$store.state.userID + '/observing-trainings', {
         params: {
           page: page,
-          filters: this.filters,
+          filters: filters,
           orderBy: this.orderBy,
           order: this.orderAsc ? 'asc' : 'desc'
         }
@@ -145,7 +181,10 @@ export default{
         return
       }
       this.loadTrainings(page)
-    }
+    },
+    delayedLoad: lodash.debounce(function () {
+      this.loadTrainings()
+    }, 1000)
   }
 }
 </script>
