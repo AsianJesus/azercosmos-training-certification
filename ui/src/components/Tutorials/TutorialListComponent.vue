@@ -1,6 +1,7 @@
 <template>
     <div class="tutorial-list-component">
         <h4>Tutorials</h4>
+        <filter-component v-model="filters"></filter-component>
         <b-tabs>
             <b-tab title="My tutorials">
                 <table class="table table-hover">
@@ -116,22 +117,24 @@ import ViewTutorialComponent from './ViewTutorialComponent.vue'
 import AddQuestionsComponent from './AddQuestionsComponent.vue'
 import EditTutorialComponent from './EditTutorialComponent.vue'
 import VerifyQuestions from './VerifyQuestions.vue'
+import FilterComponent from '../Utilities/FilterComponent.vue'
 export default{
   components: {
     ViewTutorialComponent,
     AddQuestionsComponent,
     EditTutorialComponent,
-    VerifyQuestions
+    VerifyQuestions,
+    FilterComponent
   },
   computed: {
     MyTutorials () {
-      return this.$store.state.tutorials['my']
+      return this.filterTutorials(this.$store.state.tutorials['my'])
     },
     ModeratingTutorials () {
-      return this.$store.state.tutorials['moderating']
+      return this.filterTutorials(this.$store.state.tutorials['moderating'])
     },
     ObservingTutorials () {
-      return this.$store.state.tutorials['observing']
+      return this.filterTutorials(this.$store.state.tutorials['observing'])
     }
   },
   data () {
@@ -141,7 +144,73 @@ export default{
         addQuestions: null,
         edit: null,
         verifyQuestions: null
-      }
+      },
+      filters: [
+        {
+          text: 'Name',
+          meta: {
+            name: 'title',
+            doesMatch (value, toMatch) {
+              return value ? toMatch.toString().toLowerCase().includes(value.toLowerCase()) : true
+            }
+          },
+          value: null
+        },
+        {
+          text: 'System',
+          meta: {
+              name: 'system',
+              doesMatch (value, toMatch) {
+                  return value ? toMatch.toString().toLowerCase().includes(value.toLowerCase()) : true
+              }
+          },
+          value: null
+        },
+        {
+          text: 'Max questions',
+          meta: {
+            name: 'questions_count',
+            doesMatch (value, toMatch) {
+              console.log(value, toMatch)
+              return (value && !isNaN(value)) ? parseInt(value) >= toMatch : true
+            }
+          },
+          value: null
+        },
+        {
+          text: 'Min questions',
+          meta: {
+            name: 'questions_count',
+            doesMatch (value, toMatch) {
+              console.log(value, toMatch)
+              return (value && !isNaN(value)) ? parseInt(value) <= toMatch : true
+            }
+          },
+          value: null
+        },
+        {
+          text: 'Min verified questions',
+          meta: {
+            name: 'verified_questions_count',
+            doesMatch (value, toMatch) {
+              console.log(value, toMatch)
+              return (value && !isNaN(value)) ? parseInt(value) <= toMatch : true
+            }
+          },
+          value: null
+        },
+        {
+          text: 'Max verified questions',
+          meta: {
+            name: 'verified_questions_count',
+            doesMatch (value, toMatch) {
+              console.log(value, toMatch)
+              return (value && !isNaN(value)) ? parseInt(value) >= toMatch : true
+            }
+          },
+          value: null
+        }
+      ]
     }
   },
   methods: {
@@ -178,6 +247,11 @@ export default{
       }).catch(err => {
         alert('Some error occurred')
         console.log(err)
+      })
+    },
+    filterTutorials (tutorials) {
+      return tutorials.filter(t => {
+        return !this.filters.some(f => !f.meta.doesMatch(f.value, t[f.meta.name]))
       })
     }
   }

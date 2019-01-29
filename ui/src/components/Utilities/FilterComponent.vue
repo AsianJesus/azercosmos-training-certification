@@ -1,9 +1,6 @@
 <template>
-    <div class="bcards-filter row no-gutters">
-        <div class="bcards-filter-input col-6">
-            <b-btn :size="'sm'" :variant="'secondary'">
-               Search
-            </b-btn>
+    <div class="bcards-filter">
+        <div class="bcards-filter-input">
             <select v-model="selectedItem" style="height: 100%;">
                 <option :value="i" v-for="(f, i) in value">
                     {{ f.text }}
@@ -16,6 +13,11 @@
                     {{ o.text }}
                 </option>
             </select>
+        </div>
+        <div class="filter-values">
+            <div class="filter-values-item" v-for="(f, i) in value" v-if="f.value !== null" @click="deleteValue(i)">
+                {{ f.text }} - {{ getValue(f) }}
+            </div>
         </div>
     </div>
 </template>
@@ -47,10 +49,29 @@ export default{
     changeFilter (index) {
       console.log(this.value[index], index)
       this.temp = this.value[index] ? this.value[index].value : null
+    },
+    deleteValue (index) {
+      this.value[index].value = null
+      if (index === this.selectedItem) this.temp = null
+      this.$emit('input', this.value)
+    },
+    getValue (filter) {
+      return filter.options ? filter.options.find(x => x.value === filter.value).text : filter.value
     }
   }
 }
 </script>
 <style>
-
+    .filter-values{
+        margin: 1rem auto;
+    }
+    .filter-values-item{
+        display: inline;
+        background-color: #c1c1c1;
+        padding: .4rem .6rem;
+        margin: 0 .3rem;
+        border-radius: 5px;
+        text-transform: capitalize;
+        cursor: pointer;
+    }
 </style>

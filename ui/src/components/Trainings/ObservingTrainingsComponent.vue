@@ -32,7 +32,7 @@
                     </td>
                 </tr>
             </table>
-            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" v-if="currentPage"
+            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" v-if="currentPage && totalPages > 1"
                           :per-page="1" @input="changePage">
 
             </b-pagination>
