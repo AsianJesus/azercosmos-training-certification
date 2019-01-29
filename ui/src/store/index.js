@@ -121,6 +121,23 @@ export default new Vuex.Store({
     },
     addParticipatingTraining (state, options) {
       state.trainingParticipating[options.id] = options
+    },
+    updateParticipantInfo (state, options) {
+      for (let key in this.trainings) {
+        if (this.trainings.hasOwnProperty(key)) {
+          for (let id in Object.keys(this.trainings[key])) {
+            let participants = this.trainings[key][id]['participants']
+            for (let participant in participants) {
+              if (participant.hasOwnProperty('id') && participant.id === options.id) {
+                for (let k in options.props) {
+                  participant[k] = options.props[k]
+                }
+              }
+            }
+            this.trainings[key][id]['participants'] = participants
+          }
+        }
+      }
     }
   },
   getters: {

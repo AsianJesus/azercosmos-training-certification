@@ -37,6 +37,11 @@
                         </b-form-input>
                     </div>
                     <div>
+                        <b-form-input type="number" v-model="questionsCount" placeholder="Questions count"
+                                      :state="showError && errors.questionsCount ? false : null">
+                        </b-form-input>
+                    </div>
+                    <div>
                         <b-form-input type="number" v-model="examTime" placeholder="Time of exam (in minutes)"
                                       :state="showError && errors.examTime ? false : null">
                         </b-form-input>
@@ -84,7 +89,8 @@ export default{
       participantErrors: false,
       showError: false,
       attachment: null,
-      existingFile: null
+      existingFile: null,
+      questionsCount: null
     }
   },
   mounted () {
@@ -108,6 +114,7 @@ export default{
     })
     this.isTestExam = this.training.is_test_exam
     this.passScore = this.training.pass_score
+    this.questionsCount = this.training.question_number
     this.tutorialID = this.training.tutorial_id
     this.examTime = this.training.exam_time
   },
@@ -138,7 +145,8 @@ export default{
         participants: this.participantErrors,
         tutorialID: this.isTestExam && !this.tutorialID,
         passScore: this.isTestExam && (!this.passScore || this.passScore > 100),
-        examTime: this.isTestExam && (!this.examTime || this.examTime < 0)
+        examTime: this.isTestExam && (!this.examTime || this.examTime < 0),
+        questionsCount: this.isTestExam && (!this.questionsCount || this.questionsCount < 0)
       }
     }
   },
@@ -170,6 +178,7 @@ export default{
       form.set('reference', this.reference)
       form.set('is_test_exam', this.isTestExam)
       form.set('pass_score', this.isTestExam ? this.passScore : null)
+      form.set('question_number', this.isTestExam ? this.questionsCount : null)
       form.set('tutorial_id', this.isTestExam ? this.tutorialID : null)
       form.set('exam_time', this.isTestExam ? this.examTime : null)
       let observersToDelete = this.training.observers.filter(o => !this.observers.some(ob => ob.value === o.observer_id))

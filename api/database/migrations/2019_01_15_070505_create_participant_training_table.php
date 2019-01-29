@@ -21,7 +21,7 @@ class CreateParticipantTrainingTable extends Migration
             $table->unsignedInteger('participant_id');
             $table->tinyInteger('status')->default(0);
             $table->integer('score')->nullable();
-            $table->integer('attempt')->nullable();
+            $table->integer('attempt')->default(0);
             $table->unsignedInteger('examiner_id')->nullable();
             $table->softDeletes();
             $table->timestamps();

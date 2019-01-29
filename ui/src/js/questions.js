@@ -1,0 +1,51 @@
+/**
+ * Created by fruit on 1/29/2019.
+ */
+
+function shuffleQuestions (questions) {
+  let temp, i1 = 0, i2 = 0
+  let count = questions.length * 2;
+  while (count > 0) {
+    i1 = Math.floor(Math.random() * (questions.length - 1))
+    i2 = Math.floor(Math.random() * (questions.length - 1))
+    temp = questions[i1]
+    questions[i1] = questions[i2]
+    questions[i2] = temp
+    questions[i1].answers = shuffleAnswers(questions[i1].answers)
+    count--
+  }
+  return questions
+}
+
+function shuffleAnswers (answers) {
+  let temp, i1 = 0, i2 = 0
+  let count = answers.length * 2;
+  while (count > 0) {
+    i1 = Math.floor(Math.random() * (answers.length - 1))
+    i2 = Math.floor(Math.random() * (answers.length - 1))
+    temp = answers[i1]
+    answers[i1] = answers[i2]
+    answers[i2] = temp
+    count--
+  }
+  return answers
+}
+
+function convertQuestions (questions) {
+  return questions.map(q => {
+    return {
+      question: q.question,
+      difficulty: q.difficulty,
+      selected: null,
+      isCorrect: null,
+      answers: ['answer1', 'answer2', 'answer3', 'answer4'].map((a, i) => {
+          return {
+            answer: q[a],
+            correct: i === q.correct_answer
+          }
+      })
+    }
+  })
+}
+
+export { shuffleAnswers, shuffleQuestions, convertQuestions }

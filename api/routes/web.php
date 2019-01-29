@@ -43,6 +43,7 @@ $router->put('trainings/{id}', 'TrainingController@update');
 $router->post('trainings/{id}', 'TrainingController@update');
 $router->delete('trainings/{id}', 'TrainingController@delete');
 $router->get('trainings/{id}/questions', 'TrainingController@getQuestions');
+$router->put('trainings/{id}/participants', 'TrainingController@passTest');
 
 $router->get('participants', 'ParticipantsController@get');
 $router->get('participants/{id}', 'ParticipantsController@getById');

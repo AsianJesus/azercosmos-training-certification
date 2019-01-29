@@ -50,14 +50,16 @@ class UserController extends Controller
     // [
     //  ['name' => name, 'op' => op (optional, e.g. '=', '<>'), 'value' => value]
     // ]
-    // Four types of filters: g(global)_filters, o(observing)_filters, m(my)_filters, p(participating)_filters
 
     public function getParticipatingTrainings(Request $request, $id) {
         $user = $this->user::findOrFail($id);
-        //$participating = $user->participating_trainings();
-        $participating = $user->participating_trainings()->whereHas('training',
-            $this->applyFilters($request->input('t_filters', [])), 'trainings');
-        $participating->where($this->applyFilters($request->input('p_filters', [])));
+        $participating = $user->participating_trainings();
+        if ($request->input('t_filters')) {
+            $participating->whereHas('training', $this->applyFilters($request->input('t_filters'), 'trainings'));
+        }
+        if ($request->input('p_filters')) {
+            $participating->where($this->applyFilters($request->input('p_filters')));
+        }
         $participating->orderBy($request->input('orderBy', 'id'), $request->input('order', 'desc'));
         return $participating->with('training')->paginate($request->input('amount', 5));
     }

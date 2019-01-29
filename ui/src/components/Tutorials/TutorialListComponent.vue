@@ -171,7 +171,6 @@ export default{
           meta: {
             name: 'questions_count',
             doesMatch (value, toMatch) {
-              console.log(value, toMatch)
               return (value && !isNaN(value)) ? parseInt(value) >= toMatch : true
             }
           },
@@ -182,7 +181,6 @@ export default{
           meta: {
             name: 'questions_count',
             doesMatch (value, toMatch) {
-              console.log(value, toMatch)
               return (value && !isNaN(value)) ? parseInt(value) <= toMatch : true
             }
           },
@@ -193,7 +191,6 @@ export default{
           meta: {
             name: 'verified_questions_count',
             doesMatch (value, toMatch) {
-              console.log(value, toMatch)
               return (value && !isNaN(value)) ? parseInt(value) <= toMatch : true
             }
           },
@@ -204,7 +201,6 @@ export default{
           meta: {
             name: 'verified_questions_count',
             doesMatch (value, toMatch) {
-              console.log(value, toMatch)
               return (value && !isNaN(value)) ? parseInt(value) >= toMatch : true
             }
           },

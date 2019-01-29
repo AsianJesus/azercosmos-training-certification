@@ -34,6 +34,11 @@
                         </b-form-input>
                     </div>
                     <div>
+                        <b-form-input type="number" v-model="questionsCount" placeholder="Questions count"
+                                      :state="showError && errors.questionsCount ? false : null">
+                        </b-form-input>
+                    </div>
+                    <div>
                         <b-form-input type="number" v-model="examTime" placeholder="Time of exam (in minutes)"
                                       :state="showError && errors.examTime ? false : null">
                         </b-form-input>
@@ -70,6 +75,7 @@ export default{
       isTestExam: false,
       tutorialID: null,
       passScore: null,
+      questionsCount: null,
       examTime: null,
       participantErrors: false,
       showError: false
@@ -102,7 +108,8 @@ export default{
         participants: this.participantErrors,
         tutorialID: this.isTestExam && !this.tutorialID,
         passScore: this.isTestExam && (!this.passScore || this.passScore > 100),
-        examTime: this.isTestExam && (!this.examTime || this.examTime < 0)
+        examTime: this.isTestExam && (!this.examTime || this.examTime < 0),
+        questionsCount: this.isTestExam && (!this.questionsCount || this.questionsCount < 0)
       }
     }
   },
@@ -121,6 +128,7 @@ export default{
       form.set('description', this.description)
       form.set('reference', this.reference)
       form.set('is_test_exam', this.isTestExam)
+      form.set('question_number', this.questionsCount)
       form.set('originator_id', this.$store.state.userID)
       if (this.isTestExam) {
         form.set('tutorial_id', this.tutorialID)

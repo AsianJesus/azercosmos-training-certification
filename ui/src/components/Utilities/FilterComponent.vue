@@ -9,6 +9,9 @@
             <input type="text" v-model="temp" @input="updateFilter"
                    v-if="selectedItem === i && !f.options" v-for="(f, i) in value">
             <select v-if="selectedItem === i && f.options" v-model="temp" @input="updateFilter" v-for="(f, i) in value">
+                <option :value="null">
+                    Select filter
+                </option>
                 <option :value="o.value" v-for="(o, index) in f.options" v-bind:key="index">
                     {{ o.text }}
                 </option>

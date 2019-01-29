@@ -87,7 +87,7 @@ export default{
           meta: {
             name: 'title',
             modifier (value) {
-              return '%' + value + '%'
+              return value ? '%' + value + '%' : null
             },
           },
           value: null
@@ -118,26 +118,33 @@ export default{
         return
       }
       this.isLoading = true
-      let trainingFilters = this.filters.filter(f => !f.meta.type || f.meta.type === 't' && f.value).map(f => {
+      let params = {
+        page: page
+      }
+      if (this.orderBy) {
+        params['orderBy'] = this.orderBy
+        params['order'] = this.orderAsc ? 'asc' : 'desc'
+      }
+      let trainingFilters = this.filters.filter(f => (!f.meta.type || f.meta.type === 't') && f.value).map(f => {
         return {
           name: f.meta.name,
           value: f.meta.modifier ? f.meta.modifier(f.value) : f.value
         }
       })
+      if (trainingFilters.length) {
+        params['t_filters'] = trainingFilters
+      }
       let participantFilters = this.filters.filter(f => f.meta.type === 'p' && f.value).map(f => {
         return {
           name: f.meta.name,
           value: f.meta.modifier ? f.meta.modifier(f.value) : f.value
         }
       })
+      if (participantFilters.length) {
+        params['p_filters'] = participantFilters
+      }
       this.axios.get('/users/' + this.$store.state.userID + '/participating-trainings', {
-        params: {
-          page: page,
-          p_filters: participantFilters,
-          t_filters: trainingFilters,
-          orderBy: this.orderBy,
-          order: this.orderAsc ? 'asc' : 'desc'
-        }
+        params: params
       }).then(response => {
         this.isLoading = false
         console.log(response.data)

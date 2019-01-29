@@ -48,7 +48,8 @@
                             <b-btn variant="outline-success" v-if="participant.status === 0" @click="verify">
                                 Verify
                             </b-btn>
-                            <b-btn variant="outline-success" v-else-if="training.is_test_exam && participant.status === 1">
+                            <b-btn variant="outline-success" @click="showTests = true"
+                                   v-else-if="training.is_test_exam && participant.status === 1">
                                 Pass exam
                             </b-btn>
                         </td>
@@ -56,10 +57,19 @@
                 </table>
             </div>
         </div>
+        <transition name="fade">
+            <div class="modal-window-canvas" v-if="showTests" @click="hideTests(false)">
+                <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <test-exam-component @close="hideTests($event)" :id="training.id" @passed="markAsPassed">
+                    </test-exam-component>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
 import { getStatus } from '../../js/statuses'
+import TestExamComponent from '../Tests/TestExamComponent.vue'
 export default{
   props: {
     id: {
@@ -67,9 +77,12 @@ export default{
       required: true
     }
   },
+  components: {
+    TestExamComponent
+  },
   data () {
     return {
-
+      showTests: false
     }
   },
   computed: {
@@ -98,6 +111,28 @@ export default{
         setTimeout(() => {
           this.$forceUpdate()
         }, 1000)
+      })
+    },
+    hideTests (force = false) {
+      if (!force && !confirm('Do you wanna close window?')) {
+        return
+      }
+      this.showTests = false
+    },
+    markAsPassed (score) {
+      this.$store.commit('updateParticipatingTraining', {
+        id: this.id,
+        props: {
+          score: score,
+          attempt: this.participant.attempt + 1
+        }
+      })
+      this.$store.commit('updateParticipantInfo', {
+        id: this.id,
+        props: {
+          score: score,
+          attempt: this.participant.attempt + 1
+        }
       })
     }
   }
