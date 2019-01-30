@@ -201,7 +201,8 @@ export default{
         form.append('file', this.attachment)
       }
       this.axios.post('/trainings/' + this.training.id, form).then(response => {
-        this.$store.commit('updateTraining', response.data)
+        this.$store.commit('updateObservedTraining', response.data)
+        this.$emit('close', true)
       })
     }
   }

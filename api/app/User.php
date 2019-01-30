@@ -30,8 +30,8 @@ class User extends Model
     }
 
     public function observed_trainings() {
-        $result = $this->hasMany(TrainingObserverView::class, 'observer_id', 'ID');
-        return $result->groupBy('training_id');
+        return $this->hasManyThrough(Training::class, TrainingObserverView::class, 'observer_id',
+            'id', 'ID', 'training_id')->groupBy('training_id');
     }
     public function own_trainings() {
         return $this->hasMany(Training::class, 'originator_id', 'ID');

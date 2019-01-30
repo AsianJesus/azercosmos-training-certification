@@ -79,7 +79,7 @@ export default{
       })
     },
     training () {
-      return this.$store.state.trainings.observing[this.id]
+      return this.$store.state.observedTrainings.find(t => t.id === this.id)
     }
   },
   watch: {
@@ -114,7 +114,7 @@ export default{
       this.axios.put('/trainings/' + this.id, {
         p_to_add: this.participants
       }).then(response => {
-        this.$store.commit('updateTraining', response.data)
+        this.$store.commit('updateObservedTraining', response.data)
         if (this.participants.some(x => x.participant_id === this.$store.state.userID)) {
           let t = response.data.participants.find(x => x.participant_id === this.$store.state.userID)
           t.training = response.data

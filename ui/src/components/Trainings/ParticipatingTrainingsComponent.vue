@@ -10,18 +10,18 @@
                     <th>
                         Type
                     </th>
-                    <th>
+                    <th @click="changeOrder('start_date')" class="order-button">
                         Start
                     </th>
-                    <th>
+                    <th @click="changeOrder('end_date')" class="order-button">
                         End
                     </th>
-                    <th>
+                    <th @click="changeOrder('status')" class="order-button">
                         Status
                     </th>
                     <th></th>
                 </tr>
-                <tr v-for="(p, id) in trainings" v-bind:key="id">
+                <tr v-for="(p, i) in trainings" v-bind:key="'participant' + i">
                     <td>
                         {{ p.training.title }}
                     </td>
@@ -163,6 +163,15 @@ export default{
       if (page !== this.currentPage) {
         this.loadTrainings(page)
       }
+    },
+    changeOrder (order) {
+      if (order === this.orderBy) {
+        this.orderAsc ^= true
+      } else {
+        this.orderBy = order
+        this.orderAsc = true
+      }
+      this.delayedLoad()
     },
     delayedLoad: lodash.debounce(function () {
       this.loadTrainings()

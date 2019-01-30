@@ -4,15 +4,21 @@
         <div class="participating-trainings-loaded" v-if="!isLoading">
             <table class="table">
                 <tr>
-                    <th>
+                    <th @click="changeOrder('id')" class="order-button">
+                        ID
+                    </th>
+                    <th @click="changeOrder('title')" class="order-button">
                         Name
                     </th>
-                    <th>
+                    <th @click="changeOrder('is_test_exam')" class="order-button">
                         Type
                     </th>
                     <th></th>
                 </tr>
-                <tr v-for="(p, id) in trainings" v-bind:key="id">
+                <tr v-for="(p, i) in trainings" v-bind:key="'observing' + i">
+                    <td>
+                        {{ p.id }}
+                    </td>
                     <td>
                         {{ p.title }}
                     </td>
@@ -23,7 +29,7 @@
                         <b-btn variant="outline-success" @click="viewTraining(p.id)">
                             View
                         </b-btn>
-                        <b-btn variant="outline-secondary" @click="trainingToEdit = p">
+                        <b-btn variant="outline-secondary" @click="trainingToEdit = p" v-if="canEditTraining(p.id)">
                             Edit
                         </b-btn>
                         <b-btn variant="outline-primary" @click="addParticipants(p.id)">
@@ -120,7 +126,7 @@ export default{
   },
   computed: {
     trainings () {
-      return this.$store.state.trainings.observing
+      return this.$store.state.observedTrainings
     }
   },
   mounted () {
@@ -150,10 +156,7 @@ export default{
         console.log(response.data)
         this.currentPage = response.data.current_page
         this.totalPages = response.data.last_page
-        this.$store.commit('setTrainings', {
-          type: 'observing',
-          trainings: response.data.data
-        })
+        this.$store.commit('setObservedTrainings', response.data.data)
       }).catch(() => {
         this.isLoading = false
       })
@@ -184,10 +187,25 @@ export default{
     },
     delayedLoad: lodash.debounce(function () {
       this.loadTrainings()
-    }, 1000)
+    }, 1000),
+    changeOrder (order) {
+      if (order === this.orderBy) {
+        this.orderAsc ^= true
+      } else {
+        this.orderBy = order
+        this.orderAsc = true
+      }
+      this.delayedLoad()
+    },
+    canEditTraining (id) {
+      let training = this.trainings.find(t => t.id === id)
+      return (training && training.participants) ? !training.participants.some(p => p.status > 1) : true
+    }
   }
 }
 </script>
 <style>
-
+    .participant-training-header{
+        cursor: pointer;
+    }
 </style>

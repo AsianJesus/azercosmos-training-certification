@@ -6,10 +6,10 @@
             <b-tab title="My tutorials">
                 <table class="table table-hover">
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Questions</th>
-                        <th>System</th>
+                        <th class="order-button" @click="sort('id')">ID</th>
+                        <th class="order-button" @click="sort('title')">Title</th>
+                        <th class="order-button" @click="sort('questions_count')">Questions</th>
+                        <th class="order-button" @click="sort('system')">System</th>
                         <th>Controls</th>
                     </tr>
                     <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t">
@@ -32,10 +32,10 @@
             <b-tab title="Moderating tutorials">
                 <table class="table table-hover">
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Questions</th>
-                        <th>System</th>
+                        <th class="order-button" @click="sort('id')">ID</th>
+                        <th class="order-button" @click="sort('title')">Title</th>
+                        <th class="order-button" @click="sort('questions_count')">Questions</th>
+                        <th class="order-button" @click="sort('system')">System</th>
                         <th>Controls</th>
                     </tr>
                     <tr v-for="(t, index) in ModeratingTutorials" v-bind:key="index" v-if="t">
@@ -55,10 +55,10 @@
             <b-tab title="Observing tutorials">
                 <table class="table table-hover">
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Questions</th>
-                        <th>System</th>
+                        <th class="order-button" @click="sort('id')">ID</th>
+                        <th class="order-button" @click="sort('title')">Title</th>
+                        <th class="order-button" @click="sort('questions_count')">Questions</th>
+                        <th class="order-button" @click="sort('system')">System</th>
                         <th>Controls</th>
                     </tr>
                     <tr v-for="(t, index) in ObservingTutorials" v-bind:key="index" v-if="t">
@@ -128,13 +128,13 @@ export default{
   },
   computed: {
     MyTutorials () {
-      return this.filterTutorials(this.$store.state.tutorials['my'])
+      return this.orderTutorials(this.filterTutorials(this.$store.state.tutorials['my']))
     },
     ModeratingTutorials () {
-      return this.filterTutorials(this.$store.state.tutorials['moderating'])
+      return this.orderTutorials(this.filterTutorials(this.$store.state.tutorials['moderating']))
     },
     ObservingTutorials () {
-      return this.filterTutorials(this.$store.state.tutorials['observing'])
+      return this.orderTutorials(this.filterTutorials(this.$store.state.tutorials['observing']))
     }
   },
   data () {
@@ -145,6 +145,8 @@ export default{
         edit: null,
         verifyQuestions: null
       },
+      orderBy: null,
+      orderAsc: null,
       filters: [
         {
           text: 'Name',
@@ -249,6 +251,23 @@ export default{
       return tutorials.filter(t => {
         return !this.filters.some(f => !f.meta.doesMatch(f.value, t[f.meta.name]))
       })
+    },
+    orderTutorials (tutorials) {
+      if (this.orderBy) {
+        let asc = this.orderAsc
+        let o = this.orderBy
+        return tutorials.sort((a, b) => (asc ? -1 : 1) * (a[o] > b[o] ? 1 : (a[o] === b[o] ? 0 : -1)))
+      } else {
+        return tutorials
+      }
+    },
+    sort (order) {
+      if (this.orderBy === order) {
+        this.orderAsc ^= true
+      } else {
+        this.orderAsc = true
+        this.orderBy = order
+      }
     }
   }
 }

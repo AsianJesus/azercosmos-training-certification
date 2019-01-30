@@ -87,7 +87,7 @@ export default{
   },
   computed: {
     participant () {
-      return this.$store.state.trainingParticipating[this.id]
+      return this.$store.state.trainingParticipating.find(t => t.id === this.id)
     },
     training () {
       return this.participant ? this.participant.training : null

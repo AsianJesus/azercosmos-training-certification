@@ -10,12 +10,8 @@ export default new Vuex.Store({
       observing: [],
       moderating: []
     },
-    trainings: {
-      my: {},
-      observing: {}
-    },
-    // Participating is more flexible with different structure
-    trainingParticipating: {},
+    observedTrainings: [],
+    trainingParticipating: [],
     users: [],
     userID: 1,
     serverURL: 'http://localhost/azercosmos-training-certification/api/public'
@@ -77,66 +73,61 @@ export default new Vuex.Store({
     setUsers (state, users) {
       state.users = users
     },
-    setTrainings (state, options) {
-      console.log(options)
-      state.trainings[options.type] = {}
-      options.trainings.forEach(t => {
-        state.trainings[options.type][t.id] = t
+    setObservedTrainings (state, trainings) {
+      state.observedTrainings = []
+      trainings.forEach(t => {
+        state.observedTrainings.push(t)
       })
     },
-    deleteTraining (state, options) {
-      let type = options.type
-      for (let key in state.trainings) {
-        if ((!type || key === type) && state.trainings.hasOwnProperty(key)) {
-          delete state.trainings[key][options.id]
+    deleteObservedTrainings (state, id) {
+      state.observedTrainings = state.observedTrainings.filter(t => t.id !== id)
+    },
+    updateObservedTrainings (state, info) {
+      for (let i = 0; i < state.observedTrainings.length; i++) {
+        if (state.observedTrainings[i].id === info.id) {
+          for (let key in info) {
+            state.observedTrainings[i][key] = info[key]
+          }
         }
       }
     },
-    updateTraining (state, info) {
-      for (let key in state.trainings) {
-        if (state.trainings.hasOwnProperty(key)) {
-          state.trainings[key][info.id] = info
-        }
-      }
-    },
-    addTraining (state, options) {
-      state.trainings[options.type][options.training.id] = options.training
+    addObservedTraining (state, training) {
+      state.observedTrainings.push(training)
     },
     setParticipatingTrainings (state, trainings) {
-      state.trainingParticipating = {}
-      console.log(trainings)
+      state.trainingParticipating = []
       trainings.forEach(t => {
-        state.trainingParticipating[t.id] = t
+        state.trainingParticipating.push(t)
       })
     },
     deleteParticipatingTraining (state, id) {
-      delete state.trainings[id]
+      state.trainingParticipating = state.trainingParticipating.filter(p => p.id !== id)
     },
     updateParticipatingTraining (state, info) {
-      for (let key in info.props) {
-        if (info.props.hasOwnProperty(key)) {
-          state.trainingParticipating[info.id][key] = info.props[key]
+      for (let i = 0; i < state.trainingParticipating.length; i++) {
+        if (state.trainingParticipating[i].id === info.id) {
+          for (let key in info.props) {
+            if (info.props.hasOwnProperty(key)) {
+              state.trainingParticipating[i][key] = info.props[key]
+            }
+          }
         }
       }
     },
     addParticipatingTraining (state, options) {
-      state.trainingParticipating[options.id] = options
+      state.trainingParticipating.push(options)
     },
     updateParticipantInfo (state, options) {
-      for (let key in this.trainings) {
-        if (this.trainings.hasOwnProperty(key)) {
-          for (let id in Object.keys(this.trainings[key])) {
-            let participants = this.trainings[key][id]['participants']
-            for (let participant in participants) {
-              if (participant.hasOwnProperty('id') && participant.id === options.id) {
+      for (let i = 0; i < state.observedTrainings.length; i++) {
+        let participants = state.observedTrainings[i]['participants']
+        for (let participant in participants) {
+            if (participant.id === options.id) {
                 for (let k in options.props) {
-                  participant[k] = options.props[k]
+                    participant[k] = options.props[k]
                 }
-              }
             }
-            this.trainings[key][id]['participants'] = participants
-          }
         }
+        state.observedTrainings[i]= participants
       }
     }
   },

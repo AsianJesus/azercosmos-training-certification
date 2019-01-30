@@ -61,7 +61,7 @@ export default{
   },
   computed: {
     training () {
-      return this.$store.state.trainings.observing[this.id]
+      return this.$store.state.observedTrainings.find(t => t.id === this.id)
     },
     tutorial () {
       return this.training ? this.training.tutorial : null
@@ -92,7 +92,7 @@ export default{
             this.$set(this.participants, i, temp)
           }
         }
-        this.$store.commit('updateTraining', {
+        this.$store.commit('updateObservedTraining', {
           id: this.id,
           participants: this.participants
         })

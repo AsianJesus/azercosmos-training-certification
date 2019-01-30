@@ -17,6 +17,10 @@
     padding: .3rem 1rem;
 }
 
+.order-button{
+    cursor: pointer;
+}
+
 @keyframes fade-in {
     0% {
         background-color: transparent;

@@ -65,15 +65,16 @@ class UserController extends Controller
     }
 
     public function getObservingTrainings(Request $request, $id) {
+
         $user = $this->user::findOrFail($id);
-        $observing = $user->observed_trainings()->whereHas('training',
-            $this->applyFilters($request->input('filters', []), 'trainings'));
+        $observing = $user->observed_trainings();
+        $filters = $request->input('filters');
+        if ($filters) {
+            $observing->where($this->applyFilters($filters));
+        }
         $observing->orderBy($request->input('orderBy', 'id'), $request->input('order', 'desc'));
-        $result = $observing->with('training.participants', 'training.observers.user')
+        $result = $observing->with('participants', 'observers.user')
             ->paginate($request->input('amount', 5))->toArray();
-        $result['data'] = array_map(function ($d) {
-            return $d['training'];
-        }, $result['data']);
         return $result;
     }
 }

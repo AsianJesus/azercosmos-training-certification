@@ -148,10 +148,7 @@ export default{
       })
       this.axios.post('/trainings', form).then(response => {
         console.log(response)
-        this.$store.commit('addTraining', {
-          type: 'observing',
-          training: response.data
-        })
+        this.$store.commit('addObservedTraining', response.data)
       })
     }
   }
