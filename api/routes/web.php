@@ -62,3 +62,12 @@ $router->get('test', function () {
     $arr = array('f' => 1, 's' => 2);
     return $arr['a'] ?? $arr['f'] ?? 3;
 });
+$router->get('test/mailer', function () {
+    try {
+        dispatch(new \App\Jobs\ExampleJob('Tarlan'));
+    } catch (Exception $e) {
+        return 'Fail '.$e;
+    } finally {
+        return 'Successfully';
+    }
+});

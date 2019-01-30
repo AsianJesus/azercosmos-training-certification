@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use Illuminate\Support\Facades\Mail;
+
 class ExampleJob extends Job
 {
     /**
@@ -9,9 +11,10 @@ class ExampleJob extends Job
      *
      * @return void
      */
-    public function __construct()
+    protected $name;
+    public function __construct($name)
     {
-        //
+        $this->name = $name;
     }
 
     /**
@@ -21,6 +24,9 @@ class ExampleJob extends Job
      */
     public function handle()
     {
-        //
+        Mail::send('mail', ['name' => $this->name, 'Web dev blog'], function ($message) {
+            $message->to('fruiteatearth@gmail.com', 'To Elvin')->subject('Test mail');
+            $message->from('fruiteatearth@gmail.com', 'Elvin');
+        });
     }
 }
