@@ -11,7 +11,7 @@ import store from './store'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import './global.css'
+import './global.scss'
 
 const serverURL = 'http://localhost/azercosmos-training-certification/api/public'
 
