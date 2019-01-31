@@ -6,12 +6,36 @@
                 <tr>
                     <th @click="changeOrder('id')" class="order-button">
                         ID
+                        <span v-if="orderBy === 'id'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
                     </th>
                     <th @click="changeOrder('title')" class="order-button">
                         Name
+                        <span v-if="orderBy === 'title'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
                     </th>
                     <th @click="changeOrder('is_test_exam')" class="order-button">
                         Type
+                        <span v-if="orderBy === 'is_test_exam'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
                     </th>
                     <th></th>
                 </tr>

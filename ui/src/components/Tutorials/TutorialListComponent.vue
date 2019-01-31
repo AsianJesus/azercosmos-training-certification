@@ -6,10 +6,50 @@
             <b-tab title="My tutorials">
                 <table class="table table-hover">
                     <tr>
-                        <th class="order-button" @click="sort('id')">ID</th>
-                        <th class="order-button" @click="sort('title')">Title</th>
-                        <th class="order-button" @click="sort('questions_count')">Questions</th>
-                        <th class="order-button" @click="sort('system')">System</th>
+                        <th class="order-button" @click="sort('id')">
+                            ID
+                            <span v-if="orderBy === 'id'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('title')">
+                            Title
+                            <span v-if="orderBy === 'title'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('questions_count')">
+                            Questions
+                            <span v-if="orderBy === 'questions_count'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('system')">
+                            System
+                            <span v-if="orderBy === 'system'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
                         <th>Controls</th>
                     </tr>
                     <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t">
@@ -32,10 +72,50 @@
             <b-tab title="Moderating tutorials">
                 <table class="table table-hover">
                     <tr>
-                        <th class="order-button" @click="sort('id')">ID</th>
-                        <th class="order-button" @click="sort('title')">Title</th>
-                        <th class="order-button" @click="sort('questions_count')">Questions</th>
-                        <th class="order-button" @click="sort('system')">System</th>
+                        <th class="order-button" @click="sort('id')">
+                            ID
+                            <span v-if="orderBy === 'id'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('title')">
+                            Title
+                            <span v-if="orderBy === 'title'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('questions_count')">
+                            Questions
+                            <span v-if="orderBy === 'questions_count'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('system')">
+                            System
+                            <span v-if="orderBy === 'system'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
                         <th>Controls</th>
                     </tr>
                     <tr v-for="(t, index) in ModeratingTutorials" v-bind:key="index" v-if="t">
@@ -55,10 +135,50 @@
             <b-tab title="Observing tutorials">
                 <table class="table table-hover">
                     <tr>
-                        <th class="order-button" @click="sort('id')">ID</th>
-                        <th class="order-button" @click="sort('title')">Title</th>
-                        <th class="order-button" @click="sort('questions_count')">Questions</th>
-                        <th class="order-button" @click="sort('system')">System</th>
+                        <th class="order-button" @click="sort('id')">
+                            ID
+                            <span v-if="orderBy === 'id'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('title')">
+                            Title
+                            <span v-if="orderBy === 'title'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('questions_count')">
+                            Questions
+                            <span v-if="orderBy === 'questions_count'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
+                        <th class="order-button" @click="sort('system')">
+                            System
+                            <span v-if="orderBy === 'system'">
+                                <v-icon name="angle-up" v-if="orderAsc">
+
+                                </v-icon>
+                                <v-icon name="angle-down" v-else>
+
+                                </v-icon>
+                            </span>
+                        </th>
                         <th>Controls</th>
                     </tr>
                     <tr v-for="(t, index) in ObservingTutorials" v-bind:key="index" v-if="t">

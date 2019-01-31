@@ -5,6 +5,8 @@ import Vuex from 'vuex'
 import App from './App'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import store from './store'
@@ -21,6 +23,8 @@ axios.defaults.baseURL = serverURL
 Vue.use(BootstrapVue)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
+
+Vue.component('v-icon', Icon)
 
 /* eslint-disable no-new */
 new Vue({

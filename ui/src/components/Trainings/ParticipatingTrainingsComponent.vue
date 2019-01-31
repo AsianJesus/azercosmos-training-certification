@@ -12,12 +12,36 @@
                     </th>
                     <th @click="changeOrder('start_date')" class="order-button">
                         Start
+                        <span v-if="orderBy === 'start_date'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
                     </th>
                     <th @click="changeOrder('end_date')" class="order-button">
                         End
+                        <span v-if="orderBy === 'end_date'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
                     </th>
                     <th @click="changeOrder('status')" class="order-button">
                         Status
+                        <span v-if="orderBy === 'status'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
                     </th>
                     <th></th>
                 </tr>
