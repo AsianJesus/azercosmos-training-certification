@@ -20,6 +20,21 @@
   padding: .3rem 1rem;
 }
 
+.training-table{
+  tr{
+  }
+  tr:first-of-type{
+  }
+}
+
+.view-button{
+  padding: 2px 6px;
+}
+
+.add-questions-button, .edit-button, .delete-button, .check-button{
+  padding: 2px 7px;
+}
+
 .order-button{
   cursor: pointer;
 }

@@ -1,21 +1,22 @@
 <template>
     <div class="bcards-filter">
-        <div class="bcards-filter-input">
-            <select v-model="selectedItem" style="height: 100%;">
-                <option :value="i" v-for="(f, i) in value">
+        <div class="bcards-filter-input row">
+            <b-form-select v-model="selectedItem" style="height: 100%;" :options="options" class="col-6">
+                <!--<option :value="i" v-for="(f, i) in value">
                     {{ f.text }}
-                </option>
-            </select>
-            <input type="text" v-model="temp" @input="updateFilter"
-                   v-if="selectedItem === i && !f.options" v-for="(f, i) in value">
-            <select v-if="selectedItem === i && f.options" v-model="temp" @input="updateFilter" v-for="(f, i) in value">
-                <option :value="null">
+                </option>-->
+            </b-form-select>
+            <b-form-input v-model="temp" @input="updateFilter" class="col-6"
+                          v-if="selectedItem === i && !f.options" v-for="(f, i) in value"> </b-form-input>
+            <b-form-select v-if="selectedItem === i && f.options" v-model="temp" :options="getOptions(value[i])"
+                           @input="updateFilter" v-for="(f, i) in value" class="col-6">
+                <!--<option :value="null">
                     Select filter
                 </option>
                 <option :value="o.value" v-for="(o, index) in f.options" v-bind:key="index">
                     {{ o.text }}
-                </option>
-            </select>
+                </option>-->
+            </b-form-select>
         </div>
         <div class="filter-values">
             <div class="filter-values-item" v-for="(f, i) in value" v-if="f.value !== null" @click="deleteValue(i)">
@@ -36,6 +37,16 @@ export default{
   watch: {
     selectedItem (val) {
       this.changeFilter(val)
+    }
+  },
+  computed: {
+    options () {
+      return this.value.map((v, i) => {
+        return {
+          text: v.text,
+          value: i
+        }
+      })
     }
   },
   data () {
@@ -60,6 +71,13 @@ export default{
     },
     getValue (filter) {
       return filter.options ? filter.options.find(x => x.value === filter.value).text : filter.value
+    },
+    getOptions (filter) {
+      if (!filter.options) {
+        return []
+      }
+      let options = filter.options
+      return options.concat([{text: 'Select', value: null}])
     }
   }
 }

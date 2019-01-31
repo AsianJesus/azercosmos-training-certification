@@ -2,7 +2,7 @@
     <div class="participating-trainings-component">
         <filter-component v-model="filters" @input="delayedLoad()"></filter-component>
         <div class="participating-trainigs-loaded" v-if="!isLoading">
-            <table class="table">
+            <table class="table training-table">
                 <tr>
                     <th>
                         Name
@@ -62,8 +62,8 @@
                         {{ getStatusName(p.status) }}
                     </td>
                     <td>
-                        <b-btn variant="outline-success" @click="viewTraining(p.id)">
-                            View
+                        <b-btn variant="outline-success" class="view-button" @click="viewTraining(p.id)">
+                            <v-icon name="eye"></v-icon>
                         </b-btn>
                     </td>
                 </tr>

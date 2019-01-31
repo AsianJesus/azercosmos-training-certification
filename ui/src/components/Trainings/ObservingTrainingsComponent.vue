@@ -2,7 +2,7 @@
     <div class="participating-trainings-component">
         <filter-component v-model="filters" @input="delayedLoad"></filter-component>
         <div class="participating-trainings-loaded" v-if="!isLoading">
-            <table class="table">
+            <table class="table training-table">
                 <tr>
                     <th @click="changeOrder('id')" class="order-button">
                         ID
@@ -50,14 +50,14 @@
                         {{ p.is_test_exam ? 'Test' : 'Non test' }}
                     </td>
                     <td>
-                        <b-btn variant="outline-success" @click="viewTraining(p.id)">
-                            View
+                        <b-btn variant="outline-success" class="view-button" @click="viewTraining(p.id)">
+                            <v-icon name="eye" />
                         </b-btn>
-                        <b-btn variant="outline-secondary" @click="trainingToEdit = p" v-if="canEditTraining(p.id)">
-                            Edit
+                        <b-btn variant="outline-secondary" class="edit-button" @click="trainingToEdit = p" v-if="canEditTraining(p.id)">
+                            <v-icon name="pen" />
                         </b-btn>
-                        <b-btn variant="outline-primary" @click="addParticipants(p.id)">
-                            Add participants
+                        <b-btn variant="outline-primary" class="add-questions-button" @click="addParticipants(p.id)">
+                            <v-icon name="plus" />
                         </b-btn>
                     </td>
                 </tr>
@@ -162,7 +162,7 @@ export default{
         return
       }
       this.isLoading = true
-      let filters = this.filters.filter(x => x.value).map(f => {
+      let filters = this.filters.filter(x => x.value !== null).map(f => {
         return {
           name: f.metaName,
           value: f.modifier ? f.modifier(f.value) : f.value

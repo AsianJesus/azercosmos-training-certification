@@ -4,7 +4,7 @@
         <filter-component v-model="filters"></filter-component>
         <b-tabs>
             <b-tab title="My tutorials">
-                <table class="table table-hover">
+                <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
                             ID
@@ -58,19 +58,27 @@
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
                         <td>
-                            <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
+                            <b-btn variant="outline-success" class="view-button" @click="selectedTutorial.view = t">
+                                <v-icon name="eye"></v-icon>
+                            </b-btn>
 <!--
                             <b-btn variant="outline-success" @click="selectedTutorial.verifyQuestions = t">Verify</b-btn>
 -->
-                            <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add question</b-btn>
-                            <b-btn variant="outline-secondary" @click="selectedTutorial.edit = t">Edit</b-btn>
-                            <b-btn variant="outline-danger" @click="deleteTutorial(t.id)">Delete</b-btn>
+                            <b-btn variant="outline-primary" class="add-questions-button" @click="selectedTutorial.addQuestions = t">
+                                <v-icon name="plus" />
+                            </b-btn>
+                            <b-btn variant="outline-secondary" class="edit-button" @click="selectedTutorial.edit = t">
+                                <v-icon name="pen" />
+                            </b-btn>
+                            <b-btn variant="outline-danger" class="delete-button" @click="deleteTutorial(t.id)">
+                                <v-icon name="trash" />
+                            </b-btn>
                         </td>
                     </tr>
                 </table>
             </b-tab>
             <b-tab title="Moderating tutorials">
-                <table class="table table-hover">
+                <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
                             ID
@@ -124,16 +132,24 @@
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
                         <td>
-                            <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
-                            <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add questions</b-btn>
-                            <b-btn variant="outline-success" @click="selectedTutorial.verifyQuestions = t">Verify</b-btn>
-                            <b-btn variant="outline-secondary" @click="selectedTutorial.edit = t">Edit</b-btn>
+                            <b-btn variant="outline-success" class="view-button" @click="selectedTutorial.view = t">
+                                <v-icon name="eye" />
+                            </b-btn>
+                            <b-btn variant="outline-primary" class="add-questions-button "@click="selectedTutorial.addQuestions = t">
+                                <v-icon name="plus" />
+                            </b-btn>
+                            <b-btn variant="outline-success" class="check-button" @click="selectedTutorial.verifyQuestions = t">
+                                <v-icon name="check"></v-icon>
+                            </b-btn>
+                            <b-btn variant="outline-secondary" class="edit-button" @click="selectedTutorial.edit = t">
+                                <v-icon name="pen"></v-icon>
+                            </b-btn>
                         </td>
                     </tr>
                 </table>
             </b-tab>
             <b-tab title="Observing tutorials">
-                <table class="table table-hover">
+                <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
                             ID
@@ -187,8 +203,12 @@
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
                         <td>
-                            <b-btn variant="outline-success" @click="selectedTutorial.view = t">View</b-btn>
-                            <b-btn variant="outline-primary" @click="selectedTutorial.addQuestions = t">Add questions</b-btn>
+                            <b-btn variant="outline-success" class="view-button" @click="selectedTutorial.view = t">
+                                <v-icon name="eye" />
+                            </b-btn>
+                            <b-btn variant="outline-primary" class="add-questions-button" @click="selectedTutorial.addQuestions = t">
+                                <v-icon name="plus" />
+                            </b-btn>
                         </td>
                     </tr>
                 </table>
