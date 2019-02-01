@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="landing-page-component">
         <h1>Landing page</h1>
         <div>
             <trainings-list-component></trainings-list-component>
         </div>
-        <div>
-            <b-btn variant="outline-primary" @click="showTutorial">
+        <div class="tutorials-button-holder">
+            <b-btn variant="outline-primary" class="tutorials-button" @click="showTutorial">
                 Tutorials
             </b-btn>
         </div>
@@ -44,6 +44,17 @@ export default{
   }
 }
 </script>
-<style lang="scss">
-
+<style>
+    .landing-page-component{
+        padding-bottom: 1rem;
+    }
+    .tutorials-button-holder{
+        height: 2rem;
+        position: relative;
+    }
+    .tutorials-button{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
 </style>

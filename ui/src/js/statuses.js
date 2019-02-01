@@ -19,4 +19,8 @@ let statusOptions = Object.keys(statuses).map(key => {
   }
 })
 
-export {statuses, statusOptions, getStatus}
+function getTrainingStatus (training) {
+  return training.participants && training.participants.some(x => x.status !== 2) ? 'Not Finished' : 'Finished'
+}
+
+export {statuses, statusOptions, getStatus, getTrainingStatus }

@@ -33,28 +33,32 @@ export default new Vuex.Store({
     updateTutorial (state, info) {
       let id = info.id
       let props = info.props
-      let isModerator = props.moderators && props.moderators.some(m => m.moderator_id === state.userID)
-      // Delete from moderating if you're not moderator anymore
-      if (!isModerator &&
-        state.tutorials['moderating'].some(t => t.id === id)) {
-        state.tutorials['moderating'] = state.tutorials['moderating'].filter(x => x.id !== id)
+      if (props.moderators) {
+        let isModerator = props.moderators && props.moderators.some(m => m.moderator_id === state.userID)
+        // Delete from moderating if you're not moderator anymore
+        if (!isModerator &&
+          state.tutorials['moderating'].some(t => t.id === id)) {
+          state.tutorials['moderating'] = state.tutorials['moderating'].filter(x => x.id !== id)
+        }
+        // Add into moderating if you're moderator
+        if (isModerator &&
+          !state.tutorials['moderating'].some(t => t.id === id)) {
+          state.tutorials['moderating'].push(props)
+        }
       }
-      // Add into moderating if you're moderator
-      if (isModerator &&
-        !state.tutorials['moderating'].some(t => t.id === id)) {
-        state.tutorials['moderating'].push(props)
-      }
-      // Same two actions for observers
-      let isObserver = props.observers && props.observers.some(m => m.observer_id === state.userID)
-      // Delete from moderating if you're not moderator anymore
-      if (!isObserver &&
-        state.tutorials['observing'].some(t => t.id === id)) {
-        state.tutorials['observing'] = state.tutorials['observing'].filter(x => x.id !== id)
-      }
-      // Add into moderating if you're moderator
-      if (isObserver &&
-        !state.tutorials['observing'].some(t => t.id === id)) {
-        state.tutorials['observing'].push(props)
+      if (props.observers) {
+        // Same two actions for observers
+        let isObserver = props.observers && props.observers.some(m => m.observer_id === state.userID)
+        // Delete from moderating if you're not moderator anymore
+        if (!isObserver &&
+          state.tutorials['observing'].some(t => t.id === id)) {
+          state.tutorials['observing'] = state.tutorials['observing'].filter(x => x.id !== id)
+        }
+        // Add into moderating if you're moderator
+        if (isObserver &&
+          !state.tutorials['observing'].some(t => t.id === id)) {
+          state.tutorials['observing'].push(props)
+        }
       }
       for (let type in state.tutorials) {
         if (state.tutorials.hasOwnProperty(type)) {
@@ -75,14 +79,17 @@ export default new Vuex.Store({
     },
     setObservedTrainings (state, trainings) {
       state.observedTrainings = []
+      console.log(trainings)
       trainings.forEach(t => {
+        console.log(t)
         state.observedTrainings.push(t)
       })
+      console.log(state.observedTrainings)
     },
-    deleteObservedTrainings (state, id) {
+    deleteObservedTraining (state, id) {
       state.observedTrainings = state.observedTrainings.filter(t => t.id !== id)
     },
-    updateObservedTrainings (state, info) {
+    updateObservedTraining (state, info) {
       for (let i = 0; i < state.observedTrainings.length; i++) {
         if (state.observedTrainings[i].id === info.id) {
           for (let key in info) {
@@ -121,13 +128,13 @@ export default new Vuex.Store({
       for (let i = 0; i < state.observedTrainings.length; i++) {
         let participants = state.observedTrainings[i]['participants']
         for (let participant in participants) {
-            if (participant.id === options.id) {
-                for (let k in options.props) {
-                    participant[k] = options.props[k]
-                }
+          if (participant.id === options.id) {
+            for (let k in options.props) {
+              participant[k] = options.props[k]
             }
+          }
         }
-        state.observedTrainings[i]= participants
+        state.observedTrainings[i] = participants
       }
     }
   },

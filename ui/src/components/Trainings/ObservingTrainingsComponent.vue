@@ -16,7 +16,7 @@
                         </span>
                     </th>
                     <th @click="changeOrder('title')" class="order-button">
-                        Name
+                        Course Title
                         <span v-if="orderBy === 'title'">
                             <v-icon name="angle-up" v-if="orderAsc">
 
@@ -26,9 +26,42 @@
                             </v-icon>
                         </span>
                     </th>
-                    <th @click="changeOrder('is_test_exam')" class="order-button">
-                        Type
-                        <span v-if="orderBy === 'is_test_exam'">
+                    <th @click="changeOrder('originator')" class="order-button">
+                        Trainer
+                        <span v-if="orderBy === 'originator'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
+                    </th>
+                    <th @click="changeOrder('originator')" class="order-button">
+                        Test Exam
+                        <span v-if="orderBy === 'originator'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
+                    </th>
+                    <th @click="changeOrder('created_at')" class="order-button">
+                        Record date
+                        <span v-if="orderBy === 'created_at'">
+                            <v-icon name="angle-up" v-if="orderAsc">
+
+                            </v-icon>
+                            <v-icon name="angle-down" v-else>
+
+                            </v-icon>
+                        </span>
+                    </th>
+                    <th @click="changeOrder('updated_at')" class="order-button">
+                        Latest change
+                        <span v-if="orderBy === 'updated_at'">
                             <v-icon name="angle-up" v-if="orderAsc">
 
                             </v-icon>
@@ -39,7 +72,7 @@
                     </th>
                     <th></th>
                 </tr>
-                <tr v-for="(p, i) in trainings" v-bind:key="'observing' + i">
+                <tr v-for="(p, i) in trainings" v-bind:key="'observing' + i" @click="viewTraining(p.id)">
                     <td>
                         {{ p.id }}
                     </td>
@@ -47,11 +80,20 @@
                         {{ p.title }}
                     </td>
                     <td>
-                        {{ p.is_test_exam ? 'Test' : 'Non test' }}
+                        {{ p.originator ? p.originator.NAME : '' }}
                     </td>
                     <td>
-                        <b-btn variant="outline-success" class="view-button" @click="viewTraining(p.id)">
-                            <v-icon name="eye" />
+                        {{ p.is_test_exam ? 'Yes' : 'No' }}
+                    </td>
+                    <td>
+                        {{ p.created_at.substring(0, 10) }}
+                    </td>
+                    <td>
+                        {{ p.updated_at ? p.updated_at.substring(0,10) : p.create_at.substring(0, 10) }}
+                    </td>
+                    <td class="control-buttons" @click="$event.stopPropagation()">
+                        <b-btn variant="outline-secondary" class="notify-button" @click="notify(p.id)" v-if="canNotify(p.id)">
+                            <v-icon name="bell" />
                         </b-btn>
                         <b-btn variant="outline-secondary" class="edit-button" @click="trainingToEdit = p" v-if="canEditTraining(p.id)">
                             <v-icon name="pen" />
@@ -63,7 +105,7 @@
                 </tr>
             </table>
             <b-pagination v-bind:value="currentPage" :total-rows="totalPages" v-if="currentPage && totalPages > 1"
-                          :per-page="1" @input="changePage">
+                          :per-page="1" @input="changePage" align="center">
 
             </b-pagination>
         </div>
@@ -75,7 +117,7 @@
         <transition name="fade">
             <div class="modal-window-canvas" v-if="selectedTraining !== null" @click="selectedTraining = null">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
-                    <view-training-component :id="selectedTraining"></view-training-component>
+                    <view-training-component :id="selectedTraining" @close="selectedTraining = null"></view-training-component>
                 </div>
             </div>
         </transition>
@@ -145,7 +187,8 @@ export default{
             }
           ]
         }
-      ]
+      ],
+      alreadyNotified: []
     }
   },
   computed: {
@@ -188,6 +231,13 @@ export default{
     viewTraining (id) {
       this.selectedTraining = id
     },
+    notify (id) {
+      if (!this.canNotify(id)) {
+        return
+      }
+      this.axios.patch('trainings/' + id + '/participants')
+      this.alreadyNotified.push(id)
+    },
     addParticipants (id) {
       this.trainingToAddParticipants = id
     },
@@ -224,6 +274,9 @@ export default{
     canEditTraining (id) {
       let training = this.trainings.find(t => t.id === id)
       return (training && training.participants) ? !training.participants.some(p => p.status > 1) : true
+    },
+    canNotify (id) {
+      return !this.alreadyNotified.some(x => x === id)
     }
   }
 }
@@ -231,5 +284,8 @@ export default{
 <style>
     .participant-training-header{
         cursor: pointer;
+    }
+    .participant-training-pagination{
+        text-align: center;
     }
 </style>

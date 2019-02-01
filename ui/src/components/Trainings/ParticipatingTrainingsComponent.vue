@@ -8,10 +8,13 @@
                         Name
                     </th>
                     <th>
-                        Type
+                        Trainer
+                    </th>
+                    <th>
+                        Test Exam
                     </th>
                     <th @click="changeOrder('start_date')" class="order-button">
-                        Start
+                        Record date
                         <span v-if="orderBy === 'start_date'">
                             <v-icon name="angle-up" v-if="orderAsc">
 
@@ -21,9 +24,9 @@
                             </v-icon>
                         </span>
                     </th>
-                    <th @click="changeOrder('end_date')" class="order-button">
-                        End
-                        <span v-if="orderBy === 'end_date'">
+                    <th @click="changeOrder('updated_at')" class="order-button">
+                        Latest change
+                        <span v-if="orderBy === 'update_at'">
                             <v-icon name="angle-up" v-if="orderAsc">
 
                             </v-icon>
@@ -31,7 +34,7 @@
 
                             </v-icon>
                         </span>
-                    </th>
+                    </th><!--
                     <th @click="changeOrder('status')" class="order-button">
                         Status
                         <span v-if="orderBy === 'status'">
@@ -42,29 +45,24 @@
 
                             </v-icon>
                         </span>
-                    </th>
-                    <th></th>
+                    </th>-->
                 </tr>
-                <tr v-for="(p, i) in trainings" v-bind:key="'participant' + i">
+                <tr v-for="(p, i) in trainings" v-bind:key="'participant' + i" @click="viewTraining(p.id)"
+                    :class="'training-status-' + p.status">
                     <td>
                         {{ p.training.title }}
                     </td>
                     <td>
-                        {{ p.training.is_test_exam ? 'Test' : 'Non test'}}
+                        {{ p.training.originator ? p.training.originator.NAME : '' }}
+                    </td>
+                    <td>
+                        {{ p.training.is_test_exam ? 'Yes' : 'No'}}
                     </td>
                     <td>
                         {{ p.start_date }}
                     </td>
                     <td>
-                        {{ p.end_date }}
-                    </td>
-                    <td>
-                        {{ getStatusName(p.status) }}
-                    </td>
-                    <td>
-                        <b-btn variant="outline-success" class="view-button" @click="viewTraining(p.id)">
-                            <v-icon name="eye"></v-icon>
-                        </b-btn>
+                        {{ p.updated_at ? p.updated_at.substring(0, 10) : p.created_at.substring(0, 10) }}
                     </td>
                 </tr>
             </table>
@@ -112,7 +110,7 @@ export default{
             name: 'title',
             modifier (value) {
               return value ? '%' + value + '%' : null
-            },
+            }
           },
           value: null
         },
@@ -120,7 +118,7 @@ export default{
           text: 'Status',
           meta: {
             name: 'status',
-            type: 'p',
+            type: 'p'
           },
           value: null,
           options: statusOptions

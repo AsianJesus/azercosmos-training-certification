@@ -1,24 +1,76 @@
 <template>
     <div class="view-training-as-participant-component">
-        <div class="vtapc-header">
-            <h4>
-                {{ training.title }}
-            </h4>
+        <div class="vtapc-headline">
+            <span class="vtapc-training-id">
+                Training {{ '#' + training.id }}
+            </span>
+            <span class="vtapc-training-status">
+                Status: {{ getTrainingStatus(training) }}
+            </span>
         </div>
         <div class="vtapc-body">
-            <div class="vtapc-description">
-                <p>
-                    {{ training.description }}
-                </p>
+            <div class="row-margin">
+                <div class="col-6">Trainer</div>
+                <div class="col-4 offset-2">Training record date</div>
+                <div class="col-6"><b-form-input v-model="training.originator.NAME" readonly /></div>
+                <div class="col-4 offset-2"><b-form-input v-model="training.created_at" readonly /></div>
             </div>
-            <div class="vtapc-reference">
-                <h6>References: </h6>
-                <div>
-                    {{ training.reference }}
+            <div class="vtapc-title">
+                Title
+                <b-form-input v-model="training.title" readonly />
+            </div>
+            <div class="vtapc-description">
+                Description
+                <b-form-input v-model="training.description" readonly />
+            </div>
+            <div>
+                <div class="row-margin">
+                    <div class="vtapc-reference col">
+                        Reference
+                    </div>
+                    <div class="vtapc-attachment col-3">
+                        Attachment
+                    </div>
+                </div>
+                <div class="row-margin">
+                    <div class="vtapc-reference col">
+                        <b-form-input v-model="training.reference" readonly />
+                    </div>
+                    <div class="col-3">
+                        <a :href="$store.state.serverURL + '/' + training.file.path" target="_blank" v-if="training.file">
+                            Open
+                        </a>
+                        <span v-else>
+                            No attachment
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="vtapc-tutorial" v-if="tutorial">
-                Name: {{ tutorial.title }}
+            <div class="vtapc-test-info" v-if="training.is_test_exam">
+                <div class="row-margin">
+                    <div class="vtapc-tutorial col-7">
+                        Tutorial
+                    </div>
+                    <div class="vtapc-questions-number col-2">
+                        Questions number
+                    </div>
+                    <div class="vtapc-pass-score col-2">Success threshold</div>
+                    <div class="vtapc-time col-1">Time</div>
+                </div>
+                <div class="row-margin">
+                    <div class="vtapc-tutorial col-7">
+                        <b-form-input v-model="tutorial.title" readonly />
+                    </div>
+                    <div class="vtapc-questions-number col-2">
+                        <b-form-input v-model="training.question_number" readonly />
+                    </div>
+                    <div class="vtapc-pass-score col-2">
+                        <b-form-input v-model="training.pass_score" readonly />
+                    </div>
+                    <div class="vtapc-time col-1">
+                        <b-form-input v-model="training.exam_time" readonly />
+                    </div>
+                </div>
             </div>
             <div class="vtapc-participant">
                 <table class="table">
@@ -68,7 +120,7 @@
     </div>
 </template>
 <script>
-import { getStatus } from '../../js/statuses'
+import { getStatus, getTrainingStatus } from '../../js/statuses'
 import TestExamComponent from '../Tests/TestExamComponent.vue'
 export default{
   props: {
@@ -98,6 +150,7 @@ export default{
   },
   methods: {
     getStatusName: getStatus,
+    getTrainingStatus: getTrainingStatus,
     verify () {
       this.axios.put('/participants/' + this.id, {
         status: 1
@@ -139,4 +192,28 @@ export default{
 }
 </script>
 <style>
+    .vtapc-headline{
+        border-bottom: 1px solid #20202020;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+    }
+    .vtapc-training-id, .vtapc-training-status{
+        border: 1px solid #10101040;
+        padding: .2rem .4rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 1px #20202020;
+    }
+    .vtapc-body{
+        text-align: left;
+    }
+    .vtapc-observer{
+        padding: .3rem .5rem;
+        border: 1px solid #10101040;
+        border-radius: 6px;
+    }
+    .vtapc-observer::before{
+        content: '\25CF';
+    }
 </style>

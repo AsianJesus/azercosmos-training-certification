@@ -14,7 +14,7 @@ class Training extends Model
     protected $fillable = [
         'title', 'description', 'reference', 'status', 'is_test_exam', 'question_number', 'pass_score', 'exam_time', 'tutorial_id', 'originator_id',
     ];
-    protected $with = ['tutorial', 'file'];
+    protected $with = ['tutorial', 'file', 'originator'];
 
     public function tutorial() {
         return $this->belongsTo(Tutorial::class);
@@ -38,5 +38,10 @@ class Training extends Model
 
     public function file () {
         return $this->morphOne(File::class,'fileable');
+    }
+
+
+    public function originator() {
+        return $this->belongsTo(User::class, 'originator_id', 'ID');
     }
 }

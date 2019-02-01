@@ -4,24 +4,22 @@
             <model-select :options="usersOptions" @input="addParticipant" placeholder="Participants"></model-select>
         </div>
         <div class="new-participants-list">
-            <div v-for="(p, i) in participants" v-bind:key="i">
+            <div v-for="(p, i) in participants"  v-bind:key="i">
                 <div class="new-participant-name"> {{ getUserName(p.participant_id) }}</div>
-                <div class="new-participant-dates">
-                    Start
-                    <b-form-input type="date" v-model="participants[i].start_date"
-                                  :state="showError && errors[i].start ? false : null">
+                <div class="new-participant-dates row">
+                    <b-form-input type="date" v-model="participants[i].start_date" placeholder="From"
+                                  :state="showError && errors[i].start ? false : null" class="col-5">
 
                     </b-form-input>
-                    End
-                    <b-form-input type="date" v-model="participants[i].end_date"
+                    <b-form-input type="date" v-model="participants[i].end_date" class="col-5"
                                   :state="showError && errors[i].end ? false : null">
 
                     </b-form-input>
-                </div>
-                <div class="new-participant-buttons">
-                    <b-btn @click="deleteParticipant(i)" variant="outline-danger">
-                        Delete
-                    </b-btn>
+                    <div class="new-participant-buttons col-2">
+                        <b-btn @click="deleteParticipant(i)" class="delete-button" variant="outline-danger">
+                            <v-icon name="trash" />
+                        </b-btn>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,5 +94,7 @@ export default{
 }
 </script>
 <style>
-
+.new-participant-buttons{
+    text-align: right;
+}
 </style>

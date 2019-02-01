@@ -14,8 +14,6 @@
         <div class="verify-questions-buttons">
             <b-btn variant="outline-success" @click="save()">Save</b-btn>
         </div>
-        {{ questionsToVerify }}
-        {{ questionsToDelete }}
     </div>
 </template>
 <script>

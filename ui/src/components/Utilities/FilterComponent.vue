@@ -7,9 +7,9 @@
                 </option>-->
             </b-form-select>
             <b-form-input v-model="temp" @input="updateFilter" class="col-6"
-                          v-if="selectedItem === i && !f.options" v-for="(f, i) in value"> </b-form-input>
-            <b-form-select v-if="selectedItem === i && f.options" v-model="temp" :options="getOptions(value[i])"
-                           @input="updateFilter" v-for="(f, i) in value" class="col-6">
+                          v-if="selectedItem === i && !f.options" v-for="(f, i) in value" v-bind:key="'st' + i"> </b-form-input>
+            <b-form-select v-if="selectedItem === i && f.options" v-model="temp" v-bind:key="'ss' + i"
+                           :options="getOptions(value[i])" @input="updateFilter" v-for="(f, i) in value" class="col-6">
                 <!--<option :value="null">
                     Select filter
                 </option>
@@ -19,7 +19,8 @@
             </b-form-select>
         </div>
         <div class="filter-values">
-            <div class="filter-values-item" v-for="(f, i) in value" v-if="f.value !== null" @click="deleteValue(i)">
+            <div class="filter-values-item" v-for="(f, i) in value" v-bind:key="i"
+                 v-if="f.value !== null && f.value !== ''" @click="deleteValue(i)">
                 {{ f.text }} - {{ getValue(f) }}
             </div>
         </div>

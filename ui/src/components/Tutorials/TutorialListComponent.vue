@@ -50,17 +50,14 @@
                                 </v-icon>
                             </span>
                         </th>
-                        <th>Controls</th>
+                        <th></th>
                     </tr>
-                    <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t">
+                    <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t" @click="selectedTutorial.view = t">
                         <td>{{ t.id }}</td>
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
-                        <td>
-                            <b-btn variant="outline-success" class="view-button" @click="selectedTutorial.view = t">
-                                <v-icon name="eye"></v-icon>
-                            </b-btn>
+                        <td class="control-buttons" @click="$event.stopPropagation()">
 <!--
                             <b-btn variant="outline-success" @click="selectedTutorial.verifyQuestions = t">Verify</b-btn>
 -->
@@ -124,18 +121,15 @@
                                 </v-icon>
                             </span>
                         </th>
-                        <th>Controls</th>
+                        <th></th>
                     </tr>
-                    <tr v-for="(t, index) in ModeratingTutorials" v-bind:key="index" v-if="t">
+                    <tr v-for="(t, index) in ModeratingTutorials" v-bind:key="index" v-if="t" @click="selectedTutorial.view = t">
                         <td>{{ t.id }}</td>
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
-                        <td>
-                            <b-btn variant="outline-success" class="view-button" @click="selectedTutorial.view = t">
-                                <v-icon name="eye" />
-                            </b-btn>
-                            <b-btn variant="outline-primary" class="add-questions-button "@click="selectedTutorial.addQuestions = t">
+                        <td class="control-buttons" @click="$event.stopPropagation()">
+                            <b-btn variant="outline-primary" class="add-questions-button" @click="selectedTutorial.addQuestions = t">
                                 <v-icon name="plus" />
                             </b-btn>
                             <b-btn variant="outline-success" class="check-button" @click="selectedTutorial.verifyQuestions = t">
@@ -195,17 +189,14 @@
                                 </v-icon>
                             </span>
                         </th>
-                        <th>Controls</th>
+                        <th>    </th>
                     </tr>
-                    <tr v-for="(t, index) in ObservingTutorials" v-bind:key="index" v-if="t">
+                    <tr v-for="(t, index) in ObservingTutorials" v-bind:key="index" v-if="t" @click="selectedTutorial.view = t">
                         <td>{{ t.id }}</td>
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
-                        <td>
-                            <b-btn variant="outline-success" class="view-button" @click="selectedTutorial.view = t">
-                                <v-icon name="eye" />
-                            </b-btn>
+                        <td class="control-buttons">
                             <b-btn variant="outline-primary" class="add-questions-button" @click="selectedTutorial.addQuestions = t">
                                 <v-icon name="plus" />
                             </b-btn>
@@ -301,10 +292,10 @@ export default{
         {
           text: 'System',
           meta: {
-              name: 'system',
-              doesMatch (value, toMatch) {
-                  return value ? toMatch.toString().toLowerCase().includes(value.toLowerCase()) : true
-              }
+            name: 'system',
+            doesMatch (value, toMatch) {
+              return value ? toMatch.toString().toLowerCase().includes(value.toLowerCase()) : true
+            }
           },
           value: null
         },

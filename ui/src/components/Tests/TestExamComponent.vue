@@ -3,7 +3,7 @@
         <div class="test-exam-not-loaded" v-if="!isAllLoaded">
             <div v-if="isTestExam === null">
                 <h4>
-                    Trainings are not loaded yet
+                    Questions are not loaded yet
                 </h4>
             </div>
             <div v-else-if="isTestExam === false">
@@ -17,13 +17,27 @@
                 </h4>
             </div>
         </div>
-        <div class="test-exam-start" v-else-if="!isStarted">
-            Start whenever you're ready
-            <b-btn variant="outline-primary" @click="startExam">
-                Start
-            </b-btn>
+        <div class="test-exam-start row" v-else-if="!isStarted">
+            <div class="col-12 start-training-name">{{ trainingName }}</div>
+            <div class="col-12 start-questions-count">{{ questions.length }} questions</div>
+            <div class="col-6 start-info-header">Success threshold: </div>
+            <div class="col-6 start-info">{{ passScore }}%</div>
+            <div class="col-6 start-info-header">Deadline: </div>
+            <div class="col-6 start-info"> {{ participant.end_date }}</div>
+            <div class="col-12">
+                <b-btn variant="outline-primary" @click="startExam">
+                    Start
+                </b-btn>
+            </div>
         </div>
         <div class="test-exam-loaded row" v-else>
+            <div class="test-exam-header col-12">
+                <div class="row">
+                    <div class="col-3">Back</div>
+                    <div class="col-9">Exam name</div>
+                    <div class="col-12">Questions count</div>
+                </div>
+            </div>
             <div class="test-exam-body col-9">
                 <div class="test-exam-name">
                     <h5>
@@ -38,15 +52,14 @@
                 <div class="test-exam-questions">
                     <div :class="['test-exam-question', q['isCorrect'] === null ? '' : (q.isCorrect ?  'correct' : 'false')]"
                          v-for="(q, i) in questions" v-bind:key="i" :ref="'question' + i">
-                        <div>
+                        <div> {{ i + 1 }}#
                             {{ q.question }}
                         </div>
                         <b-form-radio-group v-model="questions[i].selected">
                             <b-form-radio v-for="(a, ai) in q.answers" v-bind:key="i*100 + ai" :value="ai">
-                                {{ a.answer }} ( {{ a.correct }})
+                                {{ a.answer }} {{ a.correct ? '( Correct )' : '' }}
                             </b-form-radio>
                         </b-form-radio-group>
-                        {{ q.selected }}
                     </div>
                 </div>
                 <div class="test-exam-buttons" v-if="isExamGoing">
@@ -58,7 +71,7 @@
             <div class="test-exam-toolbar col-3">
                 Toolbar
                 <div class="test-exam-score">
-                    Minimal score: {{ passScore }}
+                    Minimal score: {{ passScore }}%
                 </div>
                 <div class="test-exam-countdown">
                     <countdown-component :minutes="examTime" :showHours="false"
@@ -78,7 +91,7 @@
     </div>
 </template>
 <script>
-import { shuffleQuestions, shuffleAnswers, convertQuestions } from '../../js/questions'
+import { shuffleQuestions, convertQuestions } from '../../js/questions'
 import CountdownComponent from '../Utilities/CountdownComponent.vue'
 export default{
   components: {
@@ -114,6 +127,9 @@ export default{
   computed: {
     isAllLoaded () {
       return this.isLoaded.training && this.isLoaded.questions
+    },
+    participant () {
+      return this.$store.state.trainingParticipating.find(p => p.training_id === this.id)
     }
   },
   methods: {
@@ -140,7 +156,7 @@ export default{
       return 'test-exam-difficulty-' + d
     },
     passExam (force = false) {
-      if (!force && !confirm('Are you sure?')) {
+      if (!((force || confirm('Are you sure?')) && this.isExamGoing)) {
         return
       }
       for (let i = 0; i < this.questions.length; i++) {
@@ -159,6 +175,7 @@ export default{
         alert('Sorry, but you got only ' + correctQuestionsCount + '% of ' + this.passScore + '%')
       }
       this.isExamGoing = false
+      return
       this.saveResults(correctQuestionsCount, passed)
       this.$forceUpdate()
     },
@@ -187,16 +204,48 @@ export default{
 }
 </script>
 <style>
+    .test-exam-questions{
+        text-align: left;
+    }
+    .test-exam-component{
+        position: relative;
+        min-height: 100%;
+    }
+    .test-exam-start{
+        text-align: left;
+        margin-left: 50%;
+        margin-top: 10%;
+        border: 1px solid #20202050;
+        border-radius: 10px;
+        padding: .6rem 1rem;
+        transform: translateX(-50%);
+    }
+    .start-training-name{
+        font-size: 1.7rem;
+    }
+    .start-questions-count{
+        font-size: .7rem;
+        color: silver;
+    }
+    .start-info-header{
+        font-weight: bolder;
+        margin: .3rem auto;
+    }
     .false{
-        background-color: red;
-        color: blue;
+        background-color: #ff000060;
     }
     .correct{
-        background-color: green;
-        color: white;
+        background-color: #00ff0040;
+        color: black;
+    }
+    .test-exam-questions-references{
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid #30303050;
     }
     .test-exam-questions-reference{
-      border: 1px solid blue;
       cursor: pointer;
+      padding: .3rem .5rem;
+      margin-right: .4rem;
     }
 </style>

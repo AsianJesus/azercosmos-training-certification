@@ -3,8 +3,10 @@
  */
 
 function shuffleQuestions (questions) {
-  let temp, i1 = 0, i2 = 0
-  let count = questions.length * 2;
+  let temp
+  let i1 = 0
+  let i2 = 0
+  let count = questions.length * 2
   while (count > 0) {
     i1 = Math.floor(Math.random() * (questions.length - 1))
     i2 = Math.floor(Math.random() * (questions.length - 1))
@@ -18,8 +20,10 @@ function shuffleQuestions (questions) {
 }
 
 function shuffleAnswers (answers) {
-  let temp, i1 = 0, i2 = 0
-  let count = answers.length * 2;
+  let temp
+  let i1 = 0
+  let i2 = 0
+  let count = answers.length * 2
   while (count > 0) {
     i1 = Math.floor(Math.random() * (answers.length - 1))
     i2 = Math.floor(Math.random() * (answers.length - 1))
@@ -39,13 +43,13 @@ function convertQuestions (questions) {
       selected: null,
       isCorrect: null,
       answers: ['answer1', 'answer2', 'answer3', 'answer4'].map((a, i) => {
-          return {
-            answer: q[a],
-            correct: i === q.correct_answer
-          }
+        return {
+          answer: q[a],
+          correct: i === q.correct_answer
+        }
       })
     }
   })
 }
 
-export { shuffleAnswers, shuffleQuestions, convertQuestions }
+export { shuffleQuestions, convertQuestions }

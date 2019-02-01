@@ -20,31 +20,31 @@
                 <td>
                     <div>
                         <strong v-if="question.correct_answer === 0"> {{ question.answer1 }}</strong>
-                        <span v-else> {{question.answer1 }}</span>
+                        <span v-else> {{ question.answer1 }}</span>
                     </div>
                     <div>
                         <strong v-if="question.correct_answer === 1"> {{ question.answer2 }}</strong>
-                        <span v-else> {{question.answer2 }}</span>
+                        <span v-else> {{ question.answer2 }}</span>
                     </div>
                     <div>
                         <strong v-if="question.correct_answer === 2"> {{ question.answer3 }}</strong>
-                        <span v-else> {{question.answer3 }}</span>
+                        <span v-else> {{ question.answer3 }}</span>
                     </div>
                     <div>
                         <strong v-if="question.correct_answer === 3"> {{ question.answer4 }}</strong>
-                        <span v-else> {{question.answer4 }}</span>
+                        <span v-else> {{ question.answer4 }}</span>
                     </div>
                 </td>
                 <td>
-                    <div v-if="!question.verified">
-                        <b-btn variant="outline-success" @click="verify">Verify</b-btn>
-                    </div>
-                    <div v-else>
-                        <b-btn variant="outline-warning" @click="unverify">Unverify</b-btn>
-                    </div>
-                    <div>
-                        <b-btn variant="outline-danger" @click="deleteQuestion">Delete</b-btn>
-                    </div>
+                    <b-btn variant="outline-success verify-button" @click="verify" v-if="!question.verified">
+                        <v-icon name="check"></v-icon>
+                    </b-btn>
+                    <b-btn variant="outline-warning verify-button" @click="unverify" v-else>
+                        <v-icon name="ban" />
+                    </b-btn>
+                    <b-btn variant="outline-danger" class="delete-button" @click="deleteQuestion">
+                        <v-icon name="trash" />
+                    </b-btn>
                 </td>
             </tr>
         </table>
@@ -82,6 +82,6 @@ export default{
   }
 }
 </script>
-<style>
+<style lang="css">
 
 </style>

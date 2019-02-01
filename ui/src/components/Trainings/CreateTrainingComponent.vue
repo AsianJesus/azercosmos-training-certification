@@ -1,52 +1,54 @@
 <template>
     <div class="create-training-component">
         <div class="create-training-headline">
-            <b-form-input type="text" v-model="title" placeholder="Title" :state="showError && errors.title ? false : null">
-
-            </b-form-input>
+            Create a training
+        </div>
+        <div class="create-training-title">
+            <b-form-input type="text" v-model="title" placeholder="Title" class="create-training-textbox"
+                          :state="showError && errors.title ? false : null" />
         </div>
         <div class="create-training-content">
-            <div class="create-training-observers">
-                <multi-select :options="usersOptions" :selected-options="observers"
-                                @select="addObserver" placeholder="Observers"></multi-select>
-            </div>
             <div class="create-training-description">
-                <b-form-textarea v-model="description" placeholder="Description" :state="showError && errors.description ? false : null" rows="3">
-                </b-form-textarea>
-                <b-form-textarea v-model="reference" placeholder="References"></b-form-textarea>
+                <b-form-input v-model="description" placeholder="Description" class="create-training-textbox"
+                              :state="showError && errors.description ? false : null" rows="3" />
+                <b-form-input v-model="reference" placeholder="References" class="create-training-textbox" />
             </div>
             <div class="create-training-attachment">
-                <b-form-file v-model="attachment" placeholder="Your file..."></b-form-file>
+                <b-form-file v-model="attachment" placeholder="Attachment"></b-form-file>
             </div>
             <div class="create-training-test">
                 <div class="create-training-test-button">
                     <b-form-checkbox v-model="isTestExam">Is training test?</b-form-checkbox>
                 </div>
-                <div class="create-training-test-body" v-if="isTestExam">
-                    <div>
+                <div class="create-training-test-body row" v-if="isTestExam">
+                    <div class="col-3">
                         <model-select :options="tutorialsOptions" v-model="tutorialID"
                                       :isError="showError && errors.tutorialID">
                         </model-select>
                     </div>
-                    <div>
+                    <div class="col-3">
                         <b-form-input type="number" v-model="passScore" placeholder="Minimal score (%)"
-                                      :state="showError && errors.passScore ? false : null">
+                                      :state="showError && errors.passScore ? false : null" class="create-training-textbox">
                         </b-form-input>
                     </div>
-                    <div>
+                    <div class="col-3">
                         <b-form-input type="number" v-model="questionsCount" placeholder="Questions count"
-                                      :state="showError && errors.questionsCount ? false : null">
+                                      :state="showError && errors.questionsCount ? false : null" class="create-training-textbox">
                         </b-form-input>
                     </div>
-                    <div>
+                    <div class="col-3">
                         <b-form-input type="number" v-model="examTime" placeholder="Time of exam (in minutes)"
-                                      :state="showError && errors.examTime ? false : null">
+                                      :state="showError && errors.examTime ? false : null" class="create-training-textbox">
                         </b-form-input>
                     </div>
                 </div>
             </div>
+            <div class="create-training-observers">
+                <multi-select :options="usersOptions" :selected-options="observers"
+                              @select="addObserver" placeholder="Observers"></multi-select>
+            </div>
             <div class="create-training-participants">
-                <new-participant-component @input="participants = value" @error="participantErrors = $event" :showError="showError">
+                <new-participant-component @input="participants = $event" @error="participantErrors = $event" :showError="showError">
                 </new-participant-component>
             </div>
         </div>
@@ -154,6 +156,27 @@ export default{
   }
 }
 </script>
-<style>
+<style lang="css">
 
+.create-training-headline {
+    border-bottom: 1px solid #30303050;
+    font-weight: bolder;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    text-align: center;
+}
+.create-training-title, .create-training-observers, .create-training-description,
+    .create-training-attachment, .create-training-test, .create-training-participants{
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+.create-training-textbox{
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    margin-top: .4rem;
+}
+.create-training-textbox:focus{
+    outline: none;
+}
 </style>
