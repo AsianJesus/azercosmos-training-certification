@@ -47,8 +47,8 @@
                         </span>
                     </th>-->
                 </tr>
-                <tr v-for="(p, i) in trainings" v-bind:key="'participant' + i" @click="viewTraining(p.id)"
-                    :class="'training-status-' + p.status">
+                <tr v-for="(p, i) in trainings" v-bind:key="'participant' + i"
+                    @click="viewTraining(p.id)" style="cursor: pointer;" :class="'training-status-' + p.status">
                     <td>
                         {{ p.training.title }}
                     </td>

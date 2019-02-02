@@ -72,7 +72,8 @@
                     </th>
                     <th></th>
                 </tr>
-                <tr v-for="(p, i) in trainings" v-bind:key="'observing' + i" @click="viewTraining(p.id)">
+                <tr v-for="(p, i) in trainings" v-bind:key="'observing' + i" style="cursor: pointer;"
+                    @click="viewTraining(p.id)">
                     <td>
                         {{ p.id }}
                     </td>

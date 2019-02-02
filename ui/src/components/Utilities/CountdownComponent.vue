@@ -1,7 +1,7 @@
 <template>
     <div class="countdown-component">
         <div>
-            {{ label }}
+            <slot />
         </div>
         <div>
             <span v-if="showHours">

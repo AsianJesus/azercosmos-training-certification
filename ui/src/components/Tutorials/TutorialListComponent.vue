@@ -52,7 +52,8 @@
                         </th>
                         <th></th>
                     </tr>
-                    <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t" @click="selectedTutorial.view = t">
+                    <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t" style="cursor: pointer;"
+                        @click="selectedTutorial.view = t">
                         <td>{{ t.id }}</td>
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
@@ -123,7 +124,8 @@
                         </th>
                         <th></th>
                     </tr>
-                    <tr v-for="(t, index) in ModeratingTutorials" v-bind:key="index" v-if="t" @click="selectedTutorial.view = t">
+                    <tr v-for="(t, index) in ModeratingTutorials" v-bind:key="index" v-if="t" style="cursor: pointer;"
+                        @click="selectedTutorial.view = t">
                         <td>{{ t.id }}</td>
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
@@ -191,7 +193,8 @@
                         </th>
                         <th>    </th>
                     </tr>
-                    <tr v-for="(t, index) in ObservingTutorials" v-bind:key="index" v-if="t" @click="selectedTutorial.view = t">
+                    <tr v-for="(t, index) in ObservingTutorials" v-bind:key="index" v-if="t" style="cursor: pointer;"
+                        @click="selectedTutorial.view = t">
                         <td>{{ t.id }}</td>
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>

@@ -176,7 +176,7 @@ export default{
       form.set('title', this.title)
       form.set('description', this.description)
       form.set('reference', this.reference)
-      form.set('is_test_exam', this.isTestExam)
+      form.set('is_test_exam', this.isTestExam ? 1 : 0)
       form.set('pass_score', this.isTestExam ? this.passScore : null)
       form.set('question_number', this.isTestExam ? this.questionsCount : null)
       form.set('tutorial_id', this.isTestExam ? this.tutorialID : null)
@@ -202,6 +202,7 @@ export default{
       }
       this.axios.post('/trainings/' + this.training.id, form).then(response => {
         this.$store.commit('updateObservedTraining', response.data)
+        this.$store.commit('updateParticipatingTraining', response.data)
         this.$emit('close', true)
       })
     }

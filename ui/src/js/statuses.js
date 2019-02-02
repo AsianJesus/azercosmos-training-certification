@@ -23,4 +23,4 @@ function getTrainingStatus (training) {
   return training.participants && training.participants.some(x => x.status !== 2) ? 'Not Finished' : 'Finished'
 }
 
-export {statuses, statusOptions, getStatus, getTrainingStatus }
+export { statuses, statusOptions, getStatus, getTrainingStatus }

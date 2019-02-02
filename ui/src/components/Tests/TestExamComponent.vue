@@ -32,25 +32,31 @@
         </div>
         <div class="test-exam-loaded row" v-else>
             <div class="test-exam-header col-12">
-                <div class="row">
-                    <div class="col-3">Back</div>
-                    <div class="col-9">Exam name</div>
-                    <div class="col-12">Questions count</div>
+                <div class="row" style="text-align: left;">
+                    <div class="col-3" style="text-align: left;">
+                        <v-icon name="arrow-left" :scale="1.5">
+
+                        </v-icon>
+                    </div>
+                    <div class="col-9 test-exam-name">
+                        {{ trainingName }} <span v-if="tutorialName"> | </span>{{ tutorialName }}
+                    </div>
+                    <div class="col-9 offset-3">
+                        <span v-if="questions.length >= requiredQuestionNumber">
+                            {{ questions.length }} questions
+                        </span>
+                        <span v-else>
+                            There are  {{ questions.length }} questions instead of {{ requiredQuestionNumber }}
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="test-exam-body col-9">
-                <div class="test-exam-name">
-                    <h5>
-                        {{ trainingName }} - {{ tutorialName }}
-                    </h5>
-                </div>
-                <div class="test-exam-not-full" v-if="questions.length < requiredQuestionNumber">
-                    <h6>
-                        Instead of {{ requiredQuestionNumber }} there are {{ questions.length }}
-                    </h6>
-                </div>
                 <div class="test-exam-questions">
-                    <div :class="['test-exam-question', q['isCorrect'] === null ? '' : (q.isCorrect ?  'correct' : 'false')]"
+                    <div class="test-exam-question" v-for="(q, i) in questions" v-bind:key="i">
+                        <question-component v-model="questions[i]" :index="i + 1" />
+                    </div>
+                    <!--<div :class="['test-exam-question', q['isCorrect'] === null ? '' : (q.isCorrect ?  'correct' : 'false')]"
                          v-for="(q, i) in questions" v-bind:key="i" :ref="'question' + i">
                         <div> {{ i + 1 }}#
                             {{ q.question }}
@@ -60,7 +66,7 @@
                                 {{ a.answer }} {{ a.correct ? '( Correct )' : '' }}
                             </b-form-radio>
                         </b-form-radio-group>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="test-exam-buttons" v-if="isExamGoing">
                     <b-btn variant="outline-primary" @click="passExam(false)">
@@ -69,7 +75,6 @@
                 </div>
             </div>
             <div class="test-exam-toolbar col-3">
-                Toolbar
                 <div class="test-exam-score">
                     Minimal score: {{ passScore }}%
                 </div>
@@ -77,7 +82,9 @@
                     <countdown-component :minutes="examTime" :showHours="false"
                                          v-model="isExamGoing" label="Time before auto-complete"
                                          @end="passExam(true)">
-
+                        <em>
+                            Time before auto-complete
+                        </em>
                     </countdown-component>
                 </div>
                 <div class="test-exam-questions-references">
@@ -93,9 +100,11 @@
 <script>
 import { shuffleQuestions, convertQuestions } from '../../js/questions'
 import CountdownComponent from '../Utilities/CountdownComponent.vue'
+import QuestionComponent from './QuestionComponent.vue'
 export default{
   components: {
-    CountdownComponent
+    CountdownComponent,
+    QuestionComponent
   },
   props: {
     id: {
@@ -167,17 +176,17 @@ export default{
           this.questions[i]['isCorrect'] = false
         }
       }
-      let correctQuestionsCount = 100 * this.questions.filter(q => q.isCorrect).length / this.questions.length
-      let passed = correctQuestionsCount >= this.passScore
+      let totalScore = this.questions.map(q => q.difficulty).reduce((a, b) => a + b, 0)
+      let myScore = this.questions.filter(q => q.isCorrect).map(q => q.difficulty).reduce((a, b) => a + b, 0)
+      let score = 100 * myScore / totalScore
+      let passed = score >= this.passScore
       if (passed) {
         alert('Congratulations, you passed test!')
       } else {
-        alert('Sorry, but you got only ' + correctQuestionsCount + '% of ' + this.passScore + '%')
+        alert('Sorry, but you got only ' + score + '% of ' + this.passScore + '%')
       }
       this.isExamGoing = false
-      return
-      this.saveResults(correctQuestionsCount, passed)
-      this.$forceUpdate()
+      this.saveResults(score, passed)
     },
     saveResults (score, passed) {
       this.axios.put('trainings/' + this.id + '/participants', {
@@ -220,6 +229,12 @@ export default{
         padding: .6rem 1rem;
         transform: translateX(-50%);
     }
+    .test-exam-header {
+        border-bottom: 1px solid #20202080;
+    }
+    .test-exam-name{
+        font-size: 1.7rem;
+    }
     .start-training-name{
         font-size: 1.7rem;
     }
@@ -231,12 +246,15 @@ export default{
         font-weight: bolder;
         margin: .3rem auto;
     }
-    .false{
-        background-color: #ff000060;
+    .test-exam-question {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
-    .correct{
-        background-color: #00ff0040;
-        color: black;
+    .test-exam-score{
+        font-style: italic;
+    }
+    .test-exam-toolbar{
+        border-left: 1px solid #30303060;
     }
     .test-exam-questions-references{
         display: flex;

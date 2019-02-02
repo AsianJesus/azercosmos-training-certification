@@ -9,17 +9,17 @@
             </span>
         </div>
         <div class="vtapc-body">
-            <div class="row-margin">
+            <div class="row-margin vtapc-info-element">
                 <div class="col-6">Trainer</div>
                 <div class="col-4 offset-2">Training record date</div>
                 <div class="col-6"><b-form-input v-model="training.originator.NAME" readonly /></div>
                 <div class="col-4 offset-2"><b-form-input v-model="training.created_at" readonly /></div>
             </div>
-            <div class="vtapc-title">
+            <div class="vtapc-title vtapc-info-element">
                 Title
                 <b-form-input v-model="training.title" readonly />
             </div>
-            <div class="vtapc-description">
+            <div class="vtapc-description vtapc-info-element">
                 Description
                 <b-form-input v-model="training.description" readonly />
             </div>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="vtapc-test-info" v-if="training.is_test_exam">
+            <div class="vtapc-test-info vtapc-info-element" v-if="training.is_test_exam">
                 <div class="row-margin">
                     <div class="vtapc-tutorial col-7">
                         Tutorial
@@ -196,6 +196,10 @@ export default{
         border-bottom: 1px solid #20202020;
         margin-bottom: 1rem;
         padding-bottom: 1rem;
+    }
+    .vtapc-info-element{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
     .vtapc-training-id, .vtapc-training-status{
         border: 1px solid #10101040;

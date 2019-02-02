@@ -1,6 +1,6 @@
 <template>
     <div class="view-training-as-observer">
-        <div class="vtao-headline">
+        <div class="vtao-headline vtao-info-element">
             <span class="vtao-training-id">
                 Training {{ '#' + training.id }}
             </span>
@@ -9,21 +9,21 @@
             </span>
         </div>
         <div class="vtao-body">
-            <div class="row-margin">
+            <div class="row-margin vtao-info-element">
                 <div class="col-6">Trainer</div>
                 <div class="col-4 offset-2">Training record date</div>
                 <div class="col-6"><b-form-input v-model="training.originator.NAME" readonly /></div>
                 <div class="col-4 offset-2"><b-form-input v-model="training.created_at" readonly /></div>
             </div>
-            <div class="vtao-title">
+            <div class="vtao-title vtao-info-element">
                 Title
                 <b-form-input v-model="training.title" readonly />
             </div>
-            <div class="vtao-description">
+            <div class="vtao-description vtao-info-element">
                 Description
                 <b-form-input v-model="training.description" readonly />
             </div>
-            <div>
+            <div class="vtao-info-element">
                 <div class="row-margin">
                     <div class="vtao-reference col">
                         Reference
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="vtao-test-info" v-if="training.is_test_exam">
+            <div class="vtao-test-info vtao-info-element" v-if="training.is_test_exam">
                 <div class="row-margin">
                     <div class="vtao-tutorial col-7">
                         Tutorial
@@ -117,7 +117,7 @@
                 Observers
             </h5>
             <div class="vtao-observers">
-                <span class="vtao-observer" v-for="(o, i) in training.observers">
+                <span class="vtao-observer" v-for="(o, i) in training.observers" v-bind:key="i">
                     {{ o.user.NAME }}
                 </span>
             </div>
@@ -203,6 +203,10 @@ export default{
         margin-right: 2rem;
         border-radius: 5px;
         box-shadow: 0 1px #20202020;
+    }
+    .vtao-info-element{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
     .vtao-body{
         text-align: left;

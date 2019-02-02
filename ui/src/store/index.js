@@ -110,9 +110,11 @@ export default new Vuex.Store({
     deleteParticipatingTraining (state, id) {
       state.trainingParticipating = state.trainingParticipating.filter(p => p.id !== id)
     },
-    updateParticipatingTraining (state, info) {
+    updateParticipantInfo (state, info) {
+      console.log(info)
       for (let i = 0; i < state.trainingParticipating.length; i++) {
         if (state.trainingParticipating[i].id === info.id) {
+          console.log('We found one')
           for (let key in info.props) {
             if (info.props.hasOwnProperty(key)) {
               state.trainingParticipating[i][key] = info.props[key]
@@ -121,10 +123,25 @@ export default new Vuex.Store({
         }
       }
     },
+    updateParticipatingTraining (state, info) {
+      console.log(info)
+      for (let i = 0; i < state.trainingParticipating.length; i++) {
+        if (state.trainingParticipating[i].training &&
+          state.trainingParticipating[i].training.id === info.id) {
+          console.log('We found one')
+          for (let key in info.props) {
+            if (info.props.hasOwnProperty(key)) {
+              state.trainingParticipating[i].training[key] = info.props[key]
+            }
+          }
+          console.log(state.trainingParticipating[i])
+        }
+      }
+    },
     addParticipatingTraining (state, options) {
       state.trainingParticipating.push(options)
     },
-    updateParticipantInfo (state, options) {
+    updateParticipantsInfo (state, options) {
       for (let i = 0; i < state.observedTrainings.length; i++) {
         let participants = state.observedTrainings[i]['participants']
         for (let participant in participants) {
