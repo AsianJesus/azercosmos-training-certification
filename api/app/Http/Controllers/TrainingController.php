@@ -98,7 +98,7 @@ class TrainingController extends Controller
         if ($participant->status != 1) {
             return response($participant->status === 0 ? 'Participant didn\'t confirmed' : 'Participant has already passed', 403);
         }
-        $score = $request->input('score', 0);
+        $score = max($request->input('score', 0), $participant->score);
         $hasPassed = $score >= $training->pass_score;
         return $training->participants()->where('participant_id', $user_id)
             ->update(['attempt' => $participant['attempt'] + 1, 'status' => $hasPassed ? '2' : '1', 'score' => $score]);

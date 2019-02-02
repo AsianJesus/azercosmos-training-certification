@@ -1,6 +1,103 @@
 <template>
     <div class="edit-training-component">
-        <div class="edit-training-headline">
+        <div class="edit-training-headline edit-training-info-element">
+            <span class="edit-training-training-id">
+                Training {{ '#' + training.id }}
+            </span>
+            <span class="edit-training-training-status">
+                Status: {{ getTrainingStatus(training) }}
+            </span>
+        </div>
+        <div class="edit-training-body">
+            <div class="row-margin edit-training-info-element">
+                <div class="col-6">Trainer</div>
+                <div class="col-4 offset-2">Training record date</div>
+                <div class="col-6"><b-form-input :value="originator ? originator.NAME : ''" readonly /></div>
+                <div class="col-4 offset-2"><b-form-input v-model="created_at" readonly /></div>
+            </div>
+            <div class="edit-training-title edit-training-info-element">
+                Title
+                <b-form-input v-model="title" :state="showError && errors.title ? false : null" />
+            </div>
+            <div class="edit-training-description edit-training-info-element">
+                Description
+                <b-form-input v-model="description" :state="showError && errors.description ? false : null" />
+            </div>
+            <div class="edit-training-info-element">
+                <div class="row-margin">
+                    <div class="edit-training-reference col">
+                        Reference
+                    </div>
+                    <div class="edit-training-attachment col-3">
+                        Attachment
+                    </div>
+                </div>
+                <div class="row-margin">
+                    <div class="edit-training-reference col">
+                        <b-form-input v-model="reference" />
+                    </div>
+                    <div class="col-3">
+                        <a :href="$store.state.serverURL + '/' + existingFile" target="_blank" v-if="existingFile">
+                            Open
+                        </a>
+                        <span v-else>
+                            No attachment
+                        </span>
+                        <b-form-file v-model="attachment" placeholder="Attach" />
+                    </div>
+                </div>
+            </div>
+            <div class="edit-training-test-button">
+                <b-form-checkbox v-model="isTestExam" :value="1" :unchecked-value="0">Is training test?</b-form-checkbox>
+            </div>
+            <div class="edit-training-test-info edit-training-info-element" v-if="isTestExam">
+                <div class="row-margin">
+                    <div class="edit-training-tutorial col-7">
+                        Tutorial
+                    </div>
+                    <div class="edit-training-questions-number col-2">
+                        Questions number
+                    </div>
+                    <div class="edit-training-pass-score col-2">Success threshold</div>
+                    <div class="edit-training-time col-1">Time</div>
+                </div>
+                <div class="row-margin">
+                    <div class="edit-training-tutorial col-7">
+                        <model-select :options="tutorialsOptions" v-model="tutorialID"
+                                      :isError="showError && errors.tutorialID">
+                        </model-select>
+                    </div>
+                    <div class="edit-training-questions-number col-2">
+                        <b-form-input v-model="questionsCount" :state="showError && errors.questionsCount ? false : null" />
+                    </div>
+                    <div class="edit-training-pass-score col-2">
+                        <b-form-input v-model="passScore" :state="showError && errors.passScore ? false : null" />
+                    </div>
+                    <div class="edit-training-time col-1">
+                        <b-form-input v-model="examTime" :state="showError && errors.examtime ? false : null" />
+                    </div>
+                </div>
+            </div>
+            <div class="edit-training-participants" v-if="participants">
+                <h5>
+                    Participants
+                </h5>
+                <new-participant-component :participants-initial="participantsInitial" @input ="participants = $event"
+                                           @error="participantErrors = $event" :showError="showError">
+                </new-participant-component>
+            </div>
+            <h5>
+                Observers
+            </h5>
+            <div class="edit-training-observers">
+                <multi-select :options="usersOptions" :selected-options="observers"
+                              @select="addObserver" placeholder="Observers"></multi-select>
+            </div>
+            <div class="edit-training-buttons">
+                <b-btn variant="outline-success" @click="save()">Save</b-btn>
+            </div>
+        </div>
+        <!--<div class="edit-training-headline">
             <b-form-input type="text" v-model="title" placeholder="Title" :state="showError && errors.title ? false : null">
 
             </b-form-input>
@@ -11,9 +108,9 @@
                               @select="addObserver" placeholder="Observers"></multi-select>
             </div>
             <div class="edit-training-description">
-                <b-form-textarea v-model="description" placeholder="Description" :state="showError && errors.description ? false : null" rows="3">
-                </b-form-textarea>
-                <b-form-textarea v-model="reference" placeholder="References"></b-form-textarea>
+                <b-form-input v-model="description" placeholder="Description" :state="showError && errors.description ? false : null" rows="3">
+                </b-form-input>
+                <b-form-input v-model="reference" class="edit-training-reference" placeholder="References"></b-form-input>
             </div>
             <div class="edit-training-attachment">
                 <a :href="$store.state.serverURL + '/' + existingFile" v-if="existingFile" target="_blank">
@@ -23,7 +120,7 @@
             </div>
             <div class="edit-training-test">
                 <div class="edit-training-test-button">
-                    <b-form-checkbox v-model="isTestExam">Is training test?</b-form-checkbox>
+                    <b-form-checkbox v-model="isTestExam" :value="1" :unchecked-value="0">Is training test?</b-form-checkbox>
                 </div>
                 <div class="edit-training-test-body" v-if="isTestExam">
                     <div>
@@ -56,12 +153,13 @@
         </div>
         <div class="edit-training-buttons">
             <b-btn variant="outline-success" @click="save()">Save</b-btn>
-        </div>
+        </div>-->
     </div>
 </template>
 <script>
 import { MultiSelect, ModelSelect } from 'vue-search-select'
 import NewParticipantComponent from './NewParticipantsComponent.vue'
+import { getStatus, getTrainingStatus } from '../../js/statuses'
 export default{
   props: {
     training: {
@@ -90,14 +188,18 @@ export default{
       showError: false,
       attachment: null,
       existingFile: null,
-      questionsCount: null
+      questionsCount: null,
+      originator: null,
+      created_at: null
     }
   },
   mounted () {
     this.title = this.training.title
     this.description = this.training.description
     this.reference = this.training.reference
+    this.created_at = this.training.created_at
     this.existingFile = this.training.file ? this.training.file.path : null
+    this.originator = this.training.originator
     this.participantsInitial = this.training.participants.map(p => {
       return {
         participant_id: p.participant_id,
@@ -154,6 +256,7 @@ export default{
     addObserver (observers) {
       this.observers = observers
     },
+    getTrainingStatus: getTrainingStatus,
     updateParticipantsInfo () {
       let participantsToUpdate = this.training.participants.filter(p => this.participants.some(par => par.participant_id === p.participant_id))
       let infoToSend = {}
@@ -210,5 +313,27 @@ export default{
 }
 </script>
 <style>
-
+    .edit-training-headline{
+        border-bottom: 1px solid #20202020;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+    }
+    .edit-training-training-id, .edit-training-training-status{
+        border: 1px solid #10101040;
+        padding: .2rem .4rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 1px #20202020;
+    }
+    .edit-training-info-element{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    .edit-training-body{
+        text-align: left;
+    }
+    .edit-training-buttons{
+        text-align: right;
+    }
 </style>

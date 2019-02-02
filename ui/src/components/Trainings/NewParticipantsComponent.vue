@@ -4,7 +4,7 @@
             <model-select :options="usersOptions" @input="addParticipant" placeholder="Participants"></model-select>
         </div>
         <div class="new-participants-list">
-            <div v-for="(p, i) in participants"  v-bind:key="i">
+            <div v-for="(p, i) in participants"  v-bind:key="i" class="new-participant-item">
                 <div class="new-participant-name"> {{ getUserName(p.participant_id) }}</div>
                 <div class="new-participant-dates row">
                     <b-form-input type="date" v-model="participants[i].start_date" placeholder="From"
@@ -96,5 +96,8 @@ export default{
 <style>
 .new-participant-buttons{
     text-align: right;
+}
+.new-participant-item{
+    margin: .5rem auto;
 }
 </style>

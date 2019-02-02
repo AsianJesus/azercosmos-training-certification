@@ -33,10 +33,8 @@
         <div class="test-exam-loaded row" v-else>
             <div class="test-exam-header col-12">
                 <div class="row" style="text-align: left;">
-                    <div class="col-3" style="text-align: left;">
-                        <v-icon name="arrow-left" :scale="1.5">
-
-                        </v-icon>
+                    <div class="col-3" @click="passExam(); $emit('close', true)" style="cursor: pointer;">
+                        <v-icon name="arrow-left" :scale="1.5" />
                     </div>
                     <div class="col-9 test-exam-name">
                         {{ trainingName }} <span v-if="tutorialName"> | </span>{{ tutorialName }}
@@ -195,6 +193,11 @@ export default{
       }).then(() => {
         if (passed) {
           this.$emit('passed', score)
+          this.$store.commit('updateParticipantInfo', {
+            id: this.participant.id,
+            score: score,
+            attempt: this.participant.attempt + 1
+          })
         }
       })
     },
@@ -207,6 +210,12 @@ export default{
       if (element) {
         console.log(element)
         element[0].scrollIntoView()
+      }
+    },
+    exit () {
+      if (confirm('Do you wanna exit?')) {
+        this.passExam(true)
+        this.$emit('close', true)
       }
     }
   }
