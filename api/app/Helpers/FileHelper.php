@@ -25,3 +25,7 @@ function generateFileName($dir, $ext, $len=16) {
     } while(file_exists(PUBLIC_DIRECTORY."$dir\\$name"));
     return "$dir/$name";
 }
+
+function convertLoginToEmail($login) {
+    return $login.'@gmail.com';
+}

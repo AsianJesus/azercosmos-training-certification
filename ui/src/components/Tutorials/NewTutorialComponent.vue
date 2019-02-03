@@ -1,58 +1,77 @@
 <template>
     <div class="new-tutorial-component">
-        <h5>
+        <h5 class="new-tutorial-headline">
             New tutorial
-            <b-btn variant="outline-warning" @click="$emit('close', true)">Close</b-btn>
         </h5>
-        <div class="new-tutorial-component form">
-            <b-form-input placeholder="Title" v-model="form.title" :state="showError && tutorialErrors.title ? false : null">
-            </b-form-input>
-            <b-form-select :options="systems" placeholder="System" v-model="form.system"
-                            :state="showError && tutorialErrors.system ? false : null">
-            </b-form-select>
-            <multi-select :options="usersOptions" :selected-options="moderators" @select="moderators = $event"
-                          placeholder="Moderators">
-            </multi-select>
-            <multi-select :options="usersOptions" :selected-options="observers" @select="observers = $event"
-                        placeholder="Observers">
-            </multi-select>
-            <div class="new-tutorial-component questions-list">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>Question</th>
-                            <th>Answers</th>
-                            <th>Correct</th>
-                            <th>Difficulty</th>
-                        </tr>
-                        <tr v-for="(question, index) in form.questions" v-bind:key="index">
-                            <td>{{ question.question }}</td>
-                            <td>
-                                <div>
-                                    <span>1) {{ question.answer1 }}</span>
-                                </div>
-                                <div>
-                                    <span>2) {{ question.answer2 }}</span>
-                                </div>
-                                <div>
-                                    <span>3) {{ question.answer3 }}</span>
-                                </div>
-                                <div>
-                                    <span>4) {{ question.answer4 }}</span>
-                                </div>
-                            </td>
-                            <td>{{ question.correct_answer + 1}}</td>
-                            <td>{{ mapDifficulty(question.difficulty) }}</td>
-                        </tr>
-                    </table>
-                <hr>
-                <div class="new-tutorial-component new-question">
-                    <new-question-component @addQuestion="addQuestion($event)"></new-question-component>
-                </div>
+        <div class="new-tutorial-row row-margin">
+            <div class="col-6">
+                Title
+                <b-form-input v-model="form.title" :state="showError && tutorialErrors.title ? false : null" />
             </div>
+            <div class="col-6">
+                Systems
+                <b-form-select :options="systems" placeholder="System" v-model="form.system"
+                               :state="showError && tutorialErrors.system ? false : null" />
+            </div>
+        </div>
+        <div class="new-tutorial-row row-margin">
+            <div class="col-6">
+                Observers
+            </div>
+            <div class="col-6">
+                Moderators
+            </div>
+            <div class="col-6">
+                <multi-select :options="usersOptions" :selected-options="observers" @select="observers = $event"
+                              placeholder="Observers">
+                </multi-select>
+            </div>
+            <div class="col-6">
+                <multi-select :options="usersOptions" :selected-options="moderators" @select="moderators = $event"
+                              placeholder="Moderators">
+                </multi-select>
+            </div>
+        </div>
+        <div class="new-tutorial-row">
+            <div>
+                <table class="table table-hover">
+                    <tr>
+                        <th>Question</th>
+                        <th>Answers</th>
+                        <th>Correct</th>
+                        <th>Difficulty</th>
+                    </tr>
+                    <tr v-for="(question, index) in form.questions" v-bind:key="index">
+                        <td>{{ question.question }}</td>
+                        <td>
+                            <div>
+                                <span>1) {{ question.answer1 }}</span>
+                            </div>
+                            <div>
+                                <span>2) {{ question.answer2 }}</span>
+                            </div>
+                            <div>
+                                <span>3) {{ question.answer3 }}</span>
+                            </div>
+                            <div>
+                                <span>4) {{ question.answer4 }}</span>
+                            </div>
+                        </td>
+                        <td>{{ question.correct_answer + 1}}</td>
+                        <td>{{ mapDifficulty(question.difficulty) }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <new-question-component @addQuestion="addQuestion($event)"></new-question-component>
+            </div>
+        </div>
+        <div class="new-tutorial-row">
             <div class="new-tutorial-component-buttons">
                 <b-btn variant="outline-success" @click="createTutorial">
                     Create tutorial
                 </b-btn>
+                <b-btn variant="outline-warning" @click="$emit('close', true)">Close</b-btn>
             </div>
         </div>
     </div>
@@ -172,5 +191,17 @@ export default{
 }
 </script>
 <style>
-
+.new-tutorial-headline{
+    border-bottom: 1px solid #30303030;
+    padding-top: .3rem;
+    padding-bottom: .4rem;
+    font-weight: bold;
+}
+.new-tutorial-component-buttons{
+    text-align: right;
+}
+.new-tutorial-component{
+    padding: .4rem 0;
+    text-align: left;
+}
 </style>

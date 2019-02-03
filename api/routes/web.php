@@ -44,6 +44,8 @@ $router->post('trainings/{id}', 'TrainingController@update');
 $router->delete('trainings/{id}', 'TrainingController@delete');
 $router->get('trainings/{id}/questions', 'TrainingController@getQuestions');
 $router->put('trainings/{id}/participants', 'TrainingController@passTest');
+$router->patch('trainings/{id}/participants', 'TrainingController@notifyParticipants');
+$router->get('trainings/{id}/participants', 'TrainingController@notifyParticipants');
 
 $router->get('participants', 'ParticipantsController@get');
 $router->get('participants/{id}', 'ParticipantsController@getById');

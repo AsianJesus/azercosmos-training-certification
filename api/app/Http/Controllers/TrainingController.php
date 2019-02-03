@@ -9,9 +9,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\NotificationJob;
 use App\Training;
+use App\TrainingParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TrainingController extends Controller
 {
@@ -102,5 +105,10 @@ class TrainingController extends Controller
         $hasPassed = $score >= $training->pass_score;
         return $training->participants()->where('participant_id', $user_id)
             ->update(['attempt' => $participant['attempt'] + 1, 'status' => $hasPassed ? '2' : '1', 'score' => $score]);
+    }
+
+    public function notifyParticipants (Request $request, $id) {
+        dispatch(new NotificationJob($id));
+        return json_encode(true);
     }
 }

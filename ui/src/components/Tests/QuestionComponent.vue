@@ -20,6 +20,11 @@
                         {{ index }}.
                     </span>
                     {{ value.question }}
+                    <span v-if="value.file">
+                        <a :href="$store.state.serverURl + '/' + value.file.path">
+                            Attachment
+                        </a>
+                    </span>
                 </div>
                 <div class="test-question-answers">
                     <div class="test-question-answer" v-for="(a, i) in value.answers" v-bind:key="i">
