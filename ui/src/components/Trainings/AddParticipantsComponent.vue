@@ -1,40 +1,24 @@
 <template>
     <div class="add-participants-component">
-        <div class="add-participants-headline">
+        <div class="add-participants-headline" v-if="training">
+            <div class="add-participants-info">
+                <span class="add-participants-id">
+                    Training #{{ training.id }}
+                </span>
+            </div>
             <h4>
-                {{ training ? training.title : ''}}
+                {{ training.title}}
             </h4>
         </div>
         <div class="add-participants-body">
-            <div v-for="(p, i) in participants" v-bind:key="i">
-                <div class="add-participant-name">
-                    {{ getUserName(p.participant_id) }}
-                </div>
-                <div class="add-participant-dates">
-                    Start date
-                    <b-form-input type="date" v-model="participants[i].start_date" :state="errors[i].start_date ? false : null">
-
-                    </b-form-input>
-                    End date
-                    <b-form-input type="date" v-model="participants[i].end_date" :state="errors[i].end_date ? false : null">
-
-                    </b-form-input>
-                </div>
-                <div class="">
-                    <b-btn variant="outline-danger" @click="deleteParticipant(i)">
-                        Delete
-                    </b-btn>
-                </div>
-                <hr>
-            </div>
             <div v-if="error">
                 <h5 style="color: red;">
                     {{ error }}
                 </h5>
             </div>
-            <div>
-                <model-select :options="usersOptions" @input="addParticipant"></model-select>
-            </div>
+            <new-participant-component v-model="participants" :showError="error !== null" v-bind:options="usersOptions"
+                                       @error="participantsErrors = $event">
+            </new-participant-component>
         </div>
         <div class="add-participants-buttons">
             <b-btn @click="save" variant="outline-success">
@@ -45,9 +29,11 @@
 </template>
 <script>
 import { ModelSelect } from 'vue-search-select'
+import NewParticipantComponent from './NewParticipantsComponent.vue'
 export default{
   components: {
-    ModelSelect
+    ModelSelect,
+    NewParticipantComponent
   },
   props: {
     id: {
@@ -58,6 +44,7 @@ export default{
   data () {
     return {
       participants: [],
+      participantsErrors: null,
       error: null
     }
   },
@@ -68,15 +55,7 @@ export default{
     },
     usersOptions () {
       return this.$store.getters.usersOptions.filter(x => !this.participants.some(p => p.participant_id === x.value) &&
-        !this.currentParticipants.some(p => p === x.value))
-    },
-    errors () {
-      return this.participants.map(x => {
-        return {
-          start_date: !(x.start_date && x.start_date < x.end_date),
-          end_date: !(x.end_date && x.start_date < x.end_date)
-        }
-      })
+        !this.currentParticipants.some(p => p === x.value) && x.value !== this.$store.state.userID)
     },
     training () {
       return this.$store.state.observedTrainings.find(t => t.id === this.id)
@@ -106,11 +85,11 @@ export default{
         this.error = 'No users to add!'
         return
       }
-      if (this.errors.some(e => Object.values(e).some(er => er))) {
+      if (this.participantsErrors) {
         this.error = 'Some fields are filled wrong'
         return
       }
-      this.error = ''
+      this.error = null
       this.axios.put('/trainings/' + this.id, {
         p_to_add: this.participants
       }).then(response => {
@@ -127,5 +106,15 @@ export default{
 }
 </script>
 <style>
-
+.add-participants-id{
+    border: 1px solid #10101040;
+    padding: .2rem .4rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 1px #20202020;
+}
+.add-participants-buttons{
+    margin-top: .5rem;
+}
 </style>

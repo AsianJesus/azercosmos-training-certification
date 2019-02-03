@@ -97,63 +97,6 @@
                 <b-btn variant="outline-success" @click="save()">Save</b-btn>
             </div>
         </div>
-        <!--<div class="edit-training-headline">
-            <b-form-input type="text" v-model="title" placeholder="Title" :state="showError && errors.title ? false : null">
-
-            </b-form-input>
-        </div>
-        <div class="edit-training-content">
-            <div class="edit-training-observers">
-                <multi-select :options="usersOptions" :selected-options="observers"
-                              @select="addObserver" placeholder="Observers"></multi-select>
-            </div>
-            <div class="edit-training-description">
-                <b-form-input v-model="description" placeholder="Description" :state="showError && errors.description ? false : null" rows="3">
-                </b-form-input>
-                <b-form-input v-model="reference" class="edit-training-reference" placeholder="References"></b-form-input>
-            </div>
-            <div class="edit-training-attachment">
-                <a :href="$store.state.serverURL + '/' + existingFile" v-if="existingFile" target="_blank">
-                    Attachment
-                </a>
-                <b-form-file v-model="attachment" placeholder="New attachment..."></b-form-file>
-            </div>
-            <div class="edit-training-test">
-                <div class="edit-training-test-button">
-                    <b-form-checkbox v-model="isTestExam" :value="1" :unchecked-value="0">Is training test?</b-form-checkbox>
-                </div>
-                <div class="edit-training-test-body" v-if="isTestExam">
-                    <div>
-                        <model-select :options="tutorialsOptions" v-model="tutorialID"
-                                      :isError="showError && errors.tutorialID">
-                        </model-select>
-                    </div>
-                    <div>
-                        <b-form-input type="number" v-model="passScore" placeholder="Minimal score (%)"
-                                      :state="showError && errors.passScore ? false : null">
-                        </b-form-input>
-                    </div>
-                    <div>
-                        <b-form-input type="number" v-model="questionsCount" placeholder="Questions count"
-                                      :state="showError && errors.questionsCount ? false : null">
-                        </b-form-input>
-                    </div>
-                    <div>
-                        <b-form-input type="number" v-model="examTime" placeholder="Time of exam (in minutes)"
-                                      :state="showError && errors.examTime ? false : null">
-                        </b-form-input>
-                    </div>
-                </div>
-            </div>
-            <div class="edit-training-participants">
-                <new-participant-component :participants-initial="participantsInitial" @input ="participants = $event"
-                                           @error="participantErrors = $event" :showError="showError">
-                </new-participant-component>
-            </div>
-        </div>
-        <div class="edit-training-buttons">
-            <b-btn variant="outline-success" @click="save()">Save</b-btn>
-        </div>-->
     </div>
 </template>
 <script>

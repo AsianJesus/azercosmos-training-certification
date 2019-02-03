@@ -41,6 +41,12 @@ export default{
       default () {
         return []
       }
+    },
+    options: {
+      type: Array,
+      default () {
+        return []
+      }
     }
   },
   data () {
@@ -64,8 +70,12 @@ export default{
   },
   computed: {
     usersOptions () {
-      return this.$store.getters.usersOptions.filter(x => x.value !== this.$store.state.userID &&
-        !this.participants.some(p => p.participant_id === x.value))
+      if (this.options) {
+        return this.options
+      } else {
+        return this.$store.getters.usersOptions.filter(x => x.value !== this.$store.state.userID &&
+          !this.participants.some(p => p.participant_id === x.value))
+      }
     },
     errors () {
       return this.participants.map(p => {
@@ -99,5 +109,6 @@ export default{
 }
 .new-participant-item{
     margin: .5rem auto;
+    text-align: left;
 }
 </style>
