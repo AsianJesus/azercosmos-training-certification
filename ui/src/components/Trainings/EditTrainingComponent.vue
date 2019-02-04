@@ -102,7 +102,7 @@
 <script>
 import { MultiSelect, ModelSelect } from 'vue-search-select'
 import NewParticipantComponent from './NewParticipantsComponent.vue'
-import { getStatus, getTrainingStatus } from '../../js/statuses'
+import { getTrainingStatus } from '../../js/statuses'
 export default{
   props: {
     training: {

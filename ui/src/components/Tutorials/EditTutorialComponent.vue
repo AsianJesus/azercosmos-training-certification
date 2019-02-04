@@ -1,50 +1,61 @@
 <template>
     <div class="edit-tutorial-component">
-        <div class="edit-tutorial-close">
-            <b-btn variant="outline-danger" @click="$emit('close', true)">
-                Close
-            </b-btn>
+        <div class="edit-tutorial-headline">
+            <span class="edit-tutorial-id">
+                Tutorial #{{ editedTutorial.id }}
+            </span>
         </div>
-        <div class="edit-tutorial-title">
-            <b-form-input v-model="editedTutorial.title" placeholder="Title">
+        <div class="edit-tutorial-body">
+            <div class="edit-tutorial-row row-margin">
+                <div class="edit-tutorial-title col-6">
+                    Title
+                    <b-form-input v-model="editedTutorial.title" placeholder="Title">
 
-            </b-form-input>
-        </div>
-        <div class="edit-tutorial-system">
-            <b-form-select :options="systemOptions" v-model="editedTutorial.system">
-
-            </b-form-select>
-        </div>
-        <div class="edit-tutorial-moderators">
-            Moderators:
-            <multi-select :options="usersOptions" :selected-options="moderators"
-                          @select="moderators = $event" placeholder="Moderators">
-
-            </multi-select>
-        </div>
-        <div class="edit-tutorial-observers">
-            Observers:
-            <multi-select :options="usersOptions" :selected-options="observers"
-                          @select="observers = $event" placeholder="Observers">
-
-            </multi-select>
-        </div>
-        <div class="edit-tutorial-questions">
-            <details>
-                <summary>Questions</summary>
-                <div class="edit-tutorial-questions-list">
-                    <div v-for="(q, i) in questions" v-bind:key="i">
-                        <editable-question :question="q" :isDeleted="isDeleting(q.id)" @undoDelete="undoDeleteQuestion(q.id)"
-                                           @deleteQuestion="deleteQuestion(q.id)" @saveEdit="editQuestion(q.id, $event)">
-
-                        </editable-question>
-                    </div>
+                    </b-form-input>
                 </div>
-            </details>
+                <div class="edit-tutorial-system col-6">
+                    System
+                    <b-form-select :options="systemOptions" v-model="editedTutorial.system">
+
+                    </b-form-select>
+                </div>
+            </div>
+            <div class="edit-tutorial-moderators row-margin">
+                <div class="edit-tutorial-moderators col-6">
+                    Moderators:
+                    <multi-select :options="usersOptions" :selected-options="moderators"
+                                  @select="moderators = $event" placeholder="Moderators">
+
+                    </multi-select>
+                </div>
+                <div class="edit-tutorial-observers col-6">
+                    Observers:
+                    <multi-select :options="usersOptions" :selected-options="observers"
+                                  @select="observers = $event" placeholder="Observers">
+
+                    </multi-select>
+                </div>
+            </div>
+            <div class="edit-tutorial-questions" v-if="questions && questions.length">
+                <details>
+                    <summary>Questions</summary>
+                    <div class="edit-tutorial-questions-list">
+                        <div v-for="(q, i) in questions" v-bind:key="i" class="edit-tutorial-question">
+                            <editable-question :question="q" :isDeleted="isDeleting(q.id)" @undoDelete="undoDeleteQuestion(q.id)"
+                                               @deleteQuestion="deleteQuestion(q.id)" @saveEdit="editQuestion(q.id, $event)">
+
+                            </editable-question>
+                        </div>
+                    </div>
+                </details>
+            </div>
         </div>
         <div class="edit-tutorial-buttons">
             <b-btn @click="saveEdit" variant="outline-success">
                 Save
+            </b-btn>
+            <b-btn variant="outline-danger" @click="$emit('close', true)">
+                Close
             </b-btn>
         </div>
     </div>
@@ -52,9 +63,11 @@
 <script>
 import { MultiSelect } from 'vue-search-select'
 import { systemOptions } from '../../js/systems'
+import EditableQuestion from '../Questions/EditableQuestion.vue'
 export default{
   components: {
-    MultiSelect
+    MultiSelect,
+    EditableQuestion
   },
   props: {
     tutorial: {
@@ -140,6 +153,27 @@ export default{
 
 }
 </script>
-<style>
-
+<style  >
+.edit-tutorial-headline{
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #30303080;
+}
+.edit-tutorial-id{
+    padding: .4rem .6rem;
+    border: 1px solid #30303040;
+    border-radius: 5px;
+    font-size: 1.2rem;
+}
+.edit-tutorial-body{
+    text-align: left;
+}
+.edit-tutorial-row, .edit-tutorial-questions, .edit-tutorial-question{
+    margin-top: .6rem;
+    margin-bottom: .6rem;
+}
+.edit-tutorial-buttons{
+    margin: .6rem auto;
+    text-align: right;
+}
 </style>

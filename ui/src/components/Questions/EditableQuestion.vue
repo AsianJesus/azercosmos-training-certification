@@ -1,12 +1,16 @@
 <template>
     <div class="editable-question-component">
-        <div class="editable-question-deleted" v-if="isDeleted">
-            Deleted
-            <b-btn @click="$emit('undoDelete')" variant="outline-primary">Undo</b-btn>
+        <div v-if="question.id">
+            Question #{{ question.id }}
+        </div>
+        <div class="editable-question-deleted row-margin" v-if="isDeleted">
+            <div class="col-2 offset-10" style="text-align: right;">
+                <b-btn @click="$emit('undoDelete')" variant="outline-primary">Undo</b-btn>
+            </div>
         </div>
         <div class="editable-question-edit" v-else-if="isEditing">
             <div class="row-margin editable-question-edit-row">
-                <div class="col-12">
+                <div class="col-12" v-if="question.id">
                     <b-form-textarea v-model="form.question" placeholder="Question" :rows="2"
                                      :state="showError && errors.question ? false : null" />
                 </div>
@@ -160,7 +164,7 @@ export default{
   },
   mounted () {
     this.form = JSON.parse(JSON.stringify(this.question))
-    this.id = this.id || Math.random()
+    this.id = this.question.id || Math.random()
   },
   methods: {
     getDifficultyName: mapDifficulty,
