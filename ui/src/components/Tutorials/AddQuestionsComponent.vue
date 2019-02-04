@@ -10,27 +10,6 @@
                <h5>
                     Questions
                 </h5>
-<!--
-                        <tr v-for="(question, index) in questions" v-bind:key="index">
-                            <td>{{ question.question }}</td>
-                            <td>
-                                <div>
-                                    <b-form-input v-model="questions[index].answer1">1) {{ question.answer1 }}</b-form-input>
-                                </div>
-                                <div>
-                                    <span>2) {{ question.answer2 }}</span>
-                                </div>
-                                <div>
-                                    <span>3) {{ question.answer3 }}</span>
-                                </div>
-                                <div>
-                                    <span>4) {{ question.answer4 }}</span>
-                                </div>
-                            </td>
-                            <td>{{ question.correct_answer + 1}}</td>
-                            <td>{{ mapDifficulty(question.difficulty) }}</td>
-                        </tr>
--->
                 <div v-for="(q, i) in questions" v-bind:key="i">
                     <editable-question :question="q" :showAuthor="false" :showFile="false"
                                        @saveEdit="editQuestion(i, $event)" @deleteQuestion="deleteQuestion(i)" />
@@ -118,7 +97,7 @@ export default{
           id: this.tutorial.id,
           props: props
         })
-        setTimeout(() => this.$emit('close'), 1000)
+        setTimeout(() => this.$emit('close', true), 1000)
       }).catch(err => {
         alert('Some error occurred')
         console.log(err)
@@ -134,6 +113,9 @@ export default{
 }
 </script>
 <style>
+.add-questions-title{
+    border-bottom: 1px solid #30303060;
+}
 .add-questions-component{
     text-align: left;
 }

@@ -1,18 +1,33 @@
 <template>
     <div class="verify-questions-component">
-        <div class="verify-questions-close-button">
-            <b-btn variant="outline-success" @click="$emit('close', true)">Close</b-btn>
+        <div class="verify-questions-header">
+            <span class="verify-questions-tutorial-id">
+                Tutorial #{{ tutorial.id }}
+            </span>
         </div>
-        <div class="verify-questions-list">
-            <div class="verify-question-holder" v-for="(q, i) in questions" v-bind:key="i">
-                <question-to-verify :question="q" @deleteQuestion="deleteQuestion(q.id)" @undoDeleting="undoDeleting(q.id)"
-                                    @verify="verifyQuestion(q.id)" @unverify="unverifyQuestion(q.id)">
+        <div class="verify-questions-body"  v-if="questions.length">
+            <div class="verify-questions-list">
+                <div class="verify-question-holder" v-for="(q, i) in questions" v-bind:key="i">
+                    <question-to-verify :question="q" @deleteQuestion="deleteQuestion(q.id)" @undoDeleting="undoDeleting(q.id)"
+                                        @verify="verifyQuestion(q.id)" @unverify="unverifyQuestion(q.id)">
 
-                </question-to-verify>
+                    </question-to-verify>
+                </div>
             </div>
         </div>
+        <div class="verify-questions-error" v-else>
+            <h6>
+                There are no questions to verify
+            </h6>
+        </div>
         <div class="verify-questions-buttons">
-            <b-btn variant="outline-success" @click="save()">Save</b-btn>
+            <transition name="fade">
+                <b-btn variant="outline-success" @click="save()" class="save-button"
+                       v-if="questionsToDelete.length || questionsToVerify.length">
+                    <v-icon name="save" />
+                </b-btn>
+            </transition>
+            <b-btn variant="outline-success" @click="$emit('close', true)" class="delete-button">Close</b-btn>
         </div>
     </div>
 </template>
@@ -102,5 +117,22 @@ export default{
 }
 </script>
 <style>
-
+.verify-questions-header{
+    border-bottom: 1px solid #30303050;
+    margin-bottom: .5rem;
+    padding-bottom: .5rem;
+}
+.verify-questions-tutorial-id{
+    padding: .4rem .6rem;
+    border: 1px solid #30303040;
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+.verify-question-holder{
+    margin-top: .7rem;
+    margin-bottom: 1rem;
+}
+.verify-questions-buttons{
+    text-align: right;
+}
 </style>

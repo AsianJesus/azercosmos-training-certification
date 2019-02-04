@@ -7,12 +7,17 @@
         <div class="editable-question-edit" v-else-if="isEditing">
             <div class="row-margin editable-question-edit-row">
                 <div class="col-12">
-                    <b-form-input v-model="form.question" placeholder="Question" :state="showError && errors.question ? false : null" />
+                    <b-form-textarea v-model="form.question" placeholder="Question" :rows="2"
+                                     :state="showError && errors.question ? false : null" />
+                </div>
+                <div class="col-6" style="margin-top: .3rem;">
+                    <b-form-select v-model="form.difficulty" :options="difficultyOptions"
+                                   :state="showError && errors.difficulty ? false : null"/>
                 </div>
             </div>
             <div class="row-margin editable-question-edit-row">
                 <div class="col-10">
-                    <b-form-input v-model="form.answer1" placeholder="Answer #1" :state="showError && errors.answer1 ? false : null" />
+                    <b-form-textarea v-model="form.answer1" placeholder="Answer #1" :state="showError && errors.answer1 ? false : null" />
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="0">
@@ -20,7 +25,7 @@
             </div>
             <div class="row-margin editable-question-edit-row">
                 <div class="col-10">
-                    <b-form-input v-model="form.answer2" placeholder="Answer #2" :state="showError && errors.answer2 ? false : null" />
+                    <b-form-textarea v-model="form.answer2" placeholder="Answer #2" :state="showError && errors.answer2 ? false : null" />
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="1">
@@ -28,7 +33,7 @@
             </div>
             <div class="row-margin editable-question-edit-row">
                 <div class="col-10">
-                    <b-form-input v-model="form.answer3" placeholder="Answer #3" :state="showError && errors.answer3 ? false : null" />
+                    <b-form-textarea v-model="form.answer3" placeholder="Answer #3" :state="showError && errors.answer3 ? false : null" />
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="2">
@@ -36,7 +41,7 @@
             </div>
             <div class="row-margin editable-question-edit-row">
                 <div class="col-10">
-                    <b-form-input v-model="form.answer4" placeholder="Answer #4" :state="showError && errors.answer4 ? false : null" />
+                    <b-form-textarea v-model="form.answer4" placeholder="Answer #4" :state="showError && errors.answer4 ? false : null" />
                 </div>
                 <div class="col-2">
                     <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="3">
@@ -60,6 +65,9 @@
                     <h6>
                         {{ question.question }}
                     </h6>
+                    <span>
+                        {{ getDifficultyName(question.difficulty) }}
+                    </span>
                     <div v-if="question.file && showFile">
                         <a :href="$store.state.serverURL + '/' + question.file.path" target="_blank ">
                             Attachment
@@ -96,7 +104,7 @@
     </div>
 </template>
 <script>
-import { difficultyOptions } from '../../js/difficulties'
+import { difficultyOptions, mapDifficulty } from '../../js/difficulties'
 export default{
   props: {
     question: {
@@ -106,6 +114,7 @@ export default{
     isDeleted: {
       type: Boolean,
       default: false
+
     },
     showAuthor: {
       type: Boolean,
@@ -124,7 +133,8 @@ export default{
         answer2: '',
         answer3: '',
         answer4: '',
-        correct_answer: null
+        correct_answer: null,
+        difficulty: null
       },
       id: null,
       showError: false,
@@ -139,11 +149,12 @@ export default{
     },
     errors () {
       return {
-        question: !this.question,
-        answer1: !this.answer1,
-        answer2: !this.answer2,
-        answer3: !this.answer3,
-        answer4: !this.answer4,
+        question: !this.form.question,
+        answer1: !this.form.answer1,
+        answer2: !this.form.answer2,
+        answer3: !this.form.answer3,
+        answer4: !this.form.answer4,
+        difficulty: !this.form.difficulty
       }
     }
   },
@@ -152,6 +163,7 @@ export default{
     this.id = this.id || Math.random()
   },
   methods: {
+    getDifficultyName: mapDifficulty,
     startEdit () {
       this.isEditing = true
     },
@@ -177,8 +189,8 @@ export default{
 </script>
 <style>
 .editable-question-edit-row{
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+    margin-top: .3rem;
+    margin-bottom: .3rem;
 }
 .editable-question-correct{
     font-weight: bolder;
