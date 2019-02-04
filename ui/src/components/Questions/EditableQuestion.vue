@@ -5,88 +5,92 @@
             <b-btn @click="$emit('undoDelete')" variant="outline-primary">Undo</b-btn>
         </div>
         <div class="editable-question-edit" v-else-if="isEditing">
-            <div class="row">
+            <div class="row-margin editable-question-edit-row">
                 <div class="col-12">
-                    <b-form-input v-model="form.question" placeholder="Question">
-
-                    </b-form-input>
-                </div>
-                <div class="col-10">
-                    <b-form-input v-model="form.answer1" placeholder="Answer #1">
-
-                    </b-form-input>
-                </div>
-                <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="0">
-                </div>
-                <div class="col-10">
-                    <b-form-input v-model="form.answer2" placeholder="Answer #2">
-
-                    </b-form-input>
-                </div>
-                <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="1">
-                </div>
-                <div class="col-10">
-                    <b-form-input v-model="form.answer3" placeholder="Answer #3">
-
-                    </b-form-input>
-                </div>
-                <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="2">
-                </div>
-                <div class="col-10">
-                    <b-form-input v-model="form.answer4" placeholder="Answer #4">
-
-                    </b-form-input>
-                </div>
-                <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + question.id" v-model="form.correct_answer" :value="3">
+                    <b-form-input v-model="form.question" placeholder="Question" :state="showError && errors.question ? false : null" />
                 </div>
             </div>
-            <div class="editable-question-edit-buttons">
-                <b-btn @click="saveEdit" variant="outline-success">Save</b-btn>
-                <b-btn @click="cancelEdit" variant="outline-warning">Cancel</b-btn>
-                <b-btn @click="deleteQuestion" variant="outline-warning">Delete</b-btn>
+            <div class="row-margin editable-question-edit-row">
+                <div class="col-10">
+                    <b-form-input v-model="form.answer1" placeholder="Answer #1" :state="showError && errors.answer1 ? false : null" />
+                </div>
+                <div class="col-2">
+                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="0">
+                </div>
+            </div>
+            <div class="row-margin editable-question-edit-row">
+                <div class="col-10">
+                    <b-form-input v-model="form.answer2" placeholder="Answer #2" :state="showError && errors.answer2 ? false : null" />
+                </div>
+                <div class="col-2">
+                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="1">
+                </div>
+            </div>
+            <div class="row-margin editable-question-edit-row">
+                <div class="col-10">
+                    <b-form-input v-model="form.answer3" placeholder="Answer #3" :state="showError && errors.answer3 ? false : null" />
+                </div>
+                <div class="col-2">
+                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="2">
+                </div>
+            </div>
+            <div class="row-margin editable-question-edit-row">
+                <div class="col-10">
+                    <b-form-input v-model="form.answer4" placeholder="Answer #4" :state="showError && errors.answer4 ? false : null" />
+                </div>
+                <div class="col-2">
+                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="3">
+                </div>
+            </div>
+            <div class="editable-question-edit-buttons" style="text-align: right;">
+                <b-btn @click="saveEdit" variant="outline-success" class="edit-button">
+                    <v-icon name="pen" />
+                </b-btn>
+                <b-btn @click="cancelEdit" variant="outline-warning" class="delete-button">
+                    <v-icon name="ban" />
+                </b-btn>
+                <b-btn @click="deleteQuestion" variant="outline-danger" class="delete-button">
+                    <v-icon name="trash" />
+                </b-btn>
             </div>
         </div>
         <div class="editable-question-read" v-else>
-            <div class="row">
+            <div class="row-margin editable-question-read-row">
                 <div class="col-3">
                     <h6>
                         {{ question.question }}
                     </h6>
-                    <div v-if="question.file">
+                    <div v-if="question.file && showFile">
                         <a :href="$store.state.serverURL + '/' + question.file.path" target="_blank ">
                             Attachment
                         </a>
                     </div>
                 </div>
                 <div class="col">
-                    <div>
-                        <strong v-if="question.correct_answer === 0">{{ question.answer1 }}</strong>
-                        <span v-else> {{question.answer1 }}</span>
+                    <div :class="question.correct_answer === 0 ? 'editable-question-correct' : ''">
+                        Answer #1: {{ question.answer1 }}
                     </div>
-                    <div>
-                        <strong v-if="question.correct_answer === 1">{{ question.answer2 }}</strong>
-                        <span v-else> {{question.answer2 }}</span>
+                    <div :class="question.correct_answer === 1 ? 'editable-question-correct' : ''">
+                        Answer #2: {{ question.answer2 }}
                     </div>
-                    <div>
-                        <strong v-if="question.correct_answer === 2">{{ question.answer3 }}</strong>
-                        <span v-else> {{question.answer3 }}</span>
+                    <div :class="question.correct_answer === 2 ? 'editable-question-correct' : ''">
+                        Answer #3: {{ question.answer3 }}
                     </div>
-                    <div>
-                        <strong v-if="question.correct_answer === 3">{{ question.answer4 }}</strong>
-                        <span v-else> {{question.answer4 }}</span>
+                    <div :class="question.correct_answer === 3 ? 'editable-question-correct' : ''">
+                        Answer #4: {{ question.answer4 }}
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-2" v-if="showAuthor">
                     {{ author }}
                 </div>
-            </div>
-            <div class="editable-question-read-buttons">
-                <b-btn @click="startEdit" variant="outline-secondary">Edit</b-btn>
-                <b-btn @click="deleteQuestion" variant="outline-danger">Delete</b-btn>
+                <div class="col" style="text-align: right;">
+                    <b-btn @click="startEdit" variant="outline-secondary" class="edit-button">
+                        <v-icon name="pen" />
+                    </b-btn>
+                    <b-btn @click="deleteQuestion" variant="outline-danger" class="delete-button">
+                        <v-icon name="trash" />
+                    </b-btn>
+                </div>
             </div>
         </div>
     </div>
@@ -102,6 +106,14 @@ export default{
     isDeleted: {
       type: Boolean,
       default: false
+    },
+    showAuthor: {
+      type: Boolean,
+      default: true
+    },
+    showFile: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -114,6 +126,8 @@ export default{
         answer4: '',
         correct_answer: null
       },
+      id: null,
+      showError: false,
       isEditing: false
     }
   },
@@ -122,10 +136,20 @@ export default{
     author () {
       let res = this.$store.state.users.filter(x => x.ID === this.question.author_id)
       return res.length ? res[0].NAME : 'Undefined'
+    },
+    errors () {
+      return {
+        question: !this.question,
+        answer1: !this.answer1,
+        answer2: !this.answer2,
+        answer3: !this.answer3,
+        answer4: !this.answer4,
+      }
     }
   },
   mounted () {
     this.form = JSON.parse(JSON.stringify(this.question))
+    this.id = this.id || Math.random()
   },
   methods: {
     startEdit () {
@@ -133,9 +157,15 @@ export default{
     },
     cancelEdit () {
       this.form = JSON.parse(JSON.stringify(this.question))
+      this.showError = false
       this.isEditing = false
     },
     saveEdit () {
+      if (Object.values(this.errors).some(e => e)) {
+        this.showError = true
+        return
+      }
+      this.showError = false
       this.$emit('saveEdit', this.form)
       this.isEditing = false
     },
@@ -146,5 +176,11 @@ export default{
 }
 </script>
 <style>
-
+.editable-question-edit-row{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+.editable-question-correct{
+    font-weight: bolder;
+}
 </style>

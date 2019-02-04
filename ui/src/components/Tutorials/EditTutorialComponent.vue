@@ -52,11 +52,9 @@
 <script>
 import { MultiSelect } from 'vue-search-select'
 import { systemOptions } from '../../js/systems'
-import EditableQuestion from '../Questions/EditableQuestion.vue'
 export default{
   components: {
-    MultiSelect,
-    EditableQuestion
+    MultiSelect
   },
   props: {
     tutorial: {

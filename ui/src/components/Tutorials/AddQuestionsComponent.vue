@@ -4,24 +4,18 @@
             <h4>
                 {{ tutorial.title }}
             </h4>
-            <b-btn @click="$emit('close', true)" variant="outline-danger">
-                Close
-            </b-btn>
         </div>
         <div class="add-questions-body">
             <div class="add-questions-list">
-                <table class="table table-hover">
-                        <tr>
-                            <th>Question</th>
-                            <th>Answers</th>
-                            <th>Correct</th>
-                            <th>Difficulty</th>
-                        </tr>
+               <h5>
+                    Questions
+                </h5>
+<!--
                         <tr v-for="(question, index) in questions" v-bind:key="index">
                             <td>{{ question.question }}</td>
                             <td>
                                 <div>
-                                    <b-form-input v-model="questions[index]">1) {{ question.answer1 }}</b-form-input>
+                                    <b-form-input v-model="questions[index].answer1">1) {{ question.answer1 }}</b-form-input>
                                 </div>
                                 <div>
                                     <span>2) {{ question.answer2 }}</span>
@@ -36,17 +30,31 @@
                             <td>{{ question.correct_answer + 1}}</td>
                             <td>{{ mapDifficulty(question.difficulty) }}</td>
                         </tr>
-                </table>
+-->
+                <div v-for="(q, i) in questions" v-bind:key="i">
+                    <editable-question :question="q" :showAuthor="false" :showFile="false"
+                                       @saveEdit="editQuestion(i, $event)" @deleteQuestion="deleteQuestion(i)" />
+                </div>
             </div>
-            <hr>
             <div class="add-questions-new-question">
-                <new-question-component @addQuestion="addQuestion"></new-question-component>
+                <new-question-component @addQuestion="addQuestion">
+
+                </new-question-component>
             </div>
         </div>
-        <hr>
-        <div class="add-questions-post-button">
-            <b-btn @click="postQuestions" variant="outline-primary">
-                Post questions
+        <div class="add-questions-error" v-if="errorMessage">
+            <h6>
+                {{ errorMessage }}
+            </h6>
+        </div>
+        <div class="add-questions-buttons">
+            <transition name="fade">
+                <b-btn @click="postQuestions" variant="outline-primary" class="edit-button" v-if="questions.length">
+                    <v-icon name="paper-plane" />
+                </b-btn>
+            </transition>
+            <b-btn @click="$emit('close', true)" variant="outline-danger" class="edit-button">
+                <v-icon name="ban" />
             </b-btn>
         </div>
     </div>
@@ -54,6 +62,7 @@
 <script>
 import { mapDifficulty } from '../../js/difficulties'
 import NewQuestionComponent from '../Questions/NewQuestionComponent.vue'
+import EditableQuestion from '../Questions/EditableQuestion.vue'
 export default{
   props: {
     tutorial: {
@@ -66,11 +75,13 @@ export default{
     }
   },
   components: {
-    NewQuestionComponent
+    NewQuestionComponent,
+    EditableQuestion
   },
   data () {
     return {
-      questions: []
+      questions: [],
+      errorMessage: ''
     }
   },
   methods: {
@@ -82,6 +93,10 @@ export default{
       this.questions.push(question)
     },
     postQuestions () {
+      if (!this.questions.length) {
+        this.errorMessage = 'There are no questions to add'
+        return
+      }
       let form = new FormData()
       this.questions.forEach((q, index) => {
         Object.keys(q).forEach((key) => {
@@ -108,10 +123,27 @@ export default{
         alert('Some error occurred')
         console.log(err)
       })
+    },
+    editQuestion (i, question) {
+      this.$set(this.questions, i, question)
+    },
+    deleteQuestion (i) {
+      this.questions.splice(i, 1)
     }
   }
 }
 </script>
 <style>
-
+.add-questions-component{
+    text-align: left;
+}
+.add-questions-title{
+    text-align: center;
+}
+.add-questions-title, .add-questions-list, .add-questions-new-question {
+    margin-bottom: 1.2rem;
+}
+.add-questions-buttons{
+    text-align: right;
+}
 </style>

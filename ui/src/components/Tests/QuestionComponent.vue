@@ -21,7 +21,7 @@
                     </span>
                     {{ value.question }}
                     <span v-if="value.file">
-                        <a :href="$store.state.serverURl + '/' + value.file.path">
+                        <a :href="$store.state.serverURl + '/' + value.file.path" target="_blank">
                             Attachment
                         </a>
                     </span>
