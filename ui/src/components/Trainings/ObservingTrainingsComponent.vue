@@ -109,6 +109,11 @@
                           :per-page="1" @input="changePage" align="center">
 
             </b-pagination>
+            <download-excel :fields="excelFields" :data="trainings" style="text-align: right; height: 3rem;">
+                <b-btn variant="outline-success">
+                    Download for Excel
+                </b-btn>
+            </download-excel>
         </div>
         <div class="participating-trainings-not-loaded" v-else>
             <h4>
@@ -146,6 +151,7 @@ import AddParticipantsComponent from './AddParticipantsComponent.vue'
 import EditTrainingComponent from './EditTrainingComponent.vue'
 import FilterComponent from '../Utilities/FilterComponent.vue'
 import lodash from 'lodash'
+import { observervingFields } from '../../js/excelData'
 
 export default{
   components: {
@@ -189,7 +195,8 @@ export default{
           ]
         }
       ],
-      alreadyNotified: []
+      alreadyNotified: [],
+      excelFields: observervingFields
     }
   },
   computed: {

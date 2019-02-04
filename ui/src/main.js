@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App'
 import VueAxios from 'vue-axios'
+import JsonExcel from 'vue-json-excel'
 import axios from 'axios'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
@@ -25,6 +26,7 @@ Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
 Vue.component('v-icon', Icon)
+Vue.component('downloadExcel', JsonExcel)
 
 /* eslint-disable no-new */
 new Vue({

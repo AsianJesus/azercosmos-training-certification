@@ -122,9 +122,11 @@
                 </span>
             </div>
             <div class="vtao-buttons">
-                <b-btn variant="outline-danger">
-                    Save as PDF
-                </b-btn>
+                <download-excel :data="participants" :fields="excelFields">
+                    <b-btn variant="outline-danger">
+                        Save participants information
+                    </b-btn>
+                </download-excel>
                 <b-btn variant="outline-success" @click="$emit('close', true)">
                     Close
                 </b-btn>
@@ -134,6 +136,7 @@
 </template>
 <script>
 import { getStatus, getTrainingStatus } from '../../js/statuses'
+import { participantFields } from '../../js/excelData'
 export default{
   props: {
     id: {
@@ -143,7 +146,7 @@ export default{
   },
   data () {
     return {
-
+      excelFields: participantFields
     }
   },
   computed: {

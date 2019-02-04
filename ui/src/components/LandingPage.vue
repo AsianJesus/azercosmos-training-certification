@@ -1,6 +1,5 @@
 <template>
     <div class="landing-page-component">
-        <h1>Landing page</h1>
         <div>
             <trainings-list-component></trainings-list-component>
         </div>

@@ -4,6 +4,11 @@
         <filter-component v-model="filters"></filter-component>
         <b-tabs>
             <b-tab title="My tutorials">
+                <download-excel :fields="excelFields" :data="MyTutorials" style="text-align: right;">
+                    <b-btn variant="outline-success">
+                        Save as Excel
+                    </b-btn>
+                </download-excel>
                 <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
@@ -76,6 +81,11 @@
                 </table>
             </b-tab>
             <b-tab title="Moderating tutorials">
+                <download-excel :fields="excelFields" :data="ModeratingTutorials" style="text-align: right;">
+                    <b-btn variant="outline-success">
+                        Save as Excel
+                    </b-btn>
+                </download-excel>
                 <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
@@ -145,6 +155,11 @@
                 </table>
             </b-tab>
             <b-tab title="Observing tutorials">
+                <download-excel :fields="excelFields" :data="ObservingTutorials" style="text-align: right;">
+                    <b-btn variant="outline-success">
+                        Save as Excel
+                    </b-btn>
+                </download-excel>
                 <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
@@ -252,6 +267,7 @@ import AddQuestionsComponent from './AddQuestionsComponent.vue'
 import EditTutorialComponent from './EditTutorialComponent.vue'
 import VerifyQuestions from './VerifyQuestions.vue'
 import FilterComponent from '../Utilities/FilterComponent.vue'
+import { tutorialFields } from '../../js/excelData'
 export default{
   components: {
     ViewTutorialComponent,
@@ -342,7 +358,8 @@ export default{
           },
           value: null
         }
-      ]
+      ],
+      excelFields: tutorialFields
     }
   },
   methods: {

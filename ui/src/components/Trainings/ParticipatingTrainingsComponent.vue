@@ -70,6 +70,11 @@
                           v-if="currentPage && totalPages > 1">
 
             </b-pagination>
+            <download-excel :fields="excelFields" :data="trainings" style="text-align: right; height: 3rem;">
+                <b-btn variant="outline-success">
+                    Download for Excel
+                </b-btn>
+            </download-excel>
         </div>
         <div class="participating-trainings-not-loaded" v-else>
             <h4>
@@ -87,6 +92,7 @@
 </template>
 <script>
 import { getStatus, statusOptions } from '../../js/statuses'
+import { participatingFields } from '../../js/excelData'
 import ViewTrainingAsParticipantComponent from './ViewTrainingAsParticipantComponent.vue'
 import FilterComponent from '../Utilities/FilterComponent.vue'
 import lodash from 'lodash'
@@ -123,7 +129,8 @@ export default{
           value: null,
           options: statusOptions
         }
-      ]
+      ],
+      excelFields: participatingFields
     }
   },
   computed: {

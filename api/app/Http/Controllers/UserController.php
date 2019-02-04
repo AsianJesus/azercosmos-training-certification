@@ -61,7 +61,7 @@ class UserController extends Controller
             $participating->where($this->applyFilters($request->input('p_filters')));
         }
         $participating->orderBy($request->input('orderBy', 'id'), $request->input('order', 'desc'));
-        return $participating->with('training')->paginate($request->input('amount', 5));
+        return $participating->with('training')->paginate($request->input('amount', 20));
     }
 
     public function getObservingTrainings(Request $request, $id) {
@@ -74,7 +74,7 @@ class UserController extends Controller
         }
         $observing->orderBy($request->input('orderBy', 'id'), $request->input('order', 'desc'));
         $result = $observing->with('participants', 'observers.user')
-            ->paginate($request->input('amount', 5))->toArray();
+            ->paginate($request->input('amount', 20))->toArray();
         return $result;
     }
 }
