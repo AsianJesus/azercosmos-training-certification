@@ -42,7 +42,6 @@ function convertQuestions (questions) {
       difficulty: q.difficulty,
       selected: null,
       isCorrect: null,
-      file: q.file,
       answers: ['answer1', 'answer2', 'answer3', 'answer4'].map((a, i) => {
         return {
           answer: q[a],

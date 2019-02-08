@@ -45,7 +45,7 @@ export default{
     options: {
       type: Array,
       default () {
-        return null
+        return []
       }
     }
   },

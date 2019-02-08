@@ -150,7 +150,7 @@ export default{
           observer_id: x.value
         }
       })
-      let form = new FormData()
+      var form = new FormData()
       this.observers.forEach(x => form.set('observers[][observer_id]', x.value))
       this.moderators.forEach(x => form.set('moderators[][moderator_id]', x.value))
       form.set('title', this.form.title)
@@ -164,8 +164,6 @@ export default{
         form.append('file' + index, q.file)
       })
       this.axios.post('/tutorials', form).then(response => {
-        response.data.questions_count = this.questions.length
-        response.data.verified_questions_count = 0
         alert('Tutorial was successfully created')
         this.$store.commit('addTutorial', {
           type: 'my',

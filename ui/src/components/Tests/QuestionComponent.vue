@@ -1,16 +1,16 @@
 <template>
     <div class="test-question-component row">
         <div class="col-2">
-            <div class="test-question-score">
-                {{ value.difficulty }} score
-            </div>
             <div class="test-question-result" v-if="value.isCorrect !== null">
                 <div class="test-question-false" v-if="!value.isCorrect">
                     <v-icon name="times" :scale="3" color="red" />
                 </div>
                 <div class="test-question-correct" v-else>
-                   <v-icon name="plus" :scale="3" color="green" />
+                    <v-icon name="plus" :scale="3" color="green" />
                 </div>
+            </div>
+            <div class="test-question-score">
+                {{ value.difficulty }} score
             </div>
         </div>
         <div class="col">
@@ -21,7 +21,7 @@
                     </span>
                     {{ value.question }}
                     <span v-if="value.file">
-                        <a :href="$store.state.serverURL + '/' + value.file.path" target="_blank">
+                        <a :href="$store.state.serverURl + '/' + value.file.path" target="_blank">
                             Attachment
                         </a>
                     </span>

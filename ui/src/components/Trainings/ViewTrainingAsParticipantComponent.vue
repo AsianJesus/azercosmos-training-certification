@@ -155,7 +155,7 @@ export default{
       this.axios.put('/participants/' + this.id, {
         status: 1
       }).then(() => {
-        this.$store.commit('updateParticipantInfo', {
+        this.$store.commit('updateParticipatingTraining', {
           id: this.id,
           props: {
             status: 1
@@ -173,13 +173,18 @@ export default{
       this.showTests = false
     },
     markAsPassed (score) {
-      alert('We got it!')
+      this.$store.commit('updateParticipatingTraining', {
+        id: this.id,
+        props: {
+          score: score,
+          attempt: this.participant.attempt + 1
+        }
+      })
       this.$store.commit('updateParticipantInfo', {
         id: this.id,
         props: {
-          score: score > this.participant.score ? score : this.participant.score,
-          status: score >= this.training.pass_score ? 2 : this.participant.status,
-          attempt: (this.participant.attempt || 0) + 1
+          score: score,
+          attempt: this.participant.attempt + 1
         }
       })
     }
