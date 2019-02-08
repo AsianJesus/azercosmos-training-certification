@@ -28,6 +28,9 @@
                 <b-btn variant="outline-primary" @click="startExam">
                     Start
                 </b-btn>
+                <b-btn variant="outline-secondary" @click="$emit('close', true)">
+                    Cancel
+                </b-btn>
             </div>
         </div>
         <div class="test-exam-loaded row" v-else>
@@ -163,7 +166,7 @@ export default{
       return 'test-exam-difficulty-' + d
     },
     passExam (force = false) {
-      if (!((force || confirm('Are you sure?')) && this.isExamGoing)) {
+      if (!(this.isExamGoing && (force || confirm('Are you sure?')))) {
         return
       }
       for (let i = 0; i < this.questions.length; i++) {
@@ -191,14 +194,7 @@ export default{
         user_id: this.$store.state.userID,
         score: score
       }).then(() => {
-        if (passed) {
-          this.$emit('passed', score)
-          this.$store.commit('updateParticipantInfo', {
-            id: this.participant.id,
-            score: score,
-            attempt: this.participant.attempt + 1
-          })
-        }
+        this.$emit('passed', score)
       })
     },
     startExam () {

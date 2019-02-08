@@ -13,7 +13,7 @@ export default new Vuex.Store({
     observedTrainings: [],
     trainingParticipating: [],
     users: [],
-    userID: 1,
+    userID: 2,
     serverURL: 'http://localhost/azercosmos-training-certification/api/public'
   },
   mutations: {
@@ -111,12 +111,13 @@ export default new Vuex.Store({
       state.trainingParticipating = state.trainingParticipating.filter(p => p.id !== id)
     },
     updateParticipantInfo (state, info) {
-      console.log(info)
+      console.log('Updating participant info', info)
       for (let i = 0; i < state.trainingParticipating.length; i++) {
         if (state.trainingParticipating[i].id === info.id) {
           console.log('We found one')
           for (let key in info.props) {
             if (info.props.hasOwnProperty(key)) {
+              console.log(`Changing property #{key} from #{state.trainingParticipating[i][key]} to #{info.props[key]}`)
               state.trainingParticipating[i][key] = info.props[key]
             }
           }
