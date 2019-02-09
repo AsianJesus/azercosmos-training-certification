@@ -10,6 +10,8 @@ namespace App\Http\Controllers;
 
 
 use App\Jobs\NotificationJob;
+use App\Jobs\NotifyParticipantsJob;
+use App\Jobs\SendParticipantPassJob;
 use App\Training;
 use App\TrainingParticipant;
 use Illuminate\Http\Request;
@@ -59,8 +61,12 @@ class TrainingController extends Controller
         foreach($request->input('observers', []) as $observer) {
             $training->observers()->create(['observer_id' => $observer]);
         }
-        foreach($request->input('participants', []) as $participant) {
-            $training->participants()->create($participant);
+        $participants = $request->input('participants');
+        if ($participants) {
+            foreach ($participants as $participant) {
+                $training->participants()->create($participant);
+            }
+            dispatch(new NotifyParticipantsJob($training->toArray(), $participants));
         }
         return $training->load(['observers.user', 'participants.participant']);
     }
@@ -76,9 +82,15 @@ class TrainingController extends Controller
             $training->observers()->create(['observer_id' => $o]);
         },$request->input('o_to_add', []));
         $training->participants()->whereIn('id', $request->input('p_to_delete', []))->delete();
-        array_map(function ($p) use ($training) {
-            $training->participants()->create(['participant_id ' => $p]);
-        }, $request->input('p_to_add', []));
+        $participants = $request->input('p_to_add');
+        if ($participants) {
+            array_map(function ($p) use ($training) {
+                $training->participants()->create(['participant_id ' => $p]);
+            }, $participants);
+            if ($request->input('p_to_add')) {
+                dispatch(new NotifyParticipantsJob($training->toArray(), $participants));
+            }
+        }
         $file = $request->file('file');
         if ($file) {
             $name = generateFileName(TrainingController::DIRECTORY, $file->extension());
@@ -103,6 +115,9 @@ class TrainingController extends Controller
         }
         $score = max($request->input('score', 0), $participant->score);
         $hasPassed = $score >= $training->pass_score;
+        if ($hasPassed) {
+            $this->dispatch(new SendParticipantPassJob($id, $user_id));
+        }
         return $training->participants()->where('participant_id', $user_id)
             ->update(['attempt' => $participant['attempt'] + 1, 'status' => $hasPassed ? '2' : '1', 'score' => $score]);
     }
