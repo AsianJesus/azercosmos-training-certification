@@ -48,6 +48,14 @@ class Controller extends BaseController
         return response()->json($result);
     }
 
+    public function deleteMany(Request $request) {
+        $result = true;
+        foreach($request->input('ids', []) as $id) {
+            $result &= $this->model::findOrFail($id)->delete();
+        }
+        return response()->json($result);
+    }
+
     public function updateMany(Request $request) {
         $result = 0;
         foreach($request->all() as $id => $value) {
