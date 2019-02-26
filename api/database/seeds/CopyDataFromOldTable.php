@@ -116,7 +116,7 @@ class CopyDataFromOldTable extends Seeder
 
             foreach ($observers as $o) {
                 $o = (array) $o;
-                $observer = \App\TrainingObserver::create([
+                $observer = $training->observers()->create([
                    'id' => $o['ID'],
                    'observer_id' => $o['OBSERVER_ID']
                 ]);
@@ -132,7 +132,7 @@ class CopyDataFromOldTable extends Seeder
 
             foreach ($participants as $p) {
                 $p = (array) $p;
-                $participant = \App\TrainingParticipant::create([
+                $participant = $training->participants()->create([
                    'id' =>  $p['ID'],
                    'start_date' =>  $p['DATE'],
                    'end_date' =>  $p['END_DATE'],
