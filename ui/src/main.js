@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './global.scss'
 
-const serverURL = 'http://localhost/azercosmos-training-certification/api/public'
+const serverURL = '/azercosmos-training-certification/api/public'
 
 Vue.config.productionTip = false
 axios.defaults.baseURL = serverURL
