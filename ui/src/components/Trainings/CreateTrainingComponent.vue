@@ -131,7 +131,6 @@ export default{
       form.set('reference', this.reference)
       form.set('is_test_exam', this.isTestExam)
       form.set('question_number', this.questionsCount)
-      form.set('originator_id', this.$store.state.userID)
       if (this.isTestExam) {
         form.set('tutorial_id', this.tutorialID)
         form.set('pass_score', this.passScore)

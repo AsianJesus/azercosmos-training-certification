@@ -43,7 +43,7 @@ $router->put('trainings/{id}', 'TrainingController@update');
 $router->post('trainings/{id}', 'TrainingController@update');
 $router->delete('trainings/{id}', 'TrainingController@delete');
 $router->get('trainings/{id}/questions', 'TrainingController@getQuestions');
-$router->put('trainings/{id}/participants', 'TrainingController@passTest');
+$router->post('trainings/{id}/participants', 'TrainingController@passTest');
 $router->patch('trainings/{id}/participants', 'TrainingController@notifyParticipants');
 $router->get('trainings/{id}/participants', 'TrainingController@notifyParticipants');
 
@@ -55,10 +55,10 @@ $router->put('participants/{id}', 'ParticipantsController@update');
 $router->delete('participants/{id}', 'ParticipantsController@delete');
 
 $router->get('users', 'UserController@get');
-$router->get('users/{id}/tutorials', 'UserController@getTutorials');
-$router->get('users/{id}/my-trainings', 'UserController@getMyTrainings');
-$router->get('users/{id}/participating-trainings', 'UserController@getParticipatingTrainings');
-$router->get('users/{id}/observing-trainings', 'UserController@getObservingTrainings');
+$router->get('user/tutorials', 'UserController@getTutorialsBySession');
+$router->get('user/my-trainings', 'UserController@getMyTrainingsBySession');
+$router->get('user/participating-trainings', 'UserController@getParticipatingTrainingsBySession');
+$router->get('user/observing-trainings', 'UserController@getObservingTrainingsBySession');
 
 $router->get('test', function () {
     $arr = array('f' => 1, 's' => 2);

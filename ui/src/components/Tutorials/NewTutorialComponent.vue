@@ -156,7 +156,6 @@ export default{
       form.set('title', this.form.title)
       form.set('difficulty', this.form.difficulty)
       form.set('system', this.form.system)
-      form.set('author', this.form.author)
       this.form.questions.forEach((q, index) => {
         Object.keys(q).forEach((key) => {
           form.set('questions[' + index + '][' + key + ']', q[key])

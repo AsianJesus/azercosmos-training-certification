@@ -109,11 +109,15 @@
                           :per-page="1" @input="changePage" align="center">
 
             </b-pagination>
-            <download-excel :fields="excelFields" :data="trainings" style="text-align: right; height: 3rem;">
-                <b-btn variant="outline-success">
-                    Download for Excel
-                </b-btn>
-            </download-excel>
+            <div    style="text-align: right;">
+                <download-excel :fields="excelFields"
+                                :data="trainings"
+                                style="display: inline;">
+                    <b-btn variant="outline-success">
+                        Download for Excel
+                    </b-btn>
+                </download-excel>
+            </div>
         </div>
         <div class="participating-trainings-not-loaded" v-else>
             <h4>
@@ -219,7 +223,7 @@ export default{
           value: f.modifier ? f.modifier(f.value) : f.value
         }
       })
-      this.axios.get('/users/' + this.$store.state.userID + '/observing-trainings', {
+      this.axios.get('/user/observing-trainings', {
         params: {
           page: page,
           filters: filters,

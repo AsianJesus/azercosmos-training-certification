@@ -13,7 +13,8 @@
                     <th>
                         Test Exam
                     </th>
-                    <th @click="changeOrder('start_date')" class="order-button">
+                    <th @click="changeOrder('start_date')"
+                        class="order-button">
                         Record date
                         <span v-if="orderBy === 'start_date'">
                             <v-icon name="angle-up" v-if="orderAsc">
@@ -47,8 +48,12 @@
                         </span>
                     </th>-->
                 </tr>
-                <tr v-for="(p, i) in trainings" v-bind:key="'participant' + i"
-                    @click="viewTraining(p.id)" style="cursor: pointer;" :class="'training-status-' + p.status">
+                <tr v-for="(p, i) in trainings"
+                    v-bind:key="'participant' + i"
+                    v-if="p.training"
+                    @click="viewTraining(p.id)"
+                    style="cursor: pointer;"
+                    :class="'training-status-' + p.status">
                     <td>
                         {{ p.training.title }}
                     </td>
@@ -70,11 +75,15 @@
                           v-if="currentPage && totalPages > 1">
 
             </b-pagination>
-            <download-excel :fields="excelFields" :data="trainings" style="text-align: right; height: 3rem;">
-                <b-btn variant="outline-success">
-                    Download for Excel
-                </b-btn>
-            </download-excel>
+            <div style="text-align: right;">
+                <download-excel :fields="excelFields"
+                                :data="trainings"
+                                style="display: inline;" >
+                    <b-btn variant="outline-success">
+                        Download for Excel
+                    </b-btn>
+                </download-excel>
+            </div>
         </div>
         <div class="participating-trainings-not-loaded" v-else>
             <h4>
@@ -172,7 +181,7 @@ export default{
       if (participantFilters.length) {
         params['p_filters'] = participantFilters
       }
-      this.axios.get('/users/' + this.$store.state.userID + '/participating-trainings', {
+      this.axios.get('/user/participating-trainings', {
         params: params
       }).then(response => {
         this.isLoading = false

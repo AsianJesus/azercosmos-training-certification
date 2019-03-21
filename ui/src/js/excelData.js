@@ -3,9 +3,9 @@
  */
 
 const statuses = {
-    0: 'Not confirmed',
-    1: 'Not finished',
-    2: 'Finished'
+  0: 'Not confirmed',
+  1: 'Not finished',
+  2: 'Finished'
 }
 
 const participatingFields = {
@@ -79,7 +79,7 @@ const tutorialFields = {
   'Creation time': 'created_at',
   'Last update': 'updated_at',
   'Verified questions': 'verified_questions_count',
-  'Questions count': 'questions_count',
+  'Questions count': 'questions_count'
 }
 
-export { participatingFields,observervingFields, participantFields, tutorialFields }
+export { participatingFields, observervingFields, participantFields, tutorialFields }

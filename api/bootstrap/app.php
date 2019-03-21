@@ -24,6 +24,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$app->session_id = require_once __DIR__ . '/../config/getSession.php';
+
  $app->withFacades();
 
  $app->withEloquent();

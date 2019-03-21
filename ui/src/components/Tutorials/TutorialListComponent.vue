@@ -4,11 +4,13 @@
         <filter-component v-model="filters"></filter-component>
         <b-tabs>
             <b-tab title="My tutorials">
-                <download-excel :fields="excelFields" :data="MyTutorials" style="text-align: right;">
-                    <b-btn variant="outline-success">
-                        Save as Excel
-                    </b-btn>
-                </download-excel>
+                <div style="text-align: right; ">
+                    <download-excel :fields="excelFields" :data="MyTutorials" style="display: inline;">
+                        <b-btn variant="outline-success">
+                            Save as Excel
+                        </b-btn>
+                    </download-excel>
+                </div>
                 <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
@@ -81,11 +83,13 @@
                 </table>
             </b-tab>
             <b-tab title="Moderating tutorials">
-                <download-excel :fields="excelFields" :data="ModeratingTutorials" style="text-align: right;">
-                    <b-btn variant="outline-success">
-                        Save as Excel
-                    </b-btn>
-                </download-excel>
+                <div style="text-align: right; ">
+                    <download-excel :fields="excelFields" :data="ModeratingTutorials" style="display: inline;">
+                        <b-btn variant="outline-success">
+                            Save as Excel
+                        </b-btn>
+                    </download-excel>
+                </div>
                 <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">
@@ -155,11 +159,13 @@
                 </table>
             </b-tab>
             <b-tab title="Observing tutorials">
-                <download-excel :fields="excelFields" :data="ObservingTutorials" style="text-align: right;">
-                    <b-btn variant="outline-success">
-                        Save as Excel
-                    </b-btn>
-                </download-excel>
+                <div style="text-align: right; ">
+                    <download-excel :fields="excelFields" :data="ObservingTutorials" style="display: inline;">
+                        <b-btn variant="outline-success">
+                            Save as Excel
+                        </b-btn>
+                    </download-excel>
+                </div>
                 <table class="table training-table">
                     <tr>
                         <th class="order-button" @click="sort('id')">

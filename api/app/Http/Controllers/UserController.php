@@ -77,4 +77,16 @@ class UserController extends Controller
             ->paginate($request->input('amount', 20))->toArray();
         return $result;
     }
+    public function getTutorialsBySession(Request $request) {
+        return $this->getTutorials($request, app()->session_id);
+    }
+
+    public function getParticipatingTrainingsBySession(Request $request) {
+        return $this->getParticipatingTrainings($request, app()->session_id);
+    }
+
+    public function getObservingTrainingsBySession(Request $request) {
+        return $this->getObservingTrainings($request, app()->session_id);
+    }
+
 }

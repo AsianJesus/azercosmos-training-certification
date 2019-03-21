@@ -187,8 +187,7 @@ export default{
       this.saveResults(score, passed)
     },
     saveResults (score, passed) {
-      this.axios.put('trainings/' + this.id + '/participants', {
-        user_id: this.$store.state.userID,
+      this.axios.post('trainings/' + this.id + '/participants', {
         score: score
       }).then(() => {
         if (passed) {

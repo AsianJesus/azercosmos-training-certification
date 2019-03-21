@@ -4,7 +4,9 @@
             <trainings-list-component></trainings-list-component>
         </div>
         <div class="tutorials-button-holder">
-            <b-btn variant="outline-primary" class="tutorials-button" @click="showTutorial">
+            <b-btn variant="outline-primary"
+                   class="tutorials-button"
+                   @click="showTutorial">
                 Tutorials
             </b-btn>
         </div>
@@ -43,17 +45,14 @@ export default{
   }
 }
 </script>
-<style>
-    .landing-page-component{
-        padding-bottom: 1rem;
-    }
-    .tutorials-button-holder{
-        height: 2rem;
-        position: relative;
-    }
-    .tutorials-button{
-        position: absolute;
-        bottom: 0;
-        right: 0;
-    }
+<style lang="sass" scoped>
+    .landing-page-component
+        padding-bottom: 2rem
+
+    .tutorials-button-holder
+        height: 2rem
+        text-align: right
+        margin-top: 1rem
+        position: relative
+
 </style>

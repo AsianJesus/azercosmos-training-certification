@@ -1,7 +1,10 @@
 <template>
     <div class="tutorials-component">
-        <div>
-            <b-btn variant="outline-success" @click="showNewTutorial = true">Create new tutorial</b-btn>
+        <div    style="text-align: left;">
+            <b-btn variant="outline-success" @click="showNewTutorial = true">
+                Create new tutorial
+                <v-icon name="plus" />
+            </b-btn>
         </div>
         <div class="tutorials-list">
             <tutorial-list-component></tutorial-list-component>

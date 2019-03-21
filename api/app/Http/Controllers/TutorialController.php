@@ -18,6 +18,7 @@ class TutorialController extends Controller
 
     public function add(Request $request)
     {
+        $request['author'] = app()->session_id;
         $tutorial = parent::add($request);
         foreach($request->input('questions') as $index => $question) {
             $q = $tutorial->questions()->create($question);

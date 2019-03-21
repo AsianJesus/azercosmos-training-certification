@@ -14,7 +14,8 @@ export default new Vuex.Store({
     trainingParticipating: [],
     users: [],
     userID: 1,
-    serverURL: 'http://localhost/azercosmos-training-certification/api/public'
+    serverURL: '/azercosmos-training-certification/api/public'
+    // serverURL: 'http://localhost/azercosmos-training-certification/api/public'
   },
   mutations: {
     setTutorials (state, options) {

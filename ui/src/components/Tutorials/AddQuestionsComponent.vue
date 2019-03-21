@@ -66,7 +66,6 @@ export default{
   methods: {
     mapDifficulty: mapDifficulty,
     addQuestion (question) {
-      question.author_id = this.$store.state.userID
       question.verified = this.moderator
       question.tutorial_id = this.tutorial.id
       this.questions.push(question)
