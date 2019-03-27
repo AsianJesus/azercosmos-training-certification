@@ -18,7 +18,7 @@
             </div>
             <div class="create-training-test">
                 <div class="create-training-test-button">
-                    <b-form-checkbox v-model="isTestExam">Is training test?</b-form-checkbox>
+                    <b-form-checkbox v-model="isTestExam">Is Test?</b-form-checkbox>
                 </div>
                 <div class="create-training-test-body row" v-if="isTestExam">
                     <div class="col-3">

@@ -11,13 +11,10 @@ import Icon from 'vue-awesome/components/Icon'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import store from './store'
-
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './global.scss'
-
-const serverURL = '/azercosmos-training-certification/api/public'
-// const serverURL = 'http://localhost/azercosmos-training-certification/api/public'
+import {serverURL} from './config'
 
 Vue.config.productionTip = false
 axios.defaults.baseURL = serverURL

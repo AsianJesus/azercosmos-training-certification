@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { serverURL } from '../config'
 
 Vue.use(Vuex)
 
@@ -14,8 +15,7 @@ export default new Vuex.Store({
     trainingParticipating: [],
     users: [],
     userID: 1,
-    serverURL: '/azercosmos-training-certification/api/public'
-    // serverURL: 'http://localhost/azercosmos-training-certification/api/public'
+    serverURL: serverURL
   },
   mutations: {
     setTutorials (state, options) {

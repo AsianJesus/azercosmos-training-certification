@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     loadTutorials () {
-      this.axios.get('/users/1/tutorials').then(response => {
+      this.axios.get('/user/tutorials').then(response => {
         console.log(response.data)
         this.$store.commit('setTutorials', {
           type: 'my',
