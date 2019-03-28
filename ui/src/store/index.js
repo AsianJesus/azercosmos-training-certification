@@ -18,6 +18,9 @@ export default new Vuex.Store({
     serverURL: serverURL
   },
   mutations: {
+    setUser (state, user) {
+      state.userID = user.id || state.userID
+    },
     setTutorials (state, options) {
       state.tutorials[options.type] = options.tutorials
     },

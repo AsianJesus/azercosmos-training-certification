@@ -12,6 +12,7 @@
 export default {
   name: 'App',
   mounted () {
+    this.loadMyUser()
     this.loadTutorials()
     this.loadUsers()
   },
@@ -41,6 +42,11 @@ export default {
       this.axios.get('/users').then(response => {
         this.$store.commit('setUsers', response.data)
         console.log(response.data)
+      })
+    },
+    loadMyUser () {
+      this.axios.get('/user').then(response => {
+        this.$store.commit('setUser', response.data)
       })
     }
   }

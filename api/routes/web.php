@@ -55,6 +55,7 @@ $router->put('participants/{id}', 'ParticipantsController@update');
 $router->delete('participants/{id}', 'ParticipantsController@delete');
 
 $router->get('users', 'UserController@get');
+$router->get('user', 'UserController@getMyUser');
 $router->get('user/tutorials', 'UserController@getTutorialsBySession');
 $router->get('user/my-trainings', 'UserController@getMyTrainingsBySession');
 $router->get('user/participating-trainings', 'UserController@getParticipatingTrainingsBySession');

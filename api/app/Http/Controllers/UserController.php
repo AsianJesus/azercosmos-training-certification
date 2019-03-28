@@ -37,6 +37,10 @@ class UserController extends Controller
         return array('my' => $own, 'moderating' => $moderating, 'observing' => $observing);
     }
 
+    public function getMyUser(Request $request) {
+        return $this->getById(app()->session_id);
+    }
+
     public function applyFilters($filters, $table = null) {
         return function ($query) use ($filters, $table) {
             foreach ($filters as $filter) {
