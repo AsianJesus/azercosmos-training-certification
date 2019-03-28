@@ -91,8 +91,7 @@ export default{
       form: {
         title: null,
         system: null,
-        questions: [],
-        author: 1
+        questions: []
       },
       moderators: [],
       observers: [],
@@ -128,7 +127,7 @@ export default{
   },
   methods: {
     addQuestion (question) {
-      question.author_id = 1
+      question.author_id = this.userID
       question.verified = true
       this.form.questions.push(question)
     },
@@ -168,13 +167,13 @@ export default{
           type: 'my',
           tutorial: response.data
         })
-        if (this.observers && this.observers.some(x => x.value === 1)) {
+        if (this.observers && this.observers.some(x => x.value === this.$store.state.userID)) {
           this.$store.commit('addTutorial', {
             type: 'observing',
             tutorial: response.data
           })
         }
-        if (this.moderating && this.moderating.some(x => x.value === 1)) {
+        if (this.moderating && this.moderating.some(x => x.value === this.$store.state.userID)) {
           this.$store.commit('addTutorial', {
             type: 'moderating',
             tutorial: response.data
