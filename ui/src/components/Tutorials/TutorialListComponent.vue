@@ -1,10 +1,9 @@
 <template>
     <div class="tutorial-list-component">
-        <h4>Tutorials</h4>
         <filter-component v-model="filters"></filter-component>
         <b-tabs>
             <b-tab title="My tutorials">
-                <div style="text-align: right; ">
+                <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="MyTutorials" style="display: inline;">
                         <b-btn variant="outline-success">
                             Save as Excel
@@ -83,7 +82,7 @@
                 </table>
             </b-tab>
             <b-tab title="Moderating tutorials">
-                <div style="text-align: right; ">
+                <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="ModeratingTutorials" style="display: inline;">
                         <b-btn variant="outline-success">
                             Save as Excel
@@ -159,7 +158,7 @@
                 </table>
             </b-tab>
             <b-tab title="Observing tutorials">
-                <div style="text-align: right; ">
+                <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="ObservingTutorials" style="display: inline;">
                         <b-btn variant="outline-success">
                             Save as Excel

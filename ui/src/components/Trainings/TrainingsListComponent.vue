@@ -1,9 +1,14 @@
 <template>
     <div class="trainings-list-component">
         <div class="new-training-button-holder">
-            <b-btn @click="showCreateWindow = true" variant="outline-primary" class="new-training-button">
+            <b-btn @click="showCreateWindow = true"
+                   variant="outline-primary"
+                   class="new-training-button">
                 Record new training <v-icon name="plus" />
             </b-btn>
+            <h4>
+                Trainings
+            </h4>
         </div>
         <b-tabs>
             <b-tab title="Participating trainings">
@@ -61,7 +66,7 @@ export default{
 .new-training-button{
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
 }
 .trainings-list{
     padding-top: 1rem;
