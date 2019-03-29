@@ -158,7 +158,7 @@ export default{
         answer2: !this.form.answer2,
         answer3: !this.form.answer3,
         answer4: !this.form.answer4,
-        difficulty: !this.form.difficulty
+        difficulty: this.form.difficulty === null
       }
     }
   },

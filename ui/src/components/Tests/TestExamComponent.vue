@@ -17,16 +17,26 @@
                 </h4>
             </div>
         </div>
-        <div class="test-exam-start row" v-else-if="!isStarted">
-            <div class="col-12 start-training-name">{{ trainingName }}</div>
-            <div class="col-12 start-questions-count">{{ questions.length }} questions</div>
-            <div class="col-6 start-info-header">Success threshold: </div>
-            <div class="col-6 start-info">{{ passScore }}%</div>
-            <div class="col-6 start-info-header">Deadline: </div>
-            <div class="col-6 start-info"> {{ participant.end_date }}</div>
-            <div class="col-12">
+        <div class="test-exam-start" v-else-if="!isStarted">
+            <div class="start-training-name">
+                {{ trainingName }}
+            </div>
+            <div class="start-questions-count">
+                {{ questions.length }} questions
+            </div>
+            <div class="row-margin">
+                <div class="col-6 start-info-header">Success threshold: </div>
+                <div class="col-6 start-info">{{ passScore }}%</div>
+                <div class="col-6 start-info-header">Deadline: </div>
+                <div class="col-6 start-info"> {{ participant.end_date }}</div>
+            </div>
+            <div class="start-controls">
                 <b-btn variant="outline-primary" @click="startExam">
                     Start
+                </b-btn>
+                <b-btn  variant="outline-danger"
+                        @click="$emit('close', true)" >
+                    Cancel
                 </b-btn>
             </div>
         </div>
@@ -248,7 +258,7 @@ export default{
     }
     .start-questions-count{
         font-size: .7rem;
-        color: silver;
+        color: #8D8D8D;
     }
     .start-info-header{
         font-weight: bolder;
@@ -273,5 +283,9 @@ export default{
       cursor: pointer;
       padding: .3rem .5rem;
       margin-right: .4rem;
+    }
+
+    .start-controls {
+        margin: .5rem auto;
     }
 </style>

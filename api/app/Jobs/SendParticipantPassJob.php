@@ -10,6 +10,7 @@ namespace App\Jobs;
 
 use App\Training;
 use App\TrainingParticipant;
+use Illuminate\Support\Facades\Mail;
 
 class SendParticipantPassJob extends Job
 {
@@ -22,10 +23,11 @@ class SendParticipantPassJob extends Job
     }
 
     public function handle() {
-        $training = Training::findOrFail('id', $this->training)->load('observers_view.user');
-        $participant = TrainingParticipant::findOrFail('id', $this->participant)->toArray();
+        $training = Training::findOrFail($this->training)->load('observers_view.user');
+        $participant = TrainingParticipant::where('participant_id', $this->participant)
+            ->where('training_id', $this->training)->first();
         Mail::send('participant_passed', ['participant' => $participant, 'trainingName' => $training->title,
-            'pass_score' => $training->pass_score], function ($mailer)  use ($participant) {
+            'pass_score' => $training->pass_score, 'is_test' => $training->is_test], function ($mailer)  use ($participant) {
             foreach(array_map(function ($o) {
                 return $o->user;
             }, $training->observers_view ?? []) as $observer) {

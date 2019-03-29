@@ -2,9 +2,9 @@
  * Created by fruit on 1/23/2019.
  */
 const difficulties = {
-  1: 'Easy',
-  2: 'Medium',
-  3: 'Hard'
+  0: 'Easy',
+  1: 'Medium',
+  2: 'Hard'
 }
 
 function mapDifficulty (i) {

@@ -101,7 +101,7 @@ export default{
       return {
         question: !this.question,
         correct_answer: this.correct_answer === null,
-        difficulty: !this.difficulty,
+        difficulty: this.difficulty === null,
         answer1: !this.answer1,
         answer2: !this.answer2,
         answer3: !this.answer3,

@@ -39,7 +39,7 @@ function convertQuestions (questions) {
   return questions.map(q => {
     return {
       question: q.question,
-      difficulty: q.difficulty,
+      difficulty: q.difficulty + 1,
       selected: null,
       isCorrect: null,
       answers: ['answer1', 'answer2', 'answer3', 'answer4'].map((a, i) => {

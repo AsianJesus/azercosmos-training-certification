@@ -11,14 +11,15 @@
                     Questions
                 </h5>
                 <div v-for="(q, i) in questions" v-bind:key="i">
-                    <editable-question :question="q" :showAuthor="false" :showFile="false"
-                                       @saveEdit="editQuestion(i, $event)" @deleteQuestion="deleteQuestion(i)" />
+                    <editable-question :question="q"
+                                       :showAuthor="false"
+                                       :showFile="false"
+                                       @saveEdit="editQuestion(i, $event)"
+                                       @deleteQuestion="deleteQuestion(i)" />
                 </div>
             </div>
             <div class="add-questions-new-question">
-                <new-question-component @addQuestion="addQuestion">
-
-                </new-question-component>
+                <new-question-component @addQuestion="addQuestion" />
             </div>
         </div>
         <div class="add-questions-error" v-if="errorMessage">
