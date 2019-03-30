@@ -3,22 +3,19 @@
         <div class="new-training-button-holder">
             <b-btn @click="showCreateWindow = true"
                    variant="outline-primary"
-                   class="new-training-button">
-                Record new training <v-icon name="plus" />
+                   class="icon-button">
+                <v-icon name="plus" />
             </b-btn>
-            <h4>
-                Trainings
-            </h4>
         </div>
         <b-tabs>
             <b-tab title="Participating trainings">
                 <div class="trainings-list">
-                    <participating-trainings-component></participating-trainings-component>
+                    <participating-trainings-component />
                 </div>
             </b-tab>
             <b-tab title="Observing trainings">
                 <div class="trainings-list">
-                    <observing-trainings-component></observing-trainings-component>
+                    <observing-trainings-component />
                 </div>
             </b-tab>
         </b-tabs>
@@ -61,12 +58,8 @@ export default{
     position: relative;
 }
 .new-training-button-holder{
-    height: 5rem;
-}
-.new-training-button{
-    position: absolute;
-    top: 0;
-    right: 0;
+    height: 2rem;
+    text-align: right;
 }
 .trainings-list{
     padding-top: 1rem;

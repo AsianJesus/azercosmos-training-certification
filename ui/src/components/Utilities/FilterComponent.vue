@@ -1,26 +1,39 @@
 <template>
     <div class="bcards-filter">
-        <div class="bcards-filter-input row">
-            <b-form-select v-model="selectedItem" style="height: 100%;" :options="options" class="col-6">
+        <div class="bcards-filter-input-holder">
+            <b-btn>
+                <v-icon name="search" />
+            </b-btn>
+            <b-form-input v-model="temp"
+                          @input="updateFilter"
+                          v-if="selectedItem === i && !f.options"
+                          class="bcards-filter-input"
+                          v-for="(f, i) in value" v-bind:key="'st' + i" />
+            <b-form-select v-if="selectedItem === i && f.options"
+                           v-model="temp" v-bind:key="'ss' + i"
+                           :options="getOptions(value[i])"
+                           class="bcards-filter-input"
+                           @input="updateFilter"
+                           v-for="(f, i) in value" />
                 <!--<option :value="i" v-for="(f, i) in value">
                     {{ f.text }}
                 </option>-->
-            </b-form-select>
-            <b-form-input v-model="temp" @input="updateFilter" class="col-6"
-                          v-if="selectedItem === i && !f.options" v-for="(f, i) in value" v-bind:key="'st' + i"> </b-form-input>
-            <b-form-select v-if="selectedItem === i && f.options" v-model="temp" v-bind:key="'ss' + i"
-                           :options="getOptions(value[i])" @input="updateFilter" v-for="(f, i) in value" class="col-6">
                 <!--<option :value="null">
                     Select filter
                 </option>
                 <option :value="o.value" v-for="(o, index) in f.options" v-bind:key="index">
                     {{ o.text }}
                 </option>-->
-            </b-form-select>
+            <b-form-select v-model="selectedItem"
+                           class="bcards-filter-input"
+                           :options="options" />
         </div>
         <div class="filter-values">
-            <div class="filter-values-item" v-for="(f, i) in value" v-bind:key="i"
-                 v-if="f.value !== null && f.value !== ''" @click="deleteValue(i)">
+            <div class="filter-values-item"
+                 v-for="(f, i) in value"
+                 v-bind:key="i"
+                 v-if="f.value !== null && f.value !== ''"
+                 @click="deleteValue(i)">
                 {{ f.text }} - {{ getValue(f) }}
             </div>
         </div>
@@ -52,7 +65,7 @@ export default{
   },
   data () {
     return {
-      selectedItem: null,
+      selectedItem: 0,
       temp: null
     }
   },
@@ -77,8 +90,7 @@ export default{
       if (!filter.options) {
         return []
       }
-      let options = filter.options
-      return options.concat([{text: 'Select', value: null}])
+      return filter.options
     }
   }
 }
@@ -95,5 +107,12 @@ export default{
         border-radius: 5px;
         text-transform: capitalize;
         cursor: pointer;
+    }
+    .bcards-filter-input-holder {
+        text-align: left;
+    }
+    .bcards-filter-input {
+        width: max-content;
+        display: inline !important;
     }
 </style>

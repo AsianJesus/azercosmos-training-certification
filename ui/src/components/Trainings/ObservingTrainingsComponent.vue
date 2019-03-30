@@ -114,7 +114,7 @@
                                 :data="trainings"
                                 style="display: inline;">
                     <b-btn variant="outline-success">
-                        Download for Excel
+                        <v-icon name="file-excel" />
                     </b-btn>
                 </download-excel>
             </div>
@@ -127,23 +127,21 @@
         <transition name="fade">
             <div class="modal-window-canvas" v-if="selectedTraining !== null" @click="selectedTraining = null">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
-                    <view-training-component :id="selectedTraining" @close="selectedTraining = null"></view-training-component>
+                    <view-training-component :id="selectedTraining" @close="selectedTraining = null" />
                 </div>
             </div>
         </transition>
         <transition name="fade">
             <div class="modal-window-canvas" v-if="trainingToAddParticipants !== null" @click="hideAdd()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
-                    <add-participants-component :id="trainingToAddParticipants" @close="hideAdd($event)">
-                    </add-participants-component>
+                    <add-participants-component :id="trainingToAddParticipants" @close="hideAdd($event)" />
                 </div>
             </div>
         </transition>
         <transition name="fade">
             <div class="modal-window-canvas" v-if="trainingToEdit !== null" @click="hideEdit()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
-                    <edit-training-component :training="trainingToEdit" @close="hideEdit($event)">
-                    </edit-training-component>
+                    <edit-training-component :training="trainingToEdit" @close="hideEdit($event)" />
                 </div>
             </div>
         </transition>
@@ -273,7 +271,7 @@ export default{
     },
     delayedLoad: lodash.debounce(function () {
       this.loadTrainings()
-    }, 1000),
+    }, 400),
     changeOrder (order) {
       if (order === this.orderBy) {
         this.orderAsc ^= true

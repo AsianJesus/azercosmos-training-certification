@@ -4,7 +4,6 @@
             <b-btn variant="outline-success"
                    class="tutorial-component-create-new-button"
                    @click="showNewTutorial = true">
-                Create new tutorial
                 <v-icon name="plus" />
             </b-btn>
             <h4>
@@ -46,17 +45,20 @@ export default{
   }
 }
 </script>
-<style>
-.tutorials-component {
-    position: relative;
-    padding: 1rem 2rem;
-}
-.tutorials-component-header {
-    height: 4rem;
-}
-.tutorial-component-create-new-button {
-    position: absolute;
-    right: 10px;
-    top: 1rem;
-}
+<style lang="sass">
+@import "../../globals"
+
+.tutorials-component
+    position: relative
+    padding: 1rem 2rem
+
+.tutorials-component-header
+    height: 4rem
+
+.tutorial-component-create-new-button
+    @extend %icon-button
+    position: absolute
+    right: 10px
+    top: 1rem
+
 </style>

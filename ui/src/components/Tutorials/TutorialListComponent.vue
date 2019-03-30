@@ -6,7 +6,7 @@
                 <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="MyTutorials" style="display: inline;">
                         <b-btn variant="outline-success">
-                            Save as Excel
+                            <v-icon name="file-excel" />
                         </b-btn>
                     </download-excel>
                 </div>
@@ -85,7 +85,7 @@
                 <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="ModeratingTutorials" style="display: inline;">
                         <b-btn variant="outline-success">
-                            Save as Excel
+                            <v-icon name="file-excel" />
                         </b-btn>
                     </download-excel>
                 </div>
@@ -147,10 +147,14 @@
                             <b-btn variant="outline-primary" class="add-questions-button" @click="selectedTutorial.addQuestions = t">
                                 <v-icon name="plus" />
                             </b-btn>
-                            <b-btn variant="outline-success" class="check-button" @click="selectedTutorial.verifyQuestions = t">
+                            <b-btn variant="outline-success"
+                                   class="check-button"
+                                   @click="selectedTutorial.verifyQuestions = t">
                                 <v-icon name="check"></v-icon>
                             </b-btn>
-                            <b-btn variant="outline-secondary" class="edit-button" @click="selectedTutorial.edit = t">
+                            <b-btn variant="outline-secondary"
+                                   class="edit-button"
+                                   @click="selectedTutorial.edit = t">
                                 <v-icon name="pen"></v-icon>
                             </b-btn>
                         </td>
@@ -161,7 +165,7 @@
                 <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="ObservingTutorials" style="display: inline;">
                         <b-btn variant="outline-success">
-                            Save as Excel
+                            <v-icon name="file-excel" />
                         </b-btn>
                     </download-excel>
                 </div>

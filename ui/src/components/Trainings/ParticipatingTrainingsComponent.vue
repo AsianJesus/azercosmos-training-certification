@@ -11,6 +11,9 @@
                         Trainer
                     </th>
                     <th>
+                        Status
+                    </th>
+                    <th>
                         Test Exam
                     </th>
                     <th @click="changeOrder('start_date')"
@@ -61,6 +64,9 @@
                         {{ p.training.originator ? p.training.originator.NAME : '' }}
                     </td>
                     <td>
+                        {{ getStatusName(p.status) }}
+                    </td>
+                    <td>
                         {{ p.training.is_test_exam ? 'Yes' : 'No'}}
                     </td>
                     <td>
@@ -79,8 +85,10 @@
                 <download-excel :fields="excelFields"
                                 :data="trainings"
                                 style="display: inline;" >
-                    <b-btn variant="outline-success">
-                        Download for Excel
+                    <b-btn variant="outline-success"
+                           class="excel-button" >
+                        <!--Download for Excel-->
+                        <v-icon name="file-excel" />
                     </b-btn>
                 </download-excel>
             </div>
@@ -213,7 +221,7 @@ export default{
     },
     delayedLoad: lodash.debounce(function () {
       this.loadTrainings()
-    }, 1000)
+    }, 400)
   }
 }
 </script>
