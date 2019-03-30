@@ -21,8 +21,8 @@ class NotifyParticipantsJob extends Job
         $this->training = $training;
         $this->participants = $participants;
     }
-    public function __handle() {
-        $participants = TrainingParticipant::whereIn('user_id', $this->participants)
+    public function handle() {
+        $participants = TrainingParticipant::whereIn('participant_id', $this->participants)
             ->where('training_id', $this->training['id'])->with('user')->get();
         foreach ($participants as $participant) {
             Mail::send('new_training', ['training' => $this->training,

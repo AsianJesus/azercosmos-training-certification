@@ -162,7 +162,6 @@ export default{
         form.append('file' + index, q.file)
       })
       this.axios.post('/tutorials', form).then(response => {
-        alert('Tutorial was successfully created')
         this.$store.commit('addTutorial', {
           type: 'my',
           tutorial: response.data
