@@ -10,9 +10,11 @@ namespace App;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TutorialObserver extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
       'tutorial_id', 'observer_id'
     ];

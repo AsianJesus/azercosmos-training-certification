@@ -10,9 +10,11 @@ namespace App;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Moderator extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'tutorial_id', 'moderator_id'
     ];

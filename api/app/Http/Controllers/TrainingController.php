@@ -37,7 +37,7 @@ class TrainingController extends Controller
         $count = $training->question_number;
         $questions = [];
         $step = floor($count / 3);
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 0; $i <= 2; $i++) {
             $result = $training->questions()->where('difficulty', $i)->orderBy(DB::raw('RAND()'))
                 ->where('verified', true)->take($step)->get();
             $questions = array_merge($questions, $result->toArray());

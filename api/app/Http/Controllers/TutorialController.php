@@ -35,7 +35,7 @@ class TutorialController extends Controller
         foreach($request->input('observers', []) as $observer) {
             $tutorial->observers()->create($observer);
         }
-        return $tutorial;
+        return $this->getById($tutorial->id);
     }
 
     public function getById($id)

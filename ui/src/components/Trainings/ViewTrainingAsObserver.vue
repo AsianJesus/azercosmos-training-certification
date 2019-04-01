@@ -122,11 +122,15 @@
                 </span>
             </div>
             <div class="vtao-buttons">
-                <download-excel :data="participants" :fields="excelFields">
-                    <b-btn variant="outline-danger">
-                        Save participants information
-                    </b-btn>
-                </download-excel>
+                <div class="vtao-buttons-download">
+                    <download-excel :data="participants"
+                                    :fields="excelFields"
+                                    style="display: inline;" >
+                        <b-btn variant="outline-danger">
+                            Save participants information
+                        </b-btn>
+                    </download-excel>
+                </div>
                 <b-btn variant="outline-success" @click="$emit('close', true)">
                     Close
                 </b-btn>
@@ -193,42 +197,45 @@ export default{
   }
 }
 </script>
-<style>
-    .vtao-headline{
-        border-bottom: 1px solid #20202020;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-    }
-    .vtao-training-id, .vtao-training-status{
-        border: 1px solid #10101040;
-        padding: .2rem .4rem;
-        margin-left: 2rem;
-        margin-right: 2rem;
-        border-radius: 5px;
-        box-shadow: 0 1px #20202020;
-    }
-    .vtao-info-element{
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-    .vtao-body{
-        text-align: left;
-    }
-    .vtao-observers{
-        list-style-type: circle;
-        flex-wrap: wrap;
-        display: flex;
-    }
-    .vtao-observer{
-        padding: .3rem .5rem;
-        border: 1px solid #10101040;
-        border-radius: 6px;
-        margin: .3rem .7rem;
-    }
-    .vtao-observer::before{
-        content: '\25CF';
-    }
-    .vtao-buttons{
-        text-align: right;
-    }
+<style lang="sass">
+.vtao-headline
+    border-bottom: 1px solid #20202020
+    margin-bottom: 1rem
+    padding-bottom: 1rem
+
+.vtao-training-id, .vtao-training-status
+    border: 1px solid #10101040
+    padding: .2rem .4rem
+    margin-left: 2rem
+    margin-right: 2rem
+    border-radius: 5px
+    box-shadow: 0 1px #20202020
+
+.vtao-info-element
+    margin-top: 1rem
+    margin-bottom: 1rem
+
+.vtao-body
+    text-align: left
+
+.vtao-observers
+    list-style-type: circle
+    flex-wrap: wrap
+    display: flex
+
+.vtao-observer
+    padding: .3rem .5rem
+    border: 1px solid #10101040
+    border-radius: 6px
+    margin: .3rem .7rem
+
+.vtao-observer::before
+    content: '\25CF'
+
+.vtao-buttons
+    text-align: right
+
+.vtao-buttons-download
+    margin-bottom: .5rem
+
 </style>

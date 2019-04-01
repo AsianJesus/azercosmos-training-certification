@@ -22,13 +22,13 @@ class User extends Model
     public function observed_tutorials()
     {
         return $this->hasManyThrough(Tutorial::class, TutorialObserver::class, 'observer_id',
-            'id', 'ID', 'tutorial_id');
+            'id', 'ID', 'tutorial_id')->groupBy('tutorial_id');
     }
 
     public function moderating_tutorials()
     {
         return $this->hasManyThrough(Tutorial::class, Moderator::class, 'moderator_id',
-            'id', 'ID', 'tutorial_id');
+            'id', 'ID', 'tutorial_id')->groupBy('tutorial_id');
     }
 
     public function own_tutorials()

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use \Illuminate\Support\Facades\DB;
 
 class CopyDataFromOldTable extends Seeder
 {
@@ -25,7 +26,7 @@ class CopyDataFromOldTable extends Seeder
     public function run()
     {
         $erp_db = env("DB_ERP", "admin_erp");
-        $tutorials = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUTORIALS')->get();
+        $tutorials = DB::table($erp_db.'.TRAINING_TUTORIALS')->get();
         foreach ($tutorials as $t) {
             $t = (array)$t;
             $tutorial = \App\Tutorial::create([
@@ -39,7 +40,7 @@ class CopyDataFromOldTable extends Seeder
             $tutorial->updated_at = $t['EDIT_DATE'];
             $tutorial->deleted_at = $t['DELETED'] ? date('y-m-d') : null;
             $tutorial->save();
-            $questions = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUT_QUESTIONS')
+            $questions = DB::table($erp_db.'.TRAINING_TUT_QUESTIONS')
                 ->where('TUT_ID', $t['ID'])->get();
             foreach ($questions as $q) {
                 $q = (array)$q;
@@ -61,7 +62,7 @@ class CopyDataFromOldTable extends Seeder
                 $question->save();
             }
 
-            $moderators = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUT_MODERATOR')
+            $moderators = DB::table($erp_db.'.TRAINING_TUT_MODERATOR')
                 ->where('TUT_ID', $t['ID'])->get();
             foreach ($moderators as $m) {
                 $m = (array)$m;
@@ -74,7 +75,7 @@ class CopyDataFromOldTable extends Seeder
                 $moderator->save();
             }
 
-            $observers = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUT_OBSERVER')
+            $observers = DB::table($erp_db.'.TRAINING_TUT_OBSERVER')
                 ->where('TUT_ID', $t['ID'])->get();
 
             foreach ($observers as $o) {
