@@ -77,10 +77,12 @@
                     </td>
                 </tr>
             </table>
-            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" :per-page="1" @input="changePage"
-                          v-if="currentPage && totalPages > 1">
-
-            </b-pagination>
+            <b-pagination v-bind:value="currentPage"
+                          v-if="currentPage && totalPages > 1"
+                          :total-rows="totalPages"
+                          :per-page="1"
+                          align="center"
+                          @input="changePage" />
             <div style="text-align: right;">
                 <download-excel :fields="excelFields"
                                 :data="trainings"
@@ -92,11 +94,6 @@
                     </b-btn>
                 </download-excel>
             </div>
-        </div>
-        <div class="participating-trainings-not-loaded" v-else>
-            <h4>
-                Sorry, but your trainings are not loaded yet
-            </h4>
         </div>
         <transition name="fade">
             <div class="modal-window-canvas" v-if="selectedTraining !== null" @click="selectedTraining = null">
@@ -225,6 +222,5 @@ export default{
   }
 }
 </script>
-<style>
-
+<style lang="sass" scoped>
 </style>

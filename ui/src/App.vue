@@ -23,7 +23,7 @@
       <div class="new-training-button-holder">
         <b-btn @click="showCreateWindow = true"
                variant="outline-primary"
-               class="icon-button">
+               class="new-training-button">
           <v-icon name="plus" />
         </b-btn>
       </div>
@@ -130,6 +130,8 @@ export default {
 </script>
 
 <style lang="sass">
+@import 'globals'
+
 #app
   font-family: 'Avenir', Helvetica, Arial, sans-serif
   -webkit-font-smoothing: antialiased
@@ -154,6 +156,9 @@ export default {
 .new-training-button-holder
   height: 2rem
   text-align: right
+
+.new-training-button
+  @extend %icon-button
 
 .trainings-list
   padding-top: 1rem
@@ -184,6 +189,5 @@ export default {
   cursor: pointer
   color: #7c7c7c
   font-weight: 700
-
 
 </style>

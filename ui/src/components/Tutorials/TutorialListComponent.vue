@@ -3,9 +3,11 @@
         <filter-component v-model="filters"></filter-component>
         <b-tabs>
             <b-tab title="My tutorials">
-                <div style="text-align: right; margin-top: 1rem;">
+                <div class="excel-button-holder">
                     <download-excel :fields="excelFields" :data="MyTutorials" style="display: inline;">
-                        <b-btn variant="outline-success">
+                        <b-btn variant="outline-success"
+                               class="excel-button"
+                        >
                             <v-icon name="file-excel" />
                         </b-btn>
                     </download-excel>
@@ -82,9 +84,10 @@
                 </table>
             </b-tab>
             <b-tab title="Moderating tutorials">
-                <div style="text-align: right; margin-top: 1rem;">
+                <div class="excel-button-holder">
                     <download-excel :fields="excelFields" :data="ModeratingTutorials" style="display: inline;">
-                        <b-btn variant="outline-success">
+                        <b-btn variant="outline-success"
+                               class="excel-button" >
                             <v-icon name="file-excel" />
                         </b-btn>
                     </download-excel>
@@ -164,7 +167,8 @@
             <b-tab title="Observing tutorials">
                 <div style="text-align: right; margin-top: 1rem;">
                     <download-excel :fields="excelFields" :data="ObservingTutorials" style="display: inline;">
-                        <b-btn variant="outline-success">
+                        <b-btn variant="outline-success"
+                               class="excel-button" >
                             <v-icon name="file-excel" />
                         </b-btn>
                     </download-excel>
@@ -432,6 +436,10 @@ export default{
   }
 }
 </script>
-<style>
+<style lang="sass">
+
+.excel-button-holder
+    text-align: right
+    margin: 1rem auto
 
 </style>
