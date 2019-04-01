@@ -24,24 +24,25 @@ class CopyDataFromOldTable extends Seeder
 
     public function run()
     {
-        $tutorials = \Illuminate\Support\Facades\DB::table('erp.TRAINING_TUTORIALS')->get();
-        foreach($tutorials as $t) {
-            $t = (array) $t;
+        $erp_db = env("DB_ERP", "admin_erp");
+        $tutorials = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUTORIALS')->get();
+        foreach ($tutorials as $t) {
+            $t = (array)$t;
             $tutorial = \App\Tutorial::create([
-               'id' => $t['ID'],
-               'system' => $t['SYSTEM'],
-               'title' => $t['TITLE'],
-               'author' => $t['AUTHOR_ID'],
+                'id' => $t['ID'],
+                'system' => $t['SYSTEM'],
+                'title' => $t['TITLE'],
+                'author' => $t['AUTHOR_ID'],
             ]);
 
             $tutorial->created_at = $t['CREATE_DATE'];
             $tutorial->updated_at = $t['EDIT_DATE'];
             $tutorial->deleted_at = $t['DELETED'] ? date('y-m-d') : null;
             $tutorial->save();
-            $questions = \Illuminate\Support\Facades\DB::table('erp.TRAINING_TUT_QUESTIONS')
+            $questions = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUT_QUESTIONS')
                 ->where('TUT_ID', $t['ID'])->get();
-            foreach($questions as $q) {
-                $q = (array) $q;
+            foreach ($questions as $q) {
+                $q = (array)$q;
                 $question = $tutorial->questions()->create([
                     'id' => $q['ID'],
                     'question' => $q['QUESTION'],
@@ -60,10 +61,9 @@ class CopyDataFromOldTable extends Seeder
                 $question->save();
             }
 
-            $moderators = \Illuminate\Support\Facades\DB::table('erp.TRAINING_TUT_MODERATOR')
-                                ->where('TUT_ID', $t['ID'])->get();
-            foreach($moderators as $m)
-            {
+            $moderators = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUT_MODERATOR')
+                ->where('TUT_ID', $t['ID'])->get();
+            foreach ($moderators as $m) {
                 $m = (array)$m;
                 $moderator = $tutorial->moderators()->create([
                     'moderator_id' => $m['MODERATOR_ID']
@@ -74,7 +74,7 @@ class CopyDataFromOldTable extends Seeder
                 $moderator->save();
             }
 
-            $observers = \Illuminate\Support\Facades\DB::table('erp.TRAINING_TUT_OBSERVER')
+            $observers = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_TUT_OBSERVER')
                 ->where('TUT_ID', $t['ID'])->get();
 
             foreach ($observers as $o) {
@@ -89,9 +89,9 @@ class CopyDataFromOldTable extends Seeder
             }
         }
 
-        $trainings = \Illuminate\Support\Facades\DB::table('erp.TRAINING')->get();
+        $trainings = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING')->get();
         foreach ($trainings as $t) {
-            $t = (array) $t;
+            $t = (array)$t;
             $training = \App\Training::create([
                 'id' => $t['ID'],
                 'originator_id' => $t['ORIGINATOR_ID'],
@@ -111,14 +111,14 @@ class CopyDataFromOldTable extends Seeder
             $training->deleted_at = $t['DELETED'] ? date('y-m-d') : null;
             $training->save();
 
-            $observers = \Illuminate\Support\Facades\DB::table('erp.TRAINING_OBSERVER')
+            $observers = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_OBSERVER')
                 ->where('TRAINING_ID', $t['ID'])->get();
 
             foreach ($observers as $o) {
-                $o = (array) $o;
+                $o = (array)$o;
                 $observer = $training->observers()->create([
-                   'id' => $o['ID'],
-                   'observer_id' => $o['OBSERVER_ID']
+                    'id' => $o['ID'],
+                    'observer_id' => $o['OBSERVER_ID']
                 ]);
 
                 $observer->created_at = $o['EDIT_DATE'];
@@ -127,20 +127,20 @@ class CopyDataFromOldTable extends Seeder
                 $observer->save();
             }
 
-            $participants = \Illuminate\Support\Facades\DB::table('erp.TRAINING_PARTICIPANT')
+            $participants = \Illuminate\Support\Facades\DB::table($erp_db.'.TRAINING_PARTICIPANT')
                 ->where('TRAINING_ID', $t['ID'])->get();
 
             foreach ($participants as $p) {
-                $p = (array) $p;
+                $p = (array)$p;
                 $participant = $training->participants()->create([
-                   'id' =>  $p['ID'],
-                   'start_date' =>  $p['DATE'],
-                   'end_date' =>  $p['END_DATE'],
-                   'participant_id' =>  $p['PARTICIPANT_ID'],
-                   'score' =>  $p['SCORE'],
-                   'attempt' =>  $p['ATTEMPT'],
-                   'status' =>  self::STATES[$p['STATE']],
-                   'examiner_id' =>  $p['CERTIFIER_ID'],
+                    'id' => $p['ID'],
+                    'start_date' => $p['DATE'],
+                    'end_date' => $p['END_DATE'],
+                    'participant_id' => $p['PARTICIPANT_ID'],
+                    'score' => $p['SCORE'],
+                    'attempt' => $p['ATTEMPT'],
+                    'status' => self::STATES[$p['STATE']],
+                    'examiner_id' => $p['CERTIFIER_ID'],
                 ]);
 
                 $participant->created_at = $p['EDIT_DATE'];
