@@ -142,7 +142,7 @@ export default {
   min-height: 90vh
 
 .landing-page-component
-  padding-bottom: 2rem
+  padding: 0 15px 2rem 15px
 
 .tutorials-button-holder
   height: 2rem
