@@ -105,8 +105,12 @@
                     </td>
                 </tr>
             </table>
-            <b-pagination v-bind:value="currentPage" :total-rows="totalPages" v-if="currentPage && totalPages > 1"
-                          :per-page="1" @input="changePage" align="center">
+            <b-pagination v-bind:value="currentPage"
+                          :total-rows="totalPages"
+                          v-if="currentPage && totalPages > 1"
+                          :per-page="1"
+                          @input="changePage"
+                          align="center">
 
             </b-pagination>
             <div    style="text-align: right;">
