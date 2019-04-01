@@ -95,24 +95,24 @@ export default{
   }
 }
 </script>
-<style>
-    .filter-values{
-        margin: 1rem auto;
-    }
-    .filter-values-item{
-        display: inline;
-        background-color: #c1c1c1;
-        padding: .4rem .6rem;
-        margin: 0 .3rem;
-        border-radius: 5px;
-        text-transform: capitalize;
-        cursor: pointer;
-    }
-    .bcards-filter-input-holder {
-        text-align: left;
-    }
-    .bcards-filter-input {
-        width: max-content;
-        display: inline !important;
-    }
+<style lang="sass">
+.filter-values
+    margin: 1rem auto
+
+.filter-values-item
+    display: inline
+    background-color: #c1c1c1
+    padding: .4rem .6rem
+    margin: 0 .3rem
+    border-radius: 5px
+    text-transform: capitalize
+    cursor: pointer
+
+.bcards-filter-input-holder
+    text-align: left
+
+.bcards-filter-input
+    width: max-content !important
+    display: inline !important
+
 </style>

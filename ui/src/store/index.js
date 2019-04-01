@@ -14,12 +14,12 @@ export default new Vuex.Store({
     observedTrainings: [],
     trainingParticipating: [],
     users: [],
-    userID: 1,
+    userID: null,
     serverURL: serverURL
   },
   mutations: {
     setUser (state, user) {
-      state.userID = user.id || state.userID
+      state.userID = user.ID
     },
     setTutorials (state, options) {
       state.tutorials[options.type] = options.tutorials
