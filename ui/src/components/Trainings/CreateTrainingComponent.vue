@@ -129,7 +129,7 @@ export default{
       form.set('title', this.title)
       form.set('description', this.description)
       form.set('reference', this.reference)
-      form.set('is_test_exam', this.isTestExam)
+      form.set('is_test_exam', this.isTestExam ? 1 : 0)
       form.set('question_number', this.questionsCount)
       if (this.isTestExam) {
         form.set('tutorial_id', this.tutorialID)

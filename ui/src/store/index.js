@@ -103,7 +103,7 @@ export default new Vuex.Store({
       }
     },
     addObservedTraining (state, training) {
-      state.observedTrainings.push(training)
+      state.observedTrainings.unshift(training)
     },
     setParticipatingTrainings (state, trainings) {
       state.trainingParticipating = []
@@ -141,9 +141,12 @@ export default new Vuex.Store({
           console.log(state.trainingParticipating[i])
         }
       }
+      if (info.callback) {
+        info.callback()
+      }
     },
     addParticipatingTraining (state, options) {
-      state.trainingParticipating.push(options)
+      state.trainingParticipating.unshift(options)
     },
     updateParticipantsInfo (state, options) {
       for (let i = 0; i < state.observedTrainings.length; i++) {
@@ -156,6 +159,9 @@ export default new Vuex.Store({
           }
         }
         state.observedTrainings[i] = participants
+      }
+      if (options.callback) {
+        options.callback()
       }
     }
   },

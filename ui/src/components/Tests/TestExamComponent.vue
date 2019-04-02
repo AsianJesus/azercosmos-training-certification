@@ -193,22 +193,18 @@ export default{
       } else {
         alert('Sorry, but you got only ' + score + '% of ' + this.passScore + '%')
       }
-      this.isExamGoing = false
       this.saveResults(score, passed)
+      this.isExamGoing = false
     },
     saveResults (score, passed) {
       this.axios.post('trainings/' + this.id + '/participants', {
         score: score
-      }).then(() => {
-        if (passed) {
-          this.$emit('passed', score)
-          this.$store.commit('updateParticipantInfo', {
-            id: this.participant.id,
-            score: score,
-            attempt: this.participant.attempt + 1
-          })
-        }
       })
+      if (passed) {
+        this.$emit('passed', score)
+      } else {
+        this.$emit('fail', score)
+      }
     },
     startExam () {
       this.isExamGoing = true
@@ -230,62 +226,62 @@ export default{
   }
 }
 </script>
-<style>
-    .test-exam-questions{
-        text-align: left;
-    }
-    .test-exam-component{
-        position: relative;
-        min-height: 100%;
-    }
-    .test-exam-start{
-        text-align: left;
-        margin-left: 50%;
-        margin-top: 10%;
-        border: 1px solid #20202050;
-        border-radius: 10px;
-        padding: .6rem 1rem;
-        transform: translateX(-50%);
-    }
-    .test-exam-header {
-        border-bottom: 1px solid #20202080;
-    }
-    .test-exam-name{
-        font-size: 1.7rem;
-    }
-    .start-training-name{
-        font-size: 1.7rem;
-    }
-    .start-questions-count{
-        font-size: .7rem;
-        color: #8D8D8D;
-    }
-    .start-info-header{
-        font-weight: bolder;
-        margin: .3rem auto;
-    }
-    .test-exam-question {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-    .test-exam-score{
-        font-style: italic;
-    }
-    .test-exam-toolbar{
-        border-left: 1px solid #30303060;
-    }
-    .test-exam-questions-references{
-        display: flex;
-        flex-wrap: wrap;
-        border: 1px solid #30303050;
-    }
-    .test-exam-questions-reference{
-      cursor: pointer;
-      padding: .3rem .5rem;
-      margin-right: .4rem;
-    }
+<style lang="sass">
+.test-exam-questions
+    text-align: left
 
-    .start-controls {
-        margin: .5rem auto;
-    }
+.test-exam-component
+    position: relative
+    min-height: 100%
+
+.test-exam-start
+    text-align: left
+    margin-left: 50%
+    margin-top: 10%
+    border: 1px solid #20202050
+    border-radius: 10px
+    padding: .6rem 1rem
+    transform: translateX(-50%)
+
+.test-exam-header
+    border-bottom: 1px solid #20202080
+
+.test-exam-name
+    font-size: 1.7rem
+
+.start-training-name
+    font-size: 1.7rem
+
+.start-questions-count
+    font-size: .7rem
+    color: #8D8D8D
+
+.start-info-header
+    font-weight: bolder
+    margin: .3rem auto
+
+.test-exam-question
+    margin-top: 1rem
+    margin-bottom: 1rem
+
+.test-exam-score
+    font-style: italic
+
+.test-exam-toolbar
+    border-left: 1px solid #30303060
+
+.test-exam-questions-references
+    display: flex
+    flex-wrap: wrap
+    border: 1px solid #30303050
+
+.test-exam-questions-reference
+  cursor: pointer
+  padding: .3rem .5rem
+  margin-right: .4rem
+
+
+.start-controls
+    margin: .5rem auto
+
 </style>

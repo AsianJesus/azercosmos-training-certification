@@ -90,7 +90,7 @@
                         <td>{{ participant.start_date }}</td>
                         <td>{{ participant.end_date }}</td>
                         <td v-if="training.is_test_exam">
-                            {{ participant.score }}
+                            {{ participant.score }}%
                         </td>
                         <td v-if="training.is_test_exam">
                             {{ participant.attempt }}
@@ -112,8 +112,10 @@
         <transition name="fade">
             <div class="modal-window-canvas" v-if="showTests" @click="hideTests(false)">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
-                    <test-exam-component @close="hideTests($event)" :id="training.id" @passed="markAsPassed">
-                    </test-exam-component>
+                    <test-exam-component @close="hideTests($event)"
+                                         :id="training.id"
+                                         @fail="fail"
+                                         @passed="markAsPassed" />
                 </div>
             </div>
         </transition>
@@ -155,15 +157,12 @@ export default{
       this.axios.put('/participants/' + this.id, {
         status: 1
       }).then(() => {
-        this.$store.commit('updateParticipatingTraining', {
+        this.$store.commit('updateParticipantInfo', {
           id: this.id,
           props: {
             status: 1
           }
         })
-        setTimeout(() => {
-          this.$forceUpdate()
-        }, 1000)
       })
     },
     hideTests (force = false) {
@@ -172,20 +171,40 @@ export default{
       }
       this.showTests = false
     },
-    markAsPassed (score) {
+    fail (score) {
+      let currentScore = this.participant.score || 0
       this.$store.commit('updateParticipatingTraining', {
         id: this.id,
         props: {
-          score: score,
+          score: Math.max(score, currentScore),
           attempt: this.participant.attempt + 1
         }
       })
       this.$store.commit('updateParticipantInfo', {
         id: this.id,
         props: {
-          score: score,
+          score: Math.max(score, currentScore),
           attempt: this.participant.attempt + 1
         }
+      })
+    },
+    markAsPassed (score) {
+      this.$store.commit('updateParticipatingTraining', {
+        id: this.id,
+        props: {
+          score: score,
+          attempt: this.participant.attempt + 1
+        },
+        callback: () => this.$forceUpdate()
+      })
+      this.$store.commit('updateParticipantInfo', {
+        id: this.id,
+        props: {
+          score: score,
+          attempt: this.participant.attempt + 1,
+          status: 2
+        },
+        callback: () => this.$forceUpdate()
       })
     }
   }
