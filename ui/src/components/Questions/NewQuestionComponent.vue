@@ -14,7 +14,7 @@
                     </div>
                     <div class="new-question-answer-radio col-1">
                         <input type="radio" :name="'question_' + hash" :id="'question_' + hash + '_1'"
-                            :value="correct_answer === 0" @input="correct_answer = 0">
+                            :value="correct_answer === 1" @input="correct_answer = 1">
                     </div>
                 </div>
                 <div class="new-question-answer row-margin">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="new-question-answer-radio col-1">
                         <input  type="radio" :name="'question_' + hash" :id="'question_' + hash + '_2'"
-                            :value="correct_answer === 1" @input="correct_answer = 1">
+                            :value="correct_answer === 2" @input="correct_answer = 2">
                     </div>
                 </div>
                 <div class="new-question-answer row-margin">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="new-question-answer-radio col-1">
                         <input  type="radio" :name="'question_' + hash" :id="'question_' + hash + '_3'"
-                            :value="correct_answer === 2" @input="correct_answer = 2">
+                            :value="correct_answer === 3" @input="correct_answer = 3">
                     </div>
                 </div>
                 <div class="new-question-answer row-margin">
@@ -47,7 +47,7 @@
                     </div>
                     <div class="new-question-answer-radio col-1">
                         <input  type="radio" :name="'question_' + hash" :id="'question_' + hash + '_4'"
-                            :value="correct_answer === 3" @input="correct_answer = 3">
+                            :value="correct_answer === 4" @input="correct_answer = 4">
                     </div>
                 </div>
             <!--<div class="col">

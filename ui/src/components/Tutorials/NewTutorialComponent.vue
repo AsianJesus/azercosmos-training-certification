@@ -57,7 +57,7 @@
                                 <span>4) {{ question.answer4 }}</span>
                             </div>
                         </td>
-                        <td>{{ question.correct_answer + 1}}</td>
+                        <td>{{ question.correct_answer }}</td>
                         <td>{{ mapDifficulty(question.difficulty) }}</td>
                     </tr>
                 </table>

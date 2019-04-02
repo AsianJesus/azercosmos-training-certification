@@ -24,7 +24,10 @@
                     <b-form-textarea v-model="form.answer1" placeholder="Answer #1" :state="showError && errors.answer1 ? false : null" />
                 </div>
                 <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="0">
+                    <input type="radio"
+                           :name="'correct_answer_' + id"
+                           v-model="form.correct_answer"
+                           :value="1">
                 </div>
             </div>
             <div class="row-margin editable-question-edit-row">
@@ -32,7 +35,10 @@
                     <b-form-textarea v-model="form.answer2" placeholder="Answer #2" :state="showError && errors.answer2 ? false : null" />
                 </div>
                 <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="1">
+                    <input type="radio"
+                           :name="'correct_answer_' + id"
+                           v-model="form.correct_answer"
+                           :value="2">
                 </div>
             </div>
             <div class="row-margin editable-question-edit-row">
@@ -40,7 +46,10 @@
                     <b-form-textarea v-model="form.answer3" placeholder="Answer #3" :state="showError && errors.answer3 ? false : null" />
                 </div>
                 <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="2">
+                    <input type="radio"
+                           :name="'correct_answer_' + id"
+                           v-model="form.correct_answer"
+                           :value="3">
                 </div>
             </div>
             <div class="row-margin editable-question-edit-row">
@@ -48,7 +57,10 @@
                     <b-form-textarea v-model="form.answer4" placeholder="Answer #4" :state="showError && errors.answer4 ? false : null" />
                 </div>
                 <div class="col-2">
-                    <input type="radio" :name="'correct_answer_' + id" v-model="form.correct_answer" :value="3">
+                    <input type="radio"
+                           :name="'correct_answer_' + id"
+                           v-model="form.correct_answer"
+                           :value="4">
                 </div>
             </div>
             <div class="editable-question-edit-buttons" style="text-align: right;">
@@ -79,16 +91,16 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div :class="question.correct_answer === 0 ? 'editable-question-correct' : ''">
+                    <div :class="question.correct_answer === 1 ? 'editable-question-correct' : ''">
                         Answer #1: {{ question.answer1 }}
                     </div>
-                    <div :class="question.correct_answer === 1 ? 'editable-question-correct' : ''">
+                    <div :class="question.correct_answer === 2 ? 'editable-question-correct' : ''">
                         Answer #2: {{ question.answer2 }}
                     </div>
-                    <div :class="question.correct_answer === 2 ? 'editable-question-correct' : ''">
+                    <div :class="question.correct_answer === 3 ? 'editable-question-correct' : ''">
                         Answer #3: {{ question.answer3 }}
                     </div>
-                    <div :class="question.correct_answer === 3 ? 'editable-question-correct' : ''">
+                    <div :class="question.correct_answer === 4 ? 'editable-question-correct' : ''">
                         Answer #4: {{ question.answer4 }}
                     </div>
                 </div>

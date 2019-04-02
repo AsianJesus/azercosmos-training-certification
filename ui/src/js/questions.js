@@ -45,7 +45,7 @@ function convertQuestions (questions) {
       answers: ['answer1', 'answer2', 'answer3', 'answer4'].map((a, i) => {
         return {
           answer: q[a],
-          correct: i === q.correct_answer
+          correct: (i + 1) === q.correct_answer
         }
       })
     }
