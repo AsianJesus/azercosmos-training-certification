@@ -1,4 +1,4 @@
 <?php
 
 // return 1;
-return (int)$_SESSION['id'];
+return isset($_SESSION['id']) ? (int)$_SESSION['id'] : 153;

@@ -37,9 +37,9 @@
                             </v-icon>
                         </span>
                     </th>
-                    <th @click="changeOrder('originator')" class="order-button">
+                    <th @click="changeOrder('is_test_exam')" class="order-button">
                         Test Exam
-                        <span v-if="orderBy === 'originator'">
+                        <span v-if="orderBy === 'is_test_exam'">
                             <v-icon name="angle-up" v-if="orderAsc">
 
                             </v-icon>
