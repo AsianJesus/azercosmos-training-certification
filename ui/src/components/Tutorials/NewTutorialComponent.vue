@@ -149,6 +149,7 @@ export default{
           observer_id: x.value
         }
       })
+	  console.log(this.observers)
       var form = new FormData()
       this.observers.forEach(x => form.set('observers[][observer_id]', x.value))
       this.moderators.forEach(x => form.set('moderators[][moderator_id]', x.value))
