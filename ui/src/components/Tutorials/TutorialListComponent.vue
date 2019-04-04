@@ -165,7 +165,7 @@
                 </table>
             </b-tab>
             <b-tab title="Observing tutorials">
-                <div style="text-align: right; margin-top: 1rem;">
+                <div style="text-align: right; margin: 1rem  0;">
                     <download-excel :fields="excelFields" :data="ObservingTutorials" style="display: inline;">
                         <b-btn variant="outline-success"
                                class="excel-button" >
