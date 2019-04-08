@@ -12,16 +12,20 @@
             <div class="row-margin vtao-info-element">
                 <div class="col-6">Trainer</div>
                 <div class="col-4 offset-2">Training record date</div>
-                <div class="col-6"><b-form-input v-model="training.originator.NAME" readonly /></div>
-                <div class="col-4 offset-2"><b-form-input v-model="training.created_at" readonly /></div>
+                <div class="col-6">
+                    <b-form-input v-model="training.originator.NAME" readonly/>
+                </div>
+                <div class="col-4 offset-2">
+                    <b-form-input v-model="training.created_at" readonly/>
+                </div>
             </div>
             <div class="vtao-title vtao-info-element">
                 Title
-                <b-form-input v-model="training.title" readonly />
+                <b-form-input v-model="tutorial_title" readonly/>
             </div>
             <div class="vtao-description vtao-info-element">
                 Description
-                <b-form-input v-model="training.description" readonly />
+                <b-form-input v-model="training.description" readonly/>
             </div>
             <div class="vtao-info-element">
                 <div class="row-margin">
@@ -34,10 +38,11 @@
                 </div>
                 <div class="row-margin">
                     <div class="vtao-reference col">
-                        <b-form-input v-model="training.reference" readonly />
+                        <b-form-input v-model="training.reference" readonly/>
                     </div>
                     <div class="col-3">
-                        <a :href="$store.state.serverURL + '/' + training.file.path" target="_blank" v-if="training.file">
+                        <a :href="$store.state.serverURL + '/' + training.file.path" target="_blank"
+                           v-if="training.file">
                             Open
                         </a>
                         <span v-else>
@@ -59,16 +64,16 @@
                 </div>
                 <div class="row-margin">
                     <div class="vtao-tutorial col-7">
-                        <b-form-input v-model="tutorial.title" readonly />
+                        <b-form-input v-model="tutorial_title" readonly/>
                     </div>
                     <div class="vtao-questions-number col-2">
-                        <b-form-input v-model="training.question_number" readonly />
+                        <b-form-input v-model="training.question_number" readonly/>
                     </div>
                     <div class="vtao-pass-score col-2">
-                        <b-form-input v-model="training.pass_score" readonly />
+                        <b-form-input v-model="training.pass_score" readonly/>
                     </div>
                     <div class="vtao-time col-1">
-                        <b-form-input v-model="training.exam_time" readonly />
+                        <b-form-input v-model="training.exam_time" readonly/>
                     </div>
                 </div>
             </div>
@@ -86,7 +91,8 @@
                         <th>Status</th>
                         <th v-if="!training.is_test_exam"></th>
                     </tr>
-                    <tr v-for="(p, i) in participants" v-bind:key="i" v-if="p.participant" :class="'training-status-' + p.status">
+                    <tr v-for="(p, i) in participants" v-bind:key="i" v-if="p.participant"
+                        :class="'training-status-' + p.status">
                         <td>
                             {{ p.participant.NAME }}
                         </td>
@@ -125,7 +131,7 @@
                 <div class="vtao-buttons-download">
                     <download-excel :data="participants"
                                     :fields="excelFields"
-                                    style="display: inline;" >
+                                    style="display: inline;">
                         <b-btn variant="outline-danger">
                             Save participants information
                         </b-btn>
@@ -139,103 +145,116 @@
     </div>
 </template>
 <script>
-import { getStatus, getTrainingStatus } from '../../js/statuses'
-import { participantFields } from '../../js/excelData'
-export default{
-  props: {
-    id: {
-      type: Number,
-      required: true
-    }
-  },
-  data () {
-    return {
-      excelFields: participantFields
-    }
-  },
-  computed: {
-    training () {
-      return this.$store.state.observedTrainings.find(t => t.id === this.id)
-    },
-    tutorial () {
-      return this.training ? this.training.tutorial : null
-    },
-    participants () {
-      return this.training ? this.training.participants : null
-    }
-  },
-  mounted () {
+    import {getStatus, getTrainingStatus} from '../../js/statuses'
+    import {participantFields} from '../../js/excelData'
 
-  },
-  methods: {
-    getStatusName: getStatus,
-    markAsPassed (id) {
-      this.axios.put('/participants/' + id, {
-        status: 2
-      }).then(() => {
-        this.$store.commit('updateParticipatingTraining', {
-          id: id,
-          props: {
-            status: 2
-          }
-        })
-        for (let i = 0; i < this.participants.length; i++) {
-          if (this.participants[i].id === id) {
-            let temp = this.participants[i]
-            temp.status = 2
-            this.$set(this.participants, i, temp)
-          }
+    export default {
+        props: {
+            id: {
+                type: Number,
+                required: true
+            }
+        },
+        data() {
+            return {
+                excelFields: participantFields
+            }
+        },
+        computed: {
+            training() {
+                return this.$store.state.observedTrainings.find(t => t.id === this.id)
+            },
+            tutorial() {
+                return this.training ? this.training.tutorial : null
+            },
+            tutorial_title() {
+                if (this.training.hasOwnProperty("tutorial") && this.training.tutorial != null) {
+                    if (this.training.tutorial.hasOwnProperty("title")) {
+                        if (typeof this.training.tutorial.title !== 'undefined') {
+
+                            return this.training.tutorial.title;
+                        }
+
+                    }
+                }
+                return "";
+            },
+            participants() {
+                return this.training ? this.training.participants : null
+            }
+        },
+        mounted() {
+
+        },
+        methods: {
+            getStatusName: getStatus,
+            markAsPassed(id) {
+                this.axios.put('/participants/' + id, {
+                    status: 2
+                }).then(() => {
+                    this.$store.commit('updateParticipatingTraining', {
+                        id: id,
+                        props: {
+                            status: 2
+                        }
+                    })
+                    for (let i = 0; i < this.participants.length; i++) {
+                        if (this.participants[i].id === id) {
+                            let temp = this.participants[i]
+                            temp.status = 2
+                            this.$set(this.participants, i, temp)
+                        }
+                    }
+                    this.$store.commit('updateObservedTraining', {
+                        id: this.id,
+                        participants: this.participants
+                    })
+                    this.$forceUpdate()
+                })
+            },
+            getTrainingStatus: getTrainingStatus
         }
-        this.$store.commit('updateObservedTraining', {
-          id: this.id,
-          participants: this.participants
-        })
-        this.$forceUpdate()
-      })
-    },
-    getTrainingStatus: getTrainingStatus
-  }
-}
+    }
 </script>
 <style lang="sass">
-.vtao-headline
-    border-bottom: 1px solid #20202020
-    margin-bottom: 1rem
-    padding-bottom: 1rem
+    .vtao-headline
+        border-bottom: 1px solid #202020 20
+        margin-bottom: 1rem
+        padding-bottom: 1rem
 
-.vtao-training-id, .vtao-training-status
-    border: 1px solid #10101040
-    padding: .2rem .4rem
-    margin-left: 2rem
-    margin-right: 2rem
-    border-radius: 5px
-    box-shadow: 0 1px #20202020
+        .vtao-training-id, .vtao-training-status
+            border: 1px solid #101010 40
+            padding: .2rem .4rem
+            margin-left: 2rem
+            margin-right: 2rem
+            border-radius: 5px
+            box-shadow: 0 1px #202020 20
 
-.vtao-info-element
-    margin-top: 1rem
-    margin-bottom: 1rem
+        .vtao-info-element
+            margin-top: 1rem
+            margin-bottom: 1rem
 
-.vtao-body
-    text-align: left
+        .vtao-body
+            text-align: left
 
-.vtao-observers
-    list-style-type: circle
-    flex-wrap: wrap
-    display: flex
+        .vtao-observers
+            list-style-type: circle
+            flex-wrap: wrap
+            display: flex
 
-.vtao-observer
-    padding: .3rem .5rem
-    border: 1px solid #10101040
-    border-radius: 6px
-    margin: .3rem .7rem
+        .vtao-observer
+            padding: .3rem .5rem
+            border: 1px solid #101010 40
+            border-radius: 6px
+            margin: .3rem .7rem
 
-.vtao-observer::before
-    content: '\25CF'
+        .vtao-observer::before
+            content: '\25CF'
 
-.vtao-buttons
-    text-align: right
+        .vtao-buttons
+            text-align: right
 
-.vtao-buttons-download
-    margin-bottom: .5rem
+        .vtao-buttons-download
+            margin-bottom: .5rem
 
 </style>

@@ -1,2 +1,3 @@
-export const serverURL = 'https://erptest.azercosmos.az/azercosmos-training-certification/api/public'
-// export const serverURL = 'http://localhost/azercosmos-training-certification/api/public'
+const getUrl = window.location;
+let baseUrl = getUrl.protocol + '//' + getUrl.hostname
+export const serverURL = baseUrl + '/azercosmos-training-certification/api/public'
