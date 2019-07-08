@@ -58,7 +58,7 @@
                                 </v-icon>
                             </span>
                         </th>
-                        <th></th>
+                        <th @click="$event.stopPropagation()"></th>
                     </tr>
                     <tr v-for="(t, index) in MyTutorials" v-bind:key="index" v-if="t" style="cursor: pointer;"
                         @click="selectedTutorial.view = t">
@@ -227,7 +227,7 @@
                         <td>{{ t.title }}</td>
                         <td>{{ t.verified_questions_count }} / {{ t.questions_count }}</td>
                         <td>{{ t.system }}</td>
-                        <td class="control-buttons">
+                        <td class="control-buttons" @click="$event.stopPropagation()">
                             <b-btn variant="outline-primary" class="add-questions-button" @click="selectedTutorial.addQuestions = t">
                                 <v-icon name="plus" />
                             </b-btn>
@@ -237,8 +237,11 @@
             </b-tab>
         </b-tabs>
         <transition name="fade">
-            <div class="modal-window-canvas" @click="hideView" v-if="selectedTutorial.view">
+            <div class="modal-window-canvas"
+                 @click="hideView"
+                 v-if="selectedTutorial.view">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideView"> X </div>
                     <view-tutorial-component :tutorial="selectedTutorial.view" @close="hideView">
 
                     </view-tutorial-component>
@@ -246,8 +249,11 @@
             </div>
         </transition>
         <transition name="fade">
-            <div class="modal-window-canvas" v-if="selectedTutorial.addQuestions" @click="hideAddQuestions()">
+            <div class="modal-window-canvas"
+                 v-if="selectedTutorial.addQuestions"
+                 @click="hideAddQuestions()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideAddQuestions(true)"> X </div>
                     <add-questions-component :tutorial="selectedTutorial.addQuestions" @close="hideAddQuestions($event)"
                                              :moderator="canAddQuestion(selectedTutorial.addQuestions.id)">
 
@@ -256,8 +262,11 @@
             </div>
         </transition>
         <transition name="fade">
-            <div class="modal-window-canvas" v-if="selectedTutorial.edit" @click="hideEdit()">
+            <div class="modal-window-canvas"
+                 v-if="selectedTutorial.edit"
+                 @click="hideEdit()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideEdit(true)"> X </div>
                     <edit-tutorial-component :tutorial="selectedTutorial.edit" @close="hideEdit($event)">
 
                     </edit-tutorial-component>
@@ -265,8 +274,11 @@
             </div>
         </transition>
         <transition name="fade">
-            <div class="modal-window-canvas" v-if="selectedTutorial.verifyQuestions" @click="hideVerify()">
+            <div class="modal-window-canvas"
+                 v-if="selectedTutorial.verifyQuestions"
+                 @click="hideVerify()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideVerify(true)"> X </div>
                     <verify-questions :tutorial="selectedTutorial.verifyQuestions" @close="hideVerify($event)">
                     </verify-questions>
                 </div>

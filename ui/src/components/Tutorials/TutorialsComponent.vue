@@ -14,8 +14,11 @@
             <tutorial-list-component></tutorial-list-component>
         </div>
         <transition name="fade">
-            <div class="new-tutorial modal-window-canvas" @click="closeWindow()" v-if="showNewTutorial">
+            <div class="new-tutorial modal-window-canvas"
+                 @click="closeWindow()"
+                 v-if="showNewTutorial">
                 <div class="new-tutorial-holder modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="closeWindow(true)"> X </div>
                     <new-tutorial-component @close="closeWindow($event)"></new-tutorial-component>
                 </div>
             </div>

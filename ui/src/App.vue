@@ -42,6 +42,7 @@
     <transition>
       <div class="modal-window-canvas" v-if="showTutorials" @click="hideTutorials(false)">
         <div class="modal-window-holder" @click="$event.stopPropagation()">
+          <div class="modal-window-close" @click="hideTutorials(true)"> X </div>
           <tutorials-component @close="hideTutorials($event)"></tutorials-component>
         </div>
       </div>
@@ -49,7 +50,8 @@
     <transition name="fade">
       <div class="modal-window-canvas" @click="hideCreate()" v-if="showCreateWindow">
         <div class="modal-window-holder" @click="$event.stopPropagation()">
-          <create-training-component @close="hideCreate"></create-training-component>
+          <div class="modal-window-close" @click="hideCreate(true)"> X </div>
+            <create-training-component @close="hideCreate"></create-training-component>
         </div>
       </div>
     </transition>

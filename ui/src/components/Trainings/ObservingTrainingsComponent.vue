@@ -129,22 +129,30 @@
             </h4>
         </div>
         <transition name="fade">
-            <div class="modal-window-canvas" v-if="selectedTraining !== null" @click="selectedTraining = null">
+            <div class="modal-window-canvas" v-if="selectedTraining !== null"
+                 @click="selectedTraining = null">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="selectedTraining = null"> X </div>
                     <view-training-component :id="selectedTraining" @close="selectedTraining = null" />
                 </div>
             </div>
         </transition>
         <transition name="fade">
-            <div class="modal-window-canvas" v-if="trainingToAddParticipants !== null" @click="hideAdd()">
+            <div class="modal-window-canvas"
+                 v-if="trainingToAddParticipants !== null"
+                 @click="hideAdd()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideAdd(true)"> X </div>
                     <add-participants-component :id="trainingToAddParticipants" @close="hideAdd($event)" />
                 </div>
             </div>
         </transition>
         <transition name="fade">
-            <div class="modal-window-canvas" v-if="trainingToEdit !== null" @click="hideEdit()">
+            <div class="modal-window-canvas"
+                 v-if="trainingToEdit !== null"
+                 @click="hideEdit()">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideEdit(true)"> X </div>
                     <edit-training-component :training="trainingToEdit" @close="hideEdit($event)" />
                 </div>
             </div>

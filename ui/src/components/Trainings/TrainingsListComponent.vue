@@ -22,6 +22,7 @@
         <transition name="fade">
             <div class="modal-window-canvas" @click="hideCreate()" v-if="showCreateWindow">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideCreate(true)"> X </div>
                     <create-training-component @close="hideCreate"></create-training-component>
                 </div>
             </div>

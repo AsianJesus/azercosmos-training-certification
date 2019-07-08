@@ -98,6 +98,7 @@
         <transition name="fade">
             <div class="modal-window-canvas" v-if="selectedTraining !== null" @click="selectedTraining = null">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="selectedTraining = null"> X </div>
                     <view-training-component :id="selectedTraining"></view-training-component>
                 </div>
             </div>

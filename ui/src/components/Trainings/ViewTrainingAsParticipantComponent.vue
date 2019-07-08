@@ -117,6 +117,7 @@
         <transition name="fade">
             <div class="modal-window-canvas" v-if="showTests" @click="hideTests(false)">
                 <div class="modal-window-holder" @click="$event.stopPropagation()">
+                    <div class="modal-window-close" @click="hideTests(true)"> X </div>
                     <test-exam-component @close="hideTests($event)"
                                          :id="training.id"
                                          @fail="fail"
